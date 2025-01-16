@@ -11,14 +11,17 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 
 ## Your Group
 
-Add a group photo here!
+<img src='/images/group_photo.jpg'/>
 
-- Group member 1, name, email, role
-- Group member 2, name, email, role
-- Group member 3, name, email, role
-- Group member 4, name, email, role
-- Group member 5, name, email, role
-- Group member 5, name, email, role
+| Name | Email |  
+|:----:|:-----:|
+| Yi Li Tay | zo24201@bristol.ac.uk |
+| Chia Chia Wu | nq24705@bristol.ac.uk |
+| Shiyu Fan | hp24308@bristol.ac.uk |
+| Chih Chun Lin | jp24407@bristol.ac.uk |
+| Jin Liao | ge24446@bristol.ac.uk |
+| Gerald Rodrigue | nu24692@bristol.ac.uk |
+
 
 ## Project Report
 
