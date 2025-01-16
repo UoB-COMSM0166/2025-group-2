@@ -1,0 +1,28 @@
+#16th Jan 2025  
+
+- First meeting --> setting directions 
+
+
+To-do:  
+1. each team member to brainstorm 1-2 game ideas and list down potential challenges for each game idea  
+2. research on whether there are templates or libraries that can be used as reference for each game idea  
+3. share any online resources for learning p5.js  
+
+---------------------------------------------------------------------------------  
+
+Working structure: 2 team meetings per week   
+
+Monday (10.30am):  
+- updates on what each member completed the previous week  
+- evaluate progress and if there are tasks not completed from previous week, discuss whether any help is required to complete the leftover tasks  
+- discuss the tasks to focus on and complete within current week  
+
+Thursday (1pm, after lecture):   
+- progress update for the week  
+- if anyone is struggling, to ask for help from team members  
+
+---------------------------------------------------------------------------------  
+
+Miscellaneous:  
+- aim to complete project by 15th March 2025  
+- remaining weeks to be used for further testing and debugging (if any)  
