@@ -15,11 +15,11 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 
 | Name | Email |  
 |:----:|:-----:|
-| Yi Li Tay | zo24201@bristol.ac.uk |
+| Hayley Yi Li Tay | zo24201@bristol.ac.uk |
 | Chia Chia Wu | nq24705@bristol.ac.uk |
 | Shiyu Fan | hp24308@bristol.ac.uk |
 | Chih Chun Lin | jp24407@bristol.ac.uk |
-| Jin Liao | ge24446@bristol.ac.uk |
+| Octave Jin Liao | ge24446@bristol.ac.uk |
 | Gerald Rodrigue | nu24692@bristol.ac.uk |
 
 
