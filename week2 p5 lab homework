@@ -1,0 +1,52 @@
+function setup() {
+  createCanvas(400, 400);
+  background(220);
+}
+
+function draw() {
+  //when mouse button is pressed, circles turn black
+
+  if (!mouseIsPressed) {
+    var weight = dist(mouseX, mouseY, pmouseX, pmouseY);
+    strokeWeight(weight);
+    line(mouseX, mouseY, pmouseX, pmouseY);
+  } else {
+    fill(random(255), random(255), random(255));
+    ellipse(mouseX, mouseY, 20, 20);
+  }
+
+  //white circles drawn at mouse position
+}
+
+function keyPressed() {
+  if (key === "c") {
+    // Code to run.
+    fill(250);
+  }
+
+  if (keyCode === ENTER) {
+    // Code to run.
+    fill(60);
+  }
+
+  if (key === "d") {
+    background(220);
+  }
+
+  if (key === "D") {
+    clear();
+  }
+
+  if (key === "e") {
+    erase();
+  }
+
+  if (key === "a") {
+    noErase();
+    fill(random(255), random(255), random(255));
+  }
+
+  if (key === "s") {
+    saveCanvas();
+  }
+}
