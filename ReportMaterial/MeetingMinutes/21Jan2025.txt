@@ -1,0 +1,30 @@
+#21st Jan 2025  
+
+- game ideas consolidation and finalisation  
+- details of game ideas are found on "Week 0" tab of the "Group-2 planning" project  
+
+Game Ideas:  
+1. Flappy Mad Bird - Nightmare Edition (Gerald)  
+2. Chess with Steroids (Gerald)  
+3. Angry Birds (Jimmy)  
+4. Breakout (Octave)  
+5. Catch a Falling Star (Fan Fan)  
+6. Platformer Explosion Chaos (Hayley)  
+7. Bomberman (Hayley)  
+8. Merge Fruit (Doris)  
+
+
+Discussion timeline:  
+- Two options: easy game + difficult challenge? or difficult game + easy challenge  
+    --> team decision to go with easy game + difficult challenge   
+- leftover ideas to pick from for easy game + difficult challenge:  
+    1. Flappy Mad Bird - Nightmare Edition  
+    2. Angry Birds  
+    3. Breakout  
+    4. Catch a Falling Star  
+    5. Merge Fruit  
+- team decided to pick 2 games from the above for consideration:  
+    1. Merge Fruit   
+        --> newest game in the list, therefore has less versions available and so more unused ideas for challenges  
+    2. Flappy Mad Bird - Nightmare Edition  
+        --> an old classic, which will pose an interesting challenge to think of more ideas to modify the game that doesn't already exist  
