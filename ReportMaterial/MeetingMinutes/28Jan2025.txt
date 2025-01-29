@@ -1,0 +1,48 @@
+#28th Jan 2025  
+
+- selecting final idea  
+- finalising challenges to be used for final idea  
+- brainstorming on what we envision for the game itself  
+
+Final idea chosen:  Merge Fruit (name TBC)  
+Reason:  Our group prefers to go with a game that has lesser versions online so that we can have more options when modifying the game and still be novel.
+
+
+Brainstorming keypoints:  
+- Player will be able to choose between Single Player Mode or Multiplayer Mode 
+- Single Player Mode allows for 2 gameplay options
+    a. Casual Mode
+    b. Time-limit Mission Mode (name TBC)
+- Multiplayer Mode only allows for
+    a. Time-limit Mission Mode (name TBC)
+- Casual Mode will contain the following features:
+    1. Voice Control option as part of gameplay. Potential ideas for what the Voice Control option does includes
+        -> Voice Control activation will allow players to "shout" in varying levels of loudness to "bounce" a selected fruit back up (how loud to shout depends on size of fruit). 
+           This essentially allow for a redo for that fruit.  
+           Also allow players to swap around around 3 fruits to decide which fruits they want to drop first.  
+           This Voice Control Redo option will be limited to a certain number of times per game.  
+        -> Voice Control activation will allow players to select a fruit and "shout" to cause the fruit to explode.    
+           Players get extra points for fruits exploded. 
+           This Voice Control Explosion will be limited to a certain number of times per game.  
+    2. Special Rainbow Fruit that is able to merge with any types of fruit. The number of times this fruit appears per game is random, but will never exceed a certain number of times.  
+    3. Consecutive merges gives higher scores  
+    4. Top 10 local scores will be displayed  (limited to Single Player Mode only)  
+- Time-limit Mission Mode is the same between Single Player Mode and Multiplayer Mode. It will build on top of whatever is found in Casual Mode and also include:  
+    1. Each game starts with a time limit of 3 minutes and players have to complete x number of missions within the time limit  
+    2. Additional Special Fruits with special effects will be included like:  
+        -> fruit that when merged will add extra x seconds to time limit  
+        -> fruit that when merged will deduct x seconds from current time left  
+        -> fruit that when merged will explode. Any fruits within a certain distance from the centre of the exploded fruit will also explode together. Extra points given for exploded fruits.  
+        -> (optional) fruit that when merged will cause random fruits to switch places
+
+
+Key Challenges:  
+- adding Voice Control elements  
+- implementation of Multiplayer Mode  
+
+
+Week 3 homework - Introduction of game:  
+Merge fruit is a game where the user drops fruits into a container to merge them with the same type, gaining points for each merge completed.  
+Each merge will result in a larger fruit, taking up more space in the container and thus increasing the difficulty in merging and progressing onto higher scores.  
+Our group intends to modify this game by including 2 main challenges: adding voice control and multiplayer mode.  
+Other additional twists to the game include additional fruits with special properties and an additional game mode where players have to complete a fixed number of missions within a time limit.  
