@@ -1,0 +1,46 @@
+#4th Feb 2025
+
+To-do:
+- think of items with special effects that can be added into the store 
+- think of how we want the UI to look like -- everyone create a rough draft (paint, powerpoint, etc) and submit it into the kanban 
+
+
+
+Main discussion: 
+- Re-evaluating game design 
+- discussing game twists and challenges 
+
+
+Summary:
+- the group had a discussion with the professors and decided that we need a more obvious twist to the game
+- the discussion for this meeting will be the final game design (ignoring previous discussion -- we will only use the ideas for special fruits from the previous meeting) 
+
+
+Brainstorm points:
+- Adding a store function to the game which will be accessible during the game
+    -> points will be given per merge, which can be used to buy and unlock new items in store to change the gameplay
+    -> for example, the items may include unlocking additional special fruits that when merged will give extra time etc
+    -> for example, the game has a time limit of 5 minutes. Once the player has enough points to buy a bomb fruit during the 5 minutes, they can buy during the game itself and it will be added to the current game
+- the game will be time-limited 
+- the game will also have random events to disrupt the players
+    -> for example, during gameplay, there may randomly be a row of fruits dropping down all of a sudden, or maybe there will be a sudden gust of wind to change the falling path of the fruit etc
+    -> only one type of random event per game, which can happen multiple times per game and timing will be random
+- the goal will be to get as high a score as possible
+    -> the score will determine the amount of store points that the player gets during the game 
+    -> how will we calculate the scores and the store points?
+- voice control will only be used for a special fruit 
+- the game will store the current session's highest score
+- the game may also feature an option for 2 player mode 
+    -> lower priority, only to attempt after we complete the store function and other game features
+    -> in 2 player mode, the shop can be used to disrupt opponent's gameplay
+    -> the 2 player mode will NOT be an online option, but just 1 local desktop with 2 people playing together 
+- the game will not have a database for storing history
+    -> no point in this since each game starts out in the simplest form, and throughout the game, the player will earn points and buy new fruits and items etc to use within the current game
+- another potential challenge that we can consider: allowing players to draw a shape before the start of the game. That shape will be used as the "fruit" in the game  
+
+
+Current potential Special Fruits with special effects that can be made available in store:  
+    -> fruit that when merged will add extra x seconds to time limit  
+    -> fruit that when merged will deduct x seconds from current time left  
+    -> fruit that when merged will explode. Any fruits within a certain distance from the centre of the exploded fruit will also explode together. Extra points given for exploded fruits.  
+    -> (optional) fruit that when merged will cause random fruits to switch places
