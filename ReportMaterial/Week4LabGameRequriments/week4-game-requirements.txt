@@ -1,0 +1,94 @@
+Stakeholders: 
+- Users  
+- Developers  
+- Product Manager  
+- Quality Assurance Testers  
+- Game Designers  
+- Requestor/Client/Lecturer  
+
+
+
+Epics and User Stories for Stakeholders:  
+
+1. Users (Octave)
+Epic 1 - Time Challenge Game Mode
+User Story 1 - As a player, I want to play a timed challenge mode where I must merge as many fruits as possible within a limited time ao that I can test my speed and skills while earning special rewards  
+Acceptance Criteria 1 - Given that I have selected the "Time Challenge" mode, when the game starts, then a countdown timer should appear, limiting my playtime to 90 seconds and when the time runs out, my score should be calculated and displayed with rewards based on my performance  
+
+Epic 2 - Obstacle Game Mode  
+User Story 2 - As a player, I want a new game mode with obstacles that block certain merges, so that I need to strategize better and find creative ways to merge fruits  
+Acceptance Criteria 2 - Given that I have entered the "Obstacle Mode", when I try to merge fruits near an obstacle, then the obstacle should prevent the merge from happening and I should have the ability to remove obstacles by earning special items or completing specific tasks  
+
+Epic 3 - Bomb Fruit Game Mode  
+User Story 3 - As a player, I want to use a "Bomb" power-up that removes multiple fruits at once, so that I can create space and trigger more chain reactions  
+Acceptance Criteria 3 - Given that I have a "Bomb" power-up available, when I tap on it and select a target area, then the selected fruits should be removed instantly, and new fruits should fall in their place  
+
+Epic 4 - Random Merge Game Mode  
+User Story 4 - As a player, I want a special item that merges random fruits on the board automatically, so that I can quickly progress when I’m stuck  
+Acceptance Criteria 4 - Given that I have activated the "Auto Merge" power-up,  when I tap the button, then a few random fruits on the board should merge automatically into higher-tier fruit  
+
+
+
+2. Developers (Hayley)  
+Epic 1 -  Uninterrupted and fast coding of the various game functions  
+User Story 1 - As a developer, I want clear instructions on what functions are required so that I can complete the functions in time for game launch  
+Acceptance Criteria 1 - Given I am working on the development of the game, when I am coding the functions, the requirements of each function should not be modified while working
+
+Epic 2 - Streamlining process of game creation  
+User Story 2 - As a developer, I want the game design to be ready so that I can focus on coding and bringing the vision to life  
+Acceptance Criteria 2 - Given I am working on the development of the game, when I am coding the game itself, the design should already be finalised without needing my input for modification
+
+
+
+3. Product Manager (Jimmy)
+Epic 1 - Working Target
+User Story 1 - As a manager, I want to establish the final goal so that everyone in the team knows what to do  
+Acceptance Criteria 1 - Search for the ideas and hold a meeting to collect everyone's idea. Make a discussion about the idea and reach the agreement about our final goal  
+
+Epic 2 - Masterpiece Work
+User Story 2 - As a manager, I want to track the game's development milestone and progress, so that I can ensure the game meets the deadline and be done successfully  
+Acceptance Criteria 2 - Manager should have the right to track down all the progress, and allocate the job to the team response to. Also, make sure team members collaborate with each others smoothly  
+
+
+
+4. Quality Assurance Testers (Doris)
+Epic 1 - Clean and Easily Understandable Game
+User Story 1 - As a QA, I hope the game UI is intuitive and user friendly so that players can easily play and enjoy the game without confusion  
+Acceptance Criteria 1 - Given that the player opens the game when navigate through the main menu, market place, game interface then all buttons, icons are clearly labeled. The fruit can be drop smoothly and merge correctly  
+
+Epic 2 - Smooth Gameplay Without Bugs
+User Story 2 - As a QA, I hope the code can be throughly tested through automated and manual testing, so no bugs appear in the game  
+Acceptance Criteria 2 - - Given the development team has push new code or features, when automated test ex: unit test then code should pass 100% of the tests without any errors  
+
+
+
+5 UI/UX Game Designers (Fanfan)
+Epic 1 - Easy and Clean Interface 
+User Story 1 - As a UI/UX designer, I want to design a clean and intuitive game interface, so that players can easily understand how to play and interact with the game  
+Acceptance Criteria 1a - Given a new player who has just launched the game, when they enter the main screen, then they should be able to easily understand how to start a game, view scores, and access settings without confusion.
+Acceptance Criteria 1b - Given a player in the middle of gameplay, when they interact with elements like merging fruits, then they should receive clear visual and audio feedback confirming their actions  
+
+Epic 2 - Unique Visual Effects
+User Story 2 - As a UI/UX Designer, I want to create an engaging and visually appealing game design, so that players feel excited and immersed while playing the game  
+Acceptance Criteria 2a - Given a player entering the game for the first time, when they see the game board and animations, then the design should be visually attractive, with smooth transitions, appealing colours, and high-quality graphics  
+Acceptance Criteria 2b - Given a player merging fruits, when a successful merge happens, then there should be satisfying visual effects (such as animations, glow effects, or subtle movement) that make the experience enjoyable  
+
+
+
+6. Requestor/Client/Lecturer (Gerald)
+Epic 1 - Assess Game Project
+User Story 1 - I want the group to implement a creative and functional twist on an existing game, so that I can assess their ability to apply programming concepts in an innovative way  
+Acceptance Criteria 1 - Given the group has submitted their modified game, when I review their project, then I should see a clearly implemented modification that changes core gameplay mechanics, UI, or rules  
+
+Epic 2 - Review Game Project Documentation
+User Story 2 - As a lecturer reviewing student work, I want each student to provide clear documentation of their game modifications, so that I can understand the changes without having to reverse-engineer the code by myself  
+Acceptance Criteria 2 - Given a student submits their project, when I open the documentation, then it should include an explanation of the original game, the twist applied, and how it was implemented technically  
+
+
+
+
+Breaking down into tasks (User Epic 3 - Bomb Fruit Game Mode)  
+1. how to implement bomb fruits into gameplay  
+2. what are the specifics for the game mechanism behind the bomb fruit  
+3. what does the bomb fruit look like  
+4. what are the visual effects that should be implemented when the bomb fruit explodes  
