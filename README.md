@@ -35,6 +35,12 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 - 15% ~750 words
 - Use case diagrams, user stories. Early stages design. Ideation process. How did you decide as a team what to develop? 
 
+As a team, we discovered that assigning epics to our stakeholders significantly enhanced our ability to plan the next steps. For example, epics allowed us to define user stories and acceptance criteria in advance, enabling a deeper understanding of the features we needed to develop, such as the story of a user wanting to utilize a new game feature. This allows us to list out in more details all the requirements in the development of the game and note down ideas from different stakeholders' perspectives which we may or may not have missed out on if we were to approach this without using the method taught to us. 
+
+Furthermore, by having a clear understanding of the tasks at hand, we were able to create a detailed list of the necessary actions to implement changes and meet our stakeholders' needs, such as the specific tasks required to develop the new game feature. This gives our planning a more structured approach and we're thus less likely to make potentially fatal mistakes. 
+
+In conclusion, the requirements gathering process provided us with valuable insights on how to organize and prioritize activities to successfully fulfill the project requirements.
+
 ### Design
 
 - 15% ~750 words 
