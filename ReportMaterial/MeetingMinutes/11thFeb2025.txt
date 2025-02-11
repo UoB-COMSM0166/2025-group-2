@@ -1,0 +1,66 @@
+#11th Feb 2025
+
+Main Discussions:
+Complete game version 1.0, single mode version at *least*
+Discuss about the UI, by defining classes
+Discuss the in-game' incidents
+Re-evaluating the priority of adding a store versus add multiplayer
+Evaluating the implementation special fruits and timer 
+
+
+To-do:
+Fan	: UI and Mystery Tools
+Doris	: Shuffle Tools. 
+Jin	: Rainbow Fruit (use a circle and choose ANY color).
+Jimmy	: Divine Shield(need Incident).
+		-The incident occurs any 20 seconds and is going to last 5 seconds. Choose 1 incident and code it together with the divine shield function
+Hayley	: Bomb Fruit.
+Gerald	: Score Tools (own Timer and own Score).
+
+
+Next Meetings:
+- Thursday: 		13th February - Meeting to finish the class and sequence diagrams of our game (week5 homework).
+- Due date for to-dos: 	19th February - 3 pm - Online but if someone need helps it can be in-person.
+- Sunday:		23th February - In-person Consolidation meeting.
+
+
+Summary:
+- We can add a shop store, special fruits and timer in to the game during reading week 
+- Discuss later which special fruits are going to be in the multiplayer mode
+- Discussing the container size  multiplayer, because it also modifies the gameplay of multiplayer mode.
+- Discussing the fact that too many colors of fruits would make the gameplay a mess
+-the concept of 'tool' appear.
+- Each of us selected 2 fruits/tools to discuss which are going to go in the version 1.0, we got 12 ideas, then discuss and define the first 6 fruits/tools selected
+- Incident.- is going to be set randomly at the beginning of the game, and is going to occur randomly during all the game.
+- We decided to go for two containers for the multiplayer mode with just 5 types of fruits.
+- For the UI, we are going to follow Fan's design proposal (see kanban).
+
+
+Final Special Fruits list:
+
+
+----------------You can buy it multiple times----------------------
+Once you buy the special fruit,the fruit you have in hand is going to be changed to the special fruit
+
+- Rainbow fruit	- Once you buy it, you can drop it into the container and it will merge with the FISRT fruit it collides with (it can merge with ANY fruit types)
+		- has a different design/colour to it compared to the other fruits
+
+- Bomb fruit	- The range of explosion depends on the biggest fruits' diameter. Doesn't need merge. Instant explosion once it collides with the first fruit
+
+
+Once the user buys the tool, they get the effect immediately (tool effect lasts for 1 use)
+
+- Mystery box	- Tool, You can get any of the current special fruits/tools.
+- Double Score	- Tool, Double score for 10 seconds.
+- Shuffle	- Tool, Changing all fruits positions randomly (just fruits in the playing field). 
+- Divine shield	- Tool, Protect from incidents for 30 seconds.
+
+
+
+Temporary Random incidents:
+
+1-Gale - Affect the trajectory of the dropping fruits
+2-Earthquake - Randomly change the location of the fruits on the board
+3-Freeze - Randomly make some of the fruits on the board can't be merged
+4-Fire - Decrease the time when the fruits on fire are merged
+5-Rain - Drop a row of random fruits
