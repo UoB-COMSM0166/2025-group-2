@@ -38,29 +38,28 @@ export class Fruit {
 		let eyeOffsetX = eyeSize * (this.randomId % 2 == 0 ? 1.5 : 1);
 		let eyeOffsetY = eyeSize * (this.randomId % 2 == 0 ? 1.5 : 1);
 
-		// 眼睛座標
+		// Eye Coordinates
 		let leftEyeX = -eyeOffsetX;
 		let rightEyeX = eyeOffsetX;
 		let eyeY = -eyeOffsetY;
 
-		// 畫眼白
+		// Draw Eyeball (Sclera)
 		fill(255);
 		noStroke();
 		ellipse(leftEyeX, eyeY, eyeSize * 2, eyeSize * 2);
 		ellipse(rightEyeX, eyeY, eyeSize * 2, eyeSize * 2);
 
-		// 瞳孔跟隨滑鼠移動
+		// Pupil Follows Mouse Movement
 		function getPupilOffset(eyeX, eyeY) {
-			// 計算滑鼠與眼睛中心的距離
 			let dx = mouseX - (this.sprite.x + eyeX);
 			let dy = mouseY - (this.sprite.y + eyeY);
-			let angle = atan2(dy, dx); // 取得角度
-			let maxOffset = eyeSize * 0.4; // 控制瞳孔最大偏移距離
+			let angle = atan2(dy, dx);
+			let maxOffset = eyeSize * 0.4;
 
 			return createVector(cos(angle) * maxOffset, sin(angle) * maxOffset);
 		}
 
-		// 左眼瞳孔
+		// Left Eye Pupil
 		let leftPupilOffset = getPupilOffset.call(this, leftEyeX, eyeY);
 		fill(0);
 		ellipse(
@@ -70,7 +69,7 @@ export class Fruit {
 			eyeSize
 		);
 
-		// 右眼瞳孔
+		// Right Eye Pupil
 		let rightPupilOffset = getPupilOffset.call(this, rightEyeX, eyeY);
 		ellipse(
 			rightEyeX + rightPupilOffset.x,
@@ -79,7 +78,7 @@ export class Fruit {
 			eyeSize
 		);
 
-		// 嘴巴
+		// Mouth
 		let mouthY = eyeY + eyeSize * 2;
 		let mouthOffset = map(
 			noise(frameCount / 20, this.sprite.x, this.sprite.y),
@@ -127,6 +126,6 @@ export class Fruit {
 			return new Fruit(newType, newX, newY, newSize);
 		}
 
-		return null; // 等級不同，無法合併
+		return null;
 	}
 }
