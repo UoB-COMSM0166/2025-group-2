@@ -1,14 +1,14 @@
-import { Game } from './core/GameManager.js'
+import { Game } from './core/GameManager.js';
 
-const game = new Game()
+const game = new Game();
 
 function setup() {
-	game.setup()
+	game.setup();
 }
 
 function draw() {
-	game.update()
+	game.update();
 }
 
-window.setup = setup
-window.draw = draw
+window.setup = setup;
+window.draw = draw;
