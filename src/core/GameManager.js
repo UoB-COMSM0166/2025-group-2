@@ -1,6 +1,14 @@
 import { Fruit } from '../models/Fruit.js';
 import { Wall } from '../models/Wall.js';
 import { checkCollision } from '../utils/CheckCollision.js';
+import {
+	RainbowFruit,
+	BombFruit,
+	shuffle,
+	doubleScore,
+	mysteryTool,
+	divineShield,
+} from '../shop/index.js';
 
 export class Game {
 	constructor() {
@@ -19,6 +27,20 @@ export class Game {
 		this.walls = Wall.createDefaultWalls();
 
 		this.currentFruit = new Fruit(0, 300, 25, 30);
+		this.init();
+	}
+
+	/**
+	 * The init function is used to test if these modules are imported correctly.
+	 * You can check by clicking F12 and checking the console
+	 * When you want to test your own code, remove it from init()
+	 * and move them to the proper place.
+	 */
+	init() {
+		shuffle(this);
+		doubleScore(this);
+		mysteryTool(this);
+		divineShield(this);
 	}
 
 	update() {
