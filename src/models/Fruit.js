@@ -4,7 +4,7 @@ export class Fruit {
 		'#f8961e',
 		'#7fc96b',
 		'#43aa8b',
-		'#2d92d1 ',
+		'#2d92d1',
 		'#f6aeae',
 		'#277da1',
 		'#3b498e',
