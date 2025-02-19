@@ -20,6 +20,7 @@ function keyPressed() {
   }
 }
 
+
 window.setup = setup;
 window.draw = draw;
 window.keyPressed = keyPressed;
