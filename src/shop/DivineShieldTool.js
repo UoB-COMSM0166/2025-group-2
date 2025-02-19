@@ -1,4 +1,13 @@
-export function divineShield(game) {
-	game.isIncidentMode = true;
-	console.log('🛡️ Divine Shield activated!');
+export class DivineShieldTool {
+	constructor(game) {
+		this.game = game;
+	}
+
+	activate() {
+		console.log('DivineShieldTool active');
+	}
+
+	update() {
+		// console.log('DivineShieldTool close');
+	}
 }
