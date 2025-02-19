@@ -4,25 +4,24 @@ export class Fruit {
 		'#f8961e',
 		'#7fc96b',
 		'#43aa8b',
-		'#2d92d1 ',
+		'#2d92d1',
 		'#f6aeae',
 		'#277da1',
-		'#3b498e',
-		'#ffd043',
-		'#66418a',
 	];
+
 	static maxFruitLevel = this.fruitColors.length - 1;
-	constructor(i, x, y, size) {
-		this.i = i;
+
+	constructor(level, x, y, size) {
+		this.level = level;
 		this.removed = false;
+        this.initialY = y;
 		this.sprite = new Sprite(x, y, size, 'd');
 		this.t = random(1000);
 		this.randomId = int(random(100000));
-		this.isFalling = true;
 
 		this.sprite.draw = () => {
 			push();
-			fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]);
+			fill(Fruit.fruitColors[this.level % Fruit.fruitColors.length]);
 			stroke(10);
 			ellipse(0, 0, this.sprite.d, this.sprite.d);
 
@@ -100,12 +99,12 @@ export class Fruit {
 		pop();
 	}
 
-	moveWithMouse() {
-		this.sprite.y = 45;
+	moveWithMouse(leftBound, rightBound) {
+		this.sprite.y = this.initialY;
 		this.sprite.x = constrain(
 			mouseX,
-			10 + this.sprite.d / 2,
-			490 - this.sprite.d / 2
+			leftBound + this.sprite.d / 2,
+			rightBound - this.sprite.d / 2
 		);
 		this.sprite.vel.y = 0;
 	}
@@ -115,9 +114,13 @@ export class Fruit {
 		this.sprite.remove();
 	}
 
+    draw() {
+        this.sprite.draw();
+    }
+
 	static merge(a, b) {
-		if (a.i === b.i && a.i < Fruit.maxFruitLevel) {
-			const newType = a.i + 1;
+		if (a.level === b.level && a.level < Fruit.maxFruitLevel) {
+			const newType = a.level + 1;
 			const newX = (a.sprite.x + b.sprite.x) / 2;
 			const newY = (a.sprite.y + b.sprite.y) / 2;
 			const newSize = 30 + 20 * newType;
@@ -130,11 +133,11 @@ export class Fruit {
 		return null;
 	}
 
-	applyWind(windSpeed) {
-		if (!this.isFalling) return;
+    doNotFall() {
+        this.sprite.collider = 'static';
+    }
 
-		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // 大水果抗風力較強
-		let windForce = windSpeed * stiffness * 0.05; // 調整風的影響力
-		this.sprite.vel.x += windForce;
-	}
+    letFall() {
+        this.sprite.collider = 'd';
+    }
 }

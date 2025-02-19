@@ -62,7 +62,7 @@ export class Game {
 		} else {
 			this.timer++;
 			if (this.timer > 50) {
-				const newType = int(random(7));
+				const newType = int(random(4));
 				this.currentFruit = new Fruit(newType, mouseX, 25, 30 + 20 * newType);
 				this.timer = 0;
 			}

@@ -1,4 +1,4 @@
-import { Fruit } from '../models/Fruit.js';
+import { Fruit } from '../models/NewFruit.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { Wall } from '../models/NewWall.js';
 import {
@@ -8,113 +8,117 @@ import {
   divineShield,
 } from '../shop/index.js';
 
-const WALLWIDTH = 10;
+const DISTFROMGAME = 20;
+const DISTFROMSHOP = 150;
 
 export class Board {
-  constructor(gameArea, shopArea) {
+  constructor(gameArea, shopArea, wallWidth) {
     this.gameArea = gameArea;  // { x, y, w, h }
     this.shopArea = shopArea;  // { x, y, w, h }
-    this.gameWalls = [];
-    this.shopWalls = [];
+    this.wallWidth = wallWidth;
     this.gravity = 15;
     this.fruits = [];
     this.currentFruit = null;
+    this.nextFruit = null;
     this.timer = 0;
   }
 
   setup() {
-    // Creating game walls
-    this.gameWalls = this.createThreeWalls(this.gameArea);
-    this.shopWalls = this.createFourWalls(this.shopArea);
+    world.gravity.y = this.gravity;
 
     // Create the first fruit, and put it in the top center of the game area.
-    this.currentFruit = new Fruit(0, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y + 25, 30);
-    // 调用一些测试函数（以后移到合适位置）
+    this.currentFruit = new Fruit(0, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - DISTFROMGAME , 30);
+    let newType = int(random(4));
+    this.nextFruit = new Fruit(newType, this.shopArea.x + this.shopArea.w / 2, this.shopArea.y - DISTFROMSHOP, 30 + 20 * newType);
+    this.nextFruit.doNotFall();
   }
 
   update() {
-    // 更新当前水果和处理落下
+    // Update current fruit and handle falls
     this.handleCurrentFruit();
-    // 检测水果之间的碰撞和合并
+    // Detect collisions and mergers between fruits
     this.handleMerging();
-    // 过滤掉已被标记为 removed 的水果
+    // Filter out fruits that have been marked removed
     this.fruits = this.fruits.filter(fruit => !fruit.removed);
+    
   }
 
   draw() {
-
-    for (let wall of this.gameWalls) {
-      wall.draw();
-    }
-
-    for (let wall of this.shopWalls) {
-      wall.draw();
-    }
-
-    // 绘制已放置的水果
+    // Draw placed fruit
     for (let fruit of this.fruits) {
       fruit.draw();
     }
     
-    // 绘制当前操作的水果
+    // Draw the fruit of the current operation
 
   }
 
-  createThreeWalls(gameArea) {
-    return [
-      // left
-      new Wall(gameArea.x, gameArea.y + gameArea.h / 2, WALLWIDTH, gameArea.h),
-      // right
-      new Wall(gameArea.x + gameArea.w, gameArea.y + gameArea.h / 2, WALLWIDTH, gameArea.h),
-      // bottom
-      new Wall(gameArea.x + gameArea.w / 2, gameArea.y + gameArea.h - 5, gameArea.w - 10, WALLWIDTH)
-    ];
-  }
+  createFruitsLevel(area) {
+    let fruitType = 7;
+    let fruitsLevel = []
+    let gap = 18;
+    let yFromTop = 0;
+    let prevY = null;
+    let prevSize = null;
 
-  createFourWalls(gameArea) {
-    return [
-      // left
-      new Wall(gameArea.x, gameArea.y + gameArea.h / 2, WALLWIDTH, gameArea.h),
-      // right
-      new Wall(gameArea.x + gameArea.w, gameArea.y + gameArea.h / 2, WALLWIDTH, gameArea.h),
-      // top
-      new Wall(gameArea.x + gameArea.w / 2, gameArea.y + 5, gameArea.w - 10, WALLWIDTH),
-      // bottom
-      new Wall(gameArea.x + gameArea.w / 2, gameArea.y + gameArea.h - 5, gameArea.w - 10, WALLWIDTH)
-    ];
-  }
+    for (let i = 0; i < fruitType; i++) {
+      let size = 20 + 10 * i
+      let x = area.x + area.w / 2;
+      let y;
+
+      if (i === 0) {
+        // the y position of first fruit: from the top add a gap and the radius
+        y = area.y + gap + size / 2;
+      } else {
+        // the y position of the next fruit = the prevY + prevSize / 2 + currentSize / 2 + gap
+        y = prevY + prevSize / 2 + size / 2 + gap;
+      }
+      let fruit = new Fruit(i, x, y, size);
+      fruit.doNotFall();
+      fruitsLevel.push(fruit);
+      prevY = y;
+      prevSize = size;
+    }
+    return fruitsLevel;
+ }
 
   handleCurrentFruit() {
     if (this.currentFruit) {
-      // 允许当前水果跟随鼠标移动
-      this.currentFruit.moveWithMouse();
+      // allow current fruit move with mouse
+      let leftBound = this.gameArea.x + this.wallWidth;
+      let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+      this.currentFruit.moveWithMouse(leftBound, rightBound);
     } else {
-      // 没有当前水果时，计时器累加
+      // Timer increments when there is no current fruit
       this.timer++;
       if (this.timer > 50) {
-        const newType = int(random(7));
-        // 在游戏区域顶部生成新水果
-        this.currentFruit = new Fruit(newType, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y + 25, 30 + 20 * newType);
+        let newType = int(random(4));
+        // Generate new fruit at the top of the game area
+        this.nextFruit.letFall();
+        this.currentFruit = this.nextFruit;
+        this.nextFruit = new Fruit(newType, this.shopArea.x + this.shopArea.w / 2, this.shopArea.y - DISTFROMSHOP, 30 + 20 * newType);
+        this.nextFruit.doNotFall();
         this.timer = 0;
       }
     }
 
-    // 当鼠标按下时，将当前水果放入 fruits 数组，并清空 currentFruit
+    // When the mouse is pressed, put the current fruit into the fruits array and clear currentFruit
     if (mouseIsPressed && this.currentFruit) {
+      this.currentFruit.sprite.vel.y = this.gravity;
       this.fruits.push(this.currentFruit);
       this.currentFruit = null;
     }
   }
 
   handleMerging() {
-    // 两层循环遍历所有水果，检测满足合并条件的两个水果
+    // Two-level loop traverses all fruits, detects two fruits that meet the merge condition
     for (let i = 0; i < this.fruits.length; i++) {
       for (let j = i + 1; j < this.fruits.length; j++) {
         const a = this.fruits[i];
         const b = this.fruits[j];
-        // 假设 a.i 表示水果的类型/级别
+        // Suppose a.level denotes the type/grade of fruit
         if (
-          a.i === b.i &&
+          a.level === b.level &&
           checkCollision(a.sprite, b.sprite) &&
           !a.removed &&
           !b.removed
