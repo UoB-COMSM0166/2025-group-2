@@ -62,7 +62,11 @@ export class Game {
 			}
 		}
 
-		if (mouseIsPressed && this.currentFruit) {
+		if (
+			mouseIsPressed &&
+			this.currentFruit &&
+			!this.isClickingUI(mouseX, mouseY)
+		) {
 			this.fruits.push(this.currentFruit);
 			this.currentFruit = null;
 		}
@@ -87,5 +91,20 @@ export class Game {
 				}
 			}
 		}
+	}
+
+	isClickingUI(mx, my) {
+		let uiButtons = selectAll('button');
+		for (let btn of uiButtons) {
+			let bx = btn.position().x;
+			let by = btn.position().y;
+			let bw = btn.width;
+			let bh = btn.height;
+
+			if (mx > bx && mx < bx + bw && my > by && my < by + bh) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
