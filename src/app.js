@@ -1,7 +1,8 @@
 import { Game } from './core/GameManager.js';
 import { RainbowFruit } from './shop/RainbowFruit.js';
 
-const game = new Game();
+//declaring as global object to allow bomb fruit method to access
+window.game = new Game();
 
 function setup() {
   game.setup();
