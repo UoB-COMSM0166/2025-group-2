@@ -2,6 +2,7 @@ import { Fruit } from '../models/Fruit.js';
 import { Wall } from '../models/Wall.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { ToolManager } from './ToolManager.js';
+import { IncidentManager } from './IncidentManager.js';
 
 export class Game {
 	constructor() {
@@ -11,7 +12,8 @@ export class Game {
 		this.gravity = 15;
 		this.walls = [];
 
-		this.toolManager = new ToolManager(this);
+		this.incidentManager = new IncidentManager(this);
+		this.toolManager = new ToolManager(this, this.incidentManager);
 	}
 
 	setup() {
@@ -25,9 +27,9 @@ export class Game {
 		let shuffleButton = createButton('Shake Tool');
 		shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
 
-		let defineButton = createButton('defind shield');
-		defineButton.mousePressed(() =>
-			this.toolManager.activateTool('devineShield')
+		let divineButton = createButton('Divine Shield');
+		divineButton.mousePressed(() =>
+			this.toolManager.activateTool('divineShield')
 		);
 
 		let randomToolButton = createButton('Random Tool');
@@ -36,6 +38,11 @@ export class Game {
 		let doubleScoreToolButton = createButton('double Score');
 		doubleScoreToolButton.mousePressed(() =>
 			this.toolManager.activateTool('doubleScore')
+		);
+
+		let windButton = createButton('Wind Incident');
+		windButton.mousePressed(() =>
+			this.incidentManager.activateIncident('wind')
 		);
 	}
 
@@ -46,6 +53,7 @@ export class Game {
 		this.fruits = this.fruits.filter((fruit) => !fruit.removed);
 
 		this.toolManager.update();
+		this.incidentManager.update();
 	}
 
 	handleCurrentFruit() {
