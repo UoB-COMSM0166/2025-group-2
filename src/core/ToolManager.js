@@ -3,13 +3,14 @@ import {
 	DivineShieldTool,
 	DoubleScoreTool,
 } from '../shop/index.js';
-
 export class ToolManager {
-	constructor(game) {
+	constructor(game, incidentManager) {
 		this.game = game;
+		this.incidentManager = incidentManager;
+
 		this.tools = {
 			shuffle: new ShuffleTool(game),
-			devineShield: new DivineShieldTool(game),
+			divineShield: new DivineShieldTool(game, this.incidentManager),
 			doubleScore: new DoubleScoreTool(game),
 		};
 	}
