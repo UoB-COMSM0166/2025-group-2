@@ -13,11 +13,10 @@ function draw() {
   game.update();
 }
 
+
 // When "R" key is pressed, simulate purchasing a RainbowFruit
 function keyPressed() {
-  if (key === 'r' || key === 'R') {
-    RainbowFruit.buyRainbowFruit(game);
-  }
+  game.keyPressed();
 }
 
 

@@ -11,18 +11,18 @@ export class Game {
 		this.currentFruit = null;
 		this.gravity = 15;
 		this.walls = [];
+		this.nextFruit = null;
 
 		this.incidentManager = new IncidentManager(this);
 		this.toolManager = new ToolManager(this, this.incidentManager);
 	}
 
 	setup() {
-		new Canvas(500, 600);
+		new Canvas(800, 600);
 		background('#f5ebe0');
 		world.gravity.y = this.gravity;
 
 		this.walls = Wall.createDefaultWalls();
-
 		this.currentFruit = new Fruit(0, 300, 25, 30);
 		let shuffleButton = createButton('Shake Tool');
 		shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
@@ -44,7 +44,12 @@ export class Game {
 		windButton.mousePressed(() =>
 			this.incidentManager.activateIncident('wind')
 		);
+		let newType = int(random(7));
+		this.nextFruit = new Fruit(newType, 600, 100, 30 + 20 * newType);
+		this.nextFruit.doNotFall();
+		//this.init();
 	}
+
 
 	update() {
 		background('#f5ebe0');
@@ -62,8 +67,14 @@ export class Game {
 		} else {
 			this.timer++;
 			if (this.timer > 50) {
+				
+				
 				const newType = int(random(7));
-				this.currentFruit = new Fruit(newType, mouseX, 25, 30 + 20 * newType);
+				this.currentFruit = this.nextFruit;
+				this.currentFruit.letFall();
+				this.nextFruit = new Fruit(newType, 600, 100, 30 + 20 * newType);
+				this.nextFruit.doNotFall();
+					
 				this.timer = 0;
 			}
 		}
@@ -84,8 +95,16 @@ export class Game {
 				const a = this.fruits[i];
 				const b = this.fruits[j];
 
-				if (
-					a.i === b.i &&
+				if ((a.i === -1 || b.i === -1 )&&
+					checkCollision(a.sprite, b.sprite) &&
+					!a.removed &&
+					!b.removed) {
+						let mergedFruit = RainbowFruit.universalMerge(a, b);
+						if (mergedFruit) {
+							this.fruits.push(mergedFruit);
+						}
+				}
+				if (a.i === b.i &&
 					checkCollision(a.sprite, b.sprite) &&
 					!a.removed &&
 					!b.removed
@@ -99,6 +118,19 @@ export class Game {
 		}
 	}
 
+	keyPressed() {
+		if (key === 'r' || key === 'R') {
+			
+			if (this.nextFruit) {
+				this.nextFruit.remove();
+				this.nextFruit = null;
+			}
+			this.nextFruit = RainbowFruit.buyRainbowFruit();
+			this.nextFruit.doNotFall();
+		}
+	}
+
+	
 	isClickingUI(mx, my) {
 		let uiButtons = selectAll('button');
 		for (let btn of uiButtons) {
@@ -114,3 +146,4 @@ export class Game {
 		return false;
 	}
 }
+
