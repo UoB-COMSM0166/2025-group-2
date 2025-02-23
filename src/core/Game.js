@@ -62,17 +62,17 @@ export class Game {
 
         // Creating scoreWall area
         this.scoreWall = new Wall(AREAS.scoreWall.x, AREAS.scoreWall.y, AREAS.scoreWall.w, AREAS.scoreWall.h);
-        this.scoreWall.setShapeColour('#f5ebe0');
+        this.scoreWall.setShapeColour('#f2e2d0');
         this.scoreWall.addText('Score: ' + this.score);
         
         // Creating coinWall area
         this.coinWall = new Wall(AREAS.coinWall.x, AREAS.coinWall.y, AREAS.coinWall.w, AREAS.coinWall.h);
-        this.coinWall.setShapeColour('#f5ebe0');
+        this.coinWall.setShapeColour('#f2e2d0');
         this.coinWall.addText('Coin: ' + this.coin);
 
         // Creating the timerWall area
         this.timerWall = new Wall(AREAS.timerWall.x, AREAS.timerWall.y, AREAS.timerWall.w, AREAS.timerWall.h);
-        this.timerWall.setShapeColour('#f5ebe0');
+        this.timerWall.setShapeColour('#f2e2d0');
         this.timerWall.addText('Time: ' + this.time);
 
 
