@@ -3,6 +3,7 @@ import { Wall } from '../models/Wall.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { ToolManager } from './ToolManager.js';
 import { IncidentManager } from './IncidentManager.js';
+import { RainbowFruit } from '../shop/RainbowFruit.js';
 
 export class Game {
 	constructor() {
