@@ -117,7 +117,7 @@ export class Fruit {
 
 	static merge(a, b) {
 		if (a.i === b.i && a.i < Fruit.maxFruitLevel) {
-			const newType = a.i + 1;
+			const newType = a.i + 1;	
 			const newX = (a.sprite.x + b.sprite.x) / 2;
 			const newY = (a.sprite.y + b.sprite.y) / 2;
 			const newSize = 30 + 20 * newType;
@@ -136,6 +136,7 @@ export class Fruit {
 		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // 大水果抗風力較強
 		let windForce = windSpeed * stiffness * 0.05; // 調整風的影響力
 		this.sprite.vel.x += windForce;
+	}
 	doNotFall() {
 		this.sprite.collider = 'static';
 	}
@@ -144,3 +145,4 @@ export class Fruit {
 		this.sprite.collider = 'd';
 	}
 }
+
