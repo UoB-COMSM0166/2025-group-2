@@ -1,0 +1,30 @@
+#24th Feb 2025  
+
+- discussion on Class Diagram/Sequence Diagram
+- discussion of current functions created for demo 1 of the game
+- discussion of UI of demo 1 of the game
+
+
+Class Diagram:
+- we might need to refactor the codes and add in a UI script for creating the walls and shop etc to be used in both single and player mode
+- to be added: 
+    1. additional class for incidence on the same level as the fruit, shop and timer
+    2. individual functions in shop to be added below shopitem as each special fruit and each special tool
+
+Sequence Diagram:
+- to be done after we complete the first demo of the game
+
+
+Summary points after discussing the current functions creataed for demo 1 of game:
+- we will need to fix the issue of the current fruit dropping when we click on anywhere in the game to activate the special functions
+- need to fix a top wall to contain all fruits within the container so fruits don't fly out of container (game should end if fruits go over top line)
+    - currently, if we use the "shuffle" function, the fruit might fly out of the container and land outside the container and we want to stop this
+- we need to add in the functionality where the game will end if the fruit goes over the top red line 
+- to create another class for randomFruit so that it appears as part of the Mystery Box function (currently we only have a randomTool for tools)
+- we need to add the tools and fruits to the shop
+- we need to change the codes so that the size of the game containers will be relative to the screen size 
+    - currently size of everything in the UI is hard coded and doesn't resize itself based on the size of the user's screen
+- create function to assign scores for each merge in main game 
+- add global timer to the game so it lasts for 2 minutes per game 
+- add more incidences (only have the wind incidence right now)
+    - change the "Earthquake" incidence the "Fog" incidence where the user loses some visibility of the playing field
