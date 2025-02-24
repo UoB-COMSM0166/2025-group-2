@@ -48,9 +48,7 @@ export class Game {
 		let newType = int(random(7));
 		this.nextFruit = new Fruit(newType, 600, 100, 30 + 20 * newType);
 		this.nextFruit.doNotFall();
-		//this.init();
 	}
-
 
 	update() {
 		background('#f5ebe0');
@@ -68,14 +66,12 @@ export class Game {
 		} else {
 			this.timer++;
 			if (this.timer > 50) {
-				
-				
 				const newType = int(random(7));
 				this.currentFruit = this.nextFruit;
 				this.currentFruit.letFall();
 				this.nextFruit = new Fruit(newType, 600, 100, 30 + 20 * newType);
 				this.nextFruit.doNotFall();
-					
+
 				this.timer = 0;
 			}
 		}
@@ -96,16 +92,19 @@ export class Game {
 				const a = this.fruits[i];
 				const b = this.fruits[j];
 
-				if ((a.i === -1 || b.i === -1 )&&
+				if (
+					(a.i === -1 || b.i === -1) &&
 					checkCollision(a.sprite, b.sprite) &&
 					!a.removed &&
-					!b.removed) {
-						let mergedFruit = RainbowFruit.universalMerge(a, b);
-						if (mergedFruit) {
-							this.fruits.push(mergedFruit);
-						}
+					!b.removed
+				) {
+					let mergedFruit = RainbowFruit.universalMerge(a, b);
+					if (mergedFruit) {
+						this.fruits.push(mergedFruit);
+					}
 				}
-				if (a.i === b.i &&
+				if (
+					a.i === b.i &&
 					checkCollision(a.sprite, b.sprite) &&
 					!a.removed &&
 					!b.removed
@@ -121,7 +120,6 @@ export class Game {
 
 	keyPressed() {
 		if (key === 'r' || key === 'R') {
-			
 			if (this.nextFruit) {
 				this.nextFruit.remove();
 				this.nextFruit = null;
@@ -131,7 +129,6 @@ export class Game {
 		}
 	}
 
-	
 	isClickingUI(mx, my) {
 		let uiButtons = selectAll('button');
 		for (let btn of uiButtons) {
@@ -147,4 +144,3 @@ export class Game {
 		return false;
 	}
 }
-
