@@ -1,5 +1,6 @@
 import { Fruit } from '../models/Fruit.js';
 import { Wall } from '../models/Wall.js';
+import { Score } from '../models/Score.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { ToolManager } from './ToolManager.js';
 import { IncidentManager } from './IncidentManager.js';
@@ -11,6 +12,7 @@ export class Game {
 		this.currentFruit = null;
 		this.gravity = 15;
 		this.walls = [];
+		this.score = new Score();
 
 		this.incidentManager = new IncidentManager(this);
 		this.toolManager = new ToolManager(this, this.incidentManager);
@@ -64,6 +66,8 @@ export class Game {
 
 		this.toolManager.update();
 		this.incidentManager.update();
+
+		this.displayScore();
 	}
 
 	setCurrentFruit(fruit) {
@@ -111,10 +115,22 @@ export class Game {
 					const mergedFruit = Fruit.merge(a, b);
 					if (mergedFruit) {
 						this.fruits.push(mergedFruit);
+
+						if (this.toolManager.tools.doubleScore.isActive()) {
+							this.score.addScore(mergedFruit.i * 2);
+						} else {
+							this.score.addScore(mergedFruit.i);
+						}
 					}
 				}
 			}
 		}
+	}
+
+	displayScore() {
+		fill(0);
+		textSize(16);
+		text(`Score: ${this.score.getScore()}`, 10, 30);
 	}
 
 	isClickingUI(mx, my) {
