@@ -1,0 +1,32 @@
+#25th Feb 2025  
+
+
+- re-assessing priority of tasks -- prioritize multiplayer over other functions of game
+- re-alignment on some smaller details of the different tools of the game etc
+- discussion of the user feedbacks received today (week 7 homework)
+
+
+Summary and to-do:
+- moving forward, we will push changes to the "dev" branch instead of the "main" branch
+- no more special fruits, will all become tools instead where the special effects will occur straight away
+    - rename Rainbow Fruit to Rainbow Tool, Bomb Fruit to Bomb
+    - Bomb codes to be modified so bomb is a fixed size instead of fruits becoming bombs 
+    - Bomb codes to be modified so bomb explosion occurs when it collides with fruits in container, not requiring explosion
+    - modify the GameManager.js or wherever the handleMerge function exists in to handle bomb merge
+    - modify ToolManage's createSpecialFruit(FruitClass) to make sure the bomb fruit is a fixed size 
+- Bomb Tool and Rainbow Tool to be modified to make their effects useable after pressing the buttons created 
+    - some codes were modified on the backend which broke the logic a little, so some modifications have to be made
+- tools like Rainbow Tool and Bomb Tool to change the fruit on hand immediately after purchasing from shop
+- Rainbow Tool codes to be modified
+    - currently the merge function for Rainbow Tool is located in GameManager -- need to move it into RainbowFruit.js
+    - fix the Rainbow Tool codes overall to make it work 
+- fruits will change to maximum of 7 sizes
+- fruits that can appear on the hand to be dropped will be limited to the first 4 sizes only
+- activation of Divine Shield will not stop the movement of time of the incident
+    - for example, the incident will last for 30 seconds. The Divine Shield lasts for 20 seconds. 
+      In this example, we buy the Divine Shield right when the incident starts. 
+      By the time  the Divine Shield ends, the incident will have 10 seconds left.
+      Because right now, activation of Divine Shield stops the time movement of the incident, 
+      so in the above case, the incident still has 30 seconds left after the Divine Shield ends.
+- add multiplayer mode to the game
+- add start menu
