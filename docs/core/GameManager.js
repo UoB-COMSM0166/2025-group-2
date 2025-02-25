@@ -44,6 +44,16 @@ export class Game {
 		windButton.mousePressed(() =>
 			this.incidentManager.activateIncident('wind')
 		);
+
+		let rainbowButton = createButton('rainbow');
+		rainbowButton.mousePressed(() =>
+			this.toolManager.activateSpecialFruit('rainbowFruit')
+		);
+
+		let bombButton = createButton('bomb');
+		bombButton.mousePressed(() =>
+			this.toolManager.activateSpecialFruit('bombFruit')
+		);
 	}
 
 	update() {
