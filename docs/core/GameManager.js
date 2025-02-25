@@ -116,7 +116,11 @@ export class Game {
 					if (mergedFruit) {
 						this.fruits.push(mergedFruit);
 
-						if (this.toolManager.tools.doubleScore.isActive()) {
+						if (this.toolManager.tools.doubleScore.isDoubleScoreActive) {
+							console.log(
+								'this.toolManager.tools.doubleScore.isActive() :>> ',
+								this.toolManager.tools.doubleScore.isDoubleScoreActive
+							);
 							this.score.addScore(mergedFruit.i * 2);
 						} else {
 							this.score.addScore(mergedFruit.i);

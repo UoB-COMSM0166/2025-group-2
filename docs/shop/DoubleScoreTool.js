@@ -1,23 +1,34 @@
 export class DoubleScoreTool {
 	constructor(game) {
 		this.game = game;
-		this.duration = 5000;
-		this.timer = null;
+		this.doubleScoreTimeLeft = 10;
+		this.doubleScoreTimer = null;
+		this.doubleScoreActive = false;
 	}
 
 	activate() {
-		this.startTime = millis();
+		this.isDoubleScoreActive = true;
+		console.log('this.active :>> ', this.active);
 		console.log('Double Score activated!');
+		this.doubleScoreTimer = setInterval(() => {
+			if (this.doubleScoreTimeLeft > 0) {
+				this.doubleScoreTimeLeft--;
+			} else {
+				this.deactivate();
+			}
+		}, 1000);
 	}
 
 	update() {
-		if (this.startTime !== null && millis() > this.startTime + this.duration) {
-			this.startTime = null;
-			console.log('Double Score effect ended.');
+		if (this.doubleScoreActive) {
+			fill(0);
+			textSize(20);
+			text('Double socre Time Left: ' + this.doubleScoreTimeLeft, 240, 30);
 		}
 	}
 
-	isActive() {
-		return this.startTime !== null;
+	deactivate() {
+		this.doubleScoreActive = false;
+		clearInterval(this.doubleScoreTimer);
 	}
 }
