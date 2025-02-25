@@ -66,6 +66,14 @@ export class Game {
 		this.incidentManager.update();
 	}
 
+	setCurrentFruit(fruit) {
+		if (this.currentFruit) {
+			this.currentFruit.remove();
+		}
+		this.currentFruit = fruit;
+		console.log(`Current fruit set to ${fruit.constructor.name}`);
+	}
+
 	handleCurrentFruit() {
 		if (this.currentFruit) {
 			this.currentFruit.moveWithMouse();

@@ -51,7 +51,8 @@ export class ToolManager {
 	activateSpecialFruit(fruitName) {
 		if (this.specialFruits[fruitName]) {
 			const fruit = this.specialFruits[fruitName]();
-			// this.game.setCurrentFruit(fruit); // 設置當前水果
+			this.game.setCurrentFruit(fruit); // set to current fruit
+			// but maybe should ne the next one
 			console.log(`${fruitName} activated with size  ${fruit.sprite.d}`);
 		} else {
 			console.error(`Special Fruit "${fruitName}" not found!`);
