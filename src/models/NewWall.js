@@ -18,6 +18,7 @@ export class Wall {
 
     setShapeColour(colour) {
         this.sprite.color = color(colour);
+        console.log(this.sprite);
     }
 
     setStrokeColour(colour) {

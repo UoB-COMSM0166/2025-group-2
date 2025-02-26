@@ -2,85 +2,72 @@
 
 import { Board } from '../models/Board.js';
 import { Player } from '../models/Player.js';
+import { UIControllor } from './UIControllor.js';
 import { Wall } from '../models/NewWall.js';
 
-const GAMEWIDTH = 500;
-const GAMEHEIGHT = 600;
-const SHOPWIDTH = 300;
-const SHOPHEIGHT = 500;
 const WALLTHICKNESS = 10;
-const LEVELPICWIDTH = 200;
-const LEVELHEIGHT = 500;
-const GAP = 50; 
-const CANVASWIDTH = (GAMEWIDTH + SHOPWIDTH + LEVELPICWIDTH) * 2;
-const CANVASHEIGHT = 800;
-const MAINX = CANVASWIDTH / 2 - GAMEWIDTH / 2;
-
-const AREAS = {
-    GAME: {x: MAINX, y: CANVASHEIGHT - GAMEHEIGHT, w: GAMEWIDTH, h: GAMEHEIGHT}, // main game area
-    SHOP: {x: MAINX+GAMEWIDTH+GAP, y: CANVASHEIGHT - SHOPHEIGHT, w: SHOPWIDTH, h: SHOPHEIGHT}, // shop area
-    scoreWall: {x: MAINX+GAMEWIDTH+GAP+SHOPWIDTH/2, y: CANVASHEIGHT - SHOPHEIGHT - 80, w: SHOPWIDTH/2, h: 30}, // state area: timerWall, scoreWall, coinWall
-    coinWall: {x: MAINX+GAMEWIDTH+GAP+SHOPWIDTH/2, y: CANVASHEIGHT - SHOPHEIGHT - 40, w: SHOPWIDTH/2, h: 30},
-    timerWall: {x: MAINX+GAMEWIDTH/2, y: CANVASHEIGHT - GAMEHEIGHT - 130, w: SHOPWIDTH/2, h: 30},
-    LEVELPIC: {x: MAINX-LEVELPICWIDTH-GAP, y: CANVASHEIGHT - LEVELHEIGHT, w: LEVELPICWIDTH, h: LEVELHEIGHT}, // plave to show the level order.
-};
 
 export class Game {
     constructor() {
         this.board = null;
         this.players = null;
+        this.ui = new UIControllor();
+        this.AREAS = null;
+        this.isGameOver = false;
+
+
         this.gameWalls = [];
         this.shopWalls = [];
         this.topLines = [];
         this.levelPicWalls = [];
         this.fruitsLevel = [];
-        this.isGameOver = false;
         this.mode = "single";
-        this.scoreWall = null;
-        this.coinWall = null;
-        this.timerWall = null;
+        this.scoreLabel = null;
+        this.coinLabel = null;
+        this.timerLabel = null;
         this.score = 0;
         this.coin = 0;
         this.time = 0;
     }
 
     setup() {
-        let canvas = createCanvas(CANVASWIDTH, 800);
-        canvas.style('display', 'block');
-        //canvas.style('border', '2px solid black');
-        canvas.style('margin', '20px auto 0px');
+        const canvasWidth = width;
+        const canvasHeight = height;
+
+        const gameWidth = canvasWidth * 0.4;
+        const gameHeight = canvasHeight * 0.6;
+        const shopWidth = canvasWidth * 0.2;
+        const shopHeight = canvasHeight * 0.5;
+        const displayWidth = canvasWidth * 0.15;
+        const displayHeight = canvasHeight * 0.5;
+        const gap = canvasWidth * 0.05;
+        const totalWidth = displayWidth + gameWidth + shopWidth + gap * 2;
+        const leftMargin = (canvasWidth - totalWidth) / 2
+
+        this.AREAS = {
+            game: {x: leftMargin + displayWidth + gap, y: canvasHeight - gameHeight - gap, w: gameWidth, h: gameHeight}, 
+            shop: {x: leftMargin + displayWidth + gameWidth + gap * 2, y: canvasHeight - shopHeight - gap, w: shopWidth, h: shopHeight}, 
+            display: {x: leftMargin, y: canvasHeight - displayHeight - gap, w: displayWidth, h: displayHeight}, 
+            //scoreLabel: {x: MAINX + gameWidth + GAP + shopWidth/2, y: (canvasHeight - shopHeight - 80) / 2, w: shopWidth/2, h: 30}, 
+            //coinLabel: {x: MAINX + gameWidth + GAP + shopWidth/2, y: (canvasHeight - shopHeight - 40) / 2, w: shopWidth/2, h: 30},
+            //timerLabel: {x: MAINX + gameWidth / 2, y: (canvasHeight - gameHeight - 130) / 2, w: shopWidth / 2, h: 30},
+        }
 
         // Creating game walls
-        this.gameWalls = this.createThreeWalls(AREAS.GAME);
+        this.gameWalls = this.createThreeWalls(this.AREAS.game);
         // Creating the top of the game area
-        this.topLines = this.drawDashRect(AREAS.GAME.x, AREAS.GAME.x + AREAS.GAME.w, AREAS.GAME.y + 30, 25, WALLTHICKNESS, 15);
+        this.topLines = this.drawDashRect(this.AREAS.game.x, this.AREAS.game.x + this.AREAS.game.w, this.AREAS.game.y + 30, 25, WALLTHICKNESS, 15);
         // Creating shop walls
-        this.shopWalls = this.createFourWalls(AREAS.SHOP);
+        this.shopWalls = this.createFourWalls(this.AREAS.shop);
         // Creating the area to show the fruit orders
-        this.levelPicWalls = this.createFourWalls(AREAS.LEVELPIC);
-
-
-        // Creating scoreWall area
-        this.scoreWall = new Wall(AREAS.scoreWall.x, AREAS.scoreWall.y, AREAS.scoreWall.w, AREAS.scoreWall.h);
-        this.scoreWall.setShapeColour('#f2e2d0');
-        this.scoreWall.addText('Score: ' + this.score);
-        
-        // Creating coinWall area
-        this.coinWall = new Wall(AREAS.coinWall.x, AREAS.coinWall.y, AREAS.coinWall.w, AREAS.coinWall.h);
-        this.coinWall.setShapeColour('#f2e2d0');
-        this.coinWall.addText('Coin: ' + this.coin);
-
-        // Creating the timerWall area
-        this.timerWall = new Wall(AREAS.timerWall.x, AREAS.timerWall.y, AREAS.timerWall.w, AREAS.timerWall.h);
-        this.timerWall.setShapeColour('#f2e2d0');
-        this.timerWall.addText('Time: ' + this.time);
+        this.levelPicWalls = this.createFourWalls(this.AREAS.display);
 
 
         // Intialise control board.
-        this.board = new Board(AREAS.GAME, AREAS.SHOP, WALLTHICKNESS);
+        this.board = new Board(this.AREAS.game, this.AREAS.shop, WALLTHICKNESS);
         this.board.setup();
         // Create the fruits to show in the level
-        this.fruitsLevel = this.board.createFruitsLevel(AREAS.LEVELPIC);
+        this.fruitsLevel = this.board.createFruitsLevel(this.AREAS.display);
         
 
         //this.players.setup();
@@ -89,26 +76,6 @@ export class Game {
     update() {
         this.board.update();     
     }
-
-    draw() {
-        background('#f5ebe0');
-
-        for (let wall of this.gameWalls) {
-            wall.draw();
-        }
-
-        for (let wall of this.shopWalls) {
-            wall.draw();
-        }
-
-        for (let dash of this.topLines) {
-            dash.draw();
-        }
-
-        // Call Board's drawing method
-        this.board.draw();
-    }
-
 
     createThreeWalls(gameArea) {
         return [

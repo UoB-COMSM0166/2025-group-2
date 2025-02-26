@@ -1,12 +1,14 @@
 import { Fruit } from '../models/NewFruit.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { Wall } from '../models/NewWall.js';
+/*
 import {
   shuffle,
   doubleScore,
   mysteryTool,
   divineShield,
 } from '../shop/index.js';
+ */
 
 const DISTFROMGAME = 20;
 const DISTFROMSHOP = 150;
