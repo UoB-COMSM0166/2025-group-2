@@ -10,7 +10,7 @@ import {
 } from '../shop/index.js';
  */
 
-const DISTFROMGAME = 20;
+const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
 
 export class Board {
@@ -43,7 +43,9 @@ export class Board {
     this.handleMerging();
     // Filter out fruits that have been marked removed
     this.fruits = this.fruits.filter(fruit => !fruit.removed);
-    
+    for (let fruit of this.fruits) {
+      fruit.updateState();
+    }
   }
 
   updateScale(newScale) {
@@ -64,16 +66,29 @@ export class Board {
     for (let fruit of this.fruits) {
       fruit.draw();
     }
-    
-    // Draw the fruit of the current operation
+  }
 
+  getCurrentFruits() {
+    return this.fruits;
+  }
+
+  checkFruitOverLine(y) {
+    for (const fruit of this.fruits) {
+      if (fruit.getState() !== Fruit.STATE.FALLING || fruit.getSafePeriod() > 0) continue;
+
+      const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
+      if (fruitTop <= y) {
+        console.log("the fruit is over the dash line");
+        return true;
+      }
+    }
+    return false;
   }
 
   createFruitsLevel(area) {
     let fruitType = 7;
     let fruitsLevel = []
     let gap = 18;
-    let yFromTop = 0;
     let prevY = null;
     let prevSize = null;
 
@@ -103,15 +118,16 @@ export class Board {
       // allow current fruit move with mouse
       let leftBound = this.gameArea.x + this.wallWidth;
       let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
-      this.currentFruit.moveWithMouse(leftBound, rightBound, this.scaleVal);
+      this.currentFruit.moveWithMouse(leftBound, rightBound, this.gameArea.y - DISTFROMGAME);
     } else {
       // Timer increments when there is no current fruit
       this.timer++;
-      if (this.timer > 50) {
-        let newType = int(random(4));
-        // Generate new fruit at the top of the game area
+      if (this.timer > 40) {
+        // Change the next fruit to the current fruit
         this.nextFruit.letFall();
         this.currentFruit = this.nextFruit;
+        // Generate new fruit at the top of the game area
+        let newType = int(random(4));
         this.nextFruit = new Fruit(newType, this.shopArea.x + this.shopArea.w / 2, this.shopArea.y - DISTFROMSHOP, 30 + 20 * newType, this.scaleVal);
         this.nextFruit.doNotFall();
         this.timer = 0;
@@ -121,6 +137,7 @@ export class Board {
     // When the mouse is pressed, put the current fruit into the fruits array and clear currentFruit
     if (mouseIsPressed && this.currentFruit) {
       this.currentFruit.sprite.vel.y = this.gravity;
+      this.currentFruit.startFalling();
       this.fruits.push(this.currentFruit);
       this.currentFruit = null;
     }

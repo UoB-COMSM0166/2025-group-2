@@ -3,9 +3,6 @@
 import { Board } from '../models/Board.js';
 import { Player } from '../models/Player.js';
 import { UIControllor } from './UIControllor.js';
-import { Wall } from '../models/NewWall.js';
-
-const WALLTHICKNESS = 10;
 
 export class Game {
     constructor(scaleVal) {
@@ -15,20 +12,7 @@ export class Game {
         this.AREAS = null;
         this.isGameOver = false;
         this.scaleVal = scaleVal;
-
-
-        this.gameWalls = [];
-        this.shopWalls = [];
-        this.topLines = [];
-        this.levelPicWalls = [];
-        this.fruitsLevel = [];
         this.mode = "single";
-        this.scoreLabel = null;
-        this.coinLabel = null;
-        this.timerLabel = null;
-        this.score = 0;
-        this.coin = 0;
-        this.time = 0;
     }
 
     setup() {
@@ -44,38 +28,58 @@ export class Game {
         const gap = canvasWidth * 0.05;
         const totalWidth = displayWidth + gameWidth + shopWidth + gap * 2;
         const leftMargin = (canvasWidth - totalWidth) / 2
+        const thickness = 10;
 
         this.AREAS = {
             game: {x: leftMargin + displayWidth + gap, y: canvasHeight - gameHeight - gap, w: gameWidth, h: gameHeight}, 
             shop: {x: leftMargin + displayWidth + gameWidth + gap * 2, y: canvasHeight - shopHeight - gap, w: shopWidth, h: shopHeight}, 
             display: {x: leftMargin, y: canvasHeight - displayHeight - gap, w: displayWidth, h: displayHeight}, 
-            //scoreLabel: {x: MAINX + gameWidth + GAP + shopWidth/2, y: (canvasHeight - shopHeight - 80) / 2, w: shopWidth/2, h: 30}, 
-            //coinLabel: {x: MAINX + gameWidth + GAP + shopWidth/2, y: (canvasHeight - shopHeight - 40) / 2, w: shopWidth/2, h: 30},
-            //timerLabel: {x: MAINX + gameWidth / 2, y: (canvasHeight - gameHeight - 130) / 2, w: shopWidth / 2, h: 30},
+            dashLine: {
+                x1: leftMargin + displayWidth + gap + thickness / 2,
+                y1: canvasHeight - gameHeight - gap + 20,
+                x2: leftMargin + displayWidth + gap + gameWidth - thickness / 2,
+                y2: canvasHeight - gameHeight - gap + 20,
+                dashLength: 15,
+                gapLength: 10,
+                thickness: 10
+            },
         }
 
         // Creating game walls
-        this.gameWalls = this.createThreeWalls(this.AREAS.game);
-        // Creating the top of the game area
-        this.topLines = this.drawDashRect(this.AREAS.game.x, this.AREAS.game.x + this.AREAS.game.w, this.AREAS.game.y + 30, 25, WALLTHICKNESS, 15);
+        this.ui.createNoneCappedWalls(this.AREAS.game, thickness);
         // Creating shop walls
-        this.shopWalls = this.createFourWalls(this.AREAS.shop);
-        // Creating the area to show the fruit orders
-        this.levelPicWalls = this.createFourWalls(this.AREAS.display);
-
+        this.ui.createFourWalls(this.AREAS.shop, thickness);
+        // Creating display area
+        this.ui.createFourWalls(this.AREAS.display, thickness);
+        // Creating the top dashed line
+        this.ui.createDashedLine(this.AREAS.dashLine);
+        // Create timer label
+        this.ui.createLabel("timer", this.AREAS.game.x + this.AREAS.game.w / 2, this.AREAS.game.y - 150, "Time: 2:00", "#000000", 50);
 
         // Intialise control board.
-        this.board = new Board(this.AREAS.game, this.AREAS.shop, WALLTHICKNESS, this.scaleVal);
+        this.board = new Board(this.AREAS.game, this.AREAS.shop, thickness, this.scaleVal);
         this.board.setup();
         // Create the fruits to show in the level
-        this.fruitsLevel = this.board.createFruitsLevel(this.AREAS.display);
+        this.board.createFruitsLevel(this.AREAS.display);
         
 
         //this.players.setup();
     }
 
     update() {
-        this.board.update();    
+
+        this.ui.createDashedLine(this.AREAS.dashLine);
+        
+
+        if (!this.isGameOver) {
+            this.board.update();    
+            this.checkIsGameOver(this.AREAS.dashLine.y1);
+        }
+
+        if (this.isGameOver) {
+            this.ui.drawGameOver(this.AREAS.game.x + this.AREAS.game.w / 2, this.AREAS.game.y - 20);
+        }
+        this.ui.drawLabels();
     }
 
     updateScale(newScale) {
@@ -83,46 +87,13 @@ export class Game {
         this.board.updateScale(newScale);
     }
 
-    createThreeWalls(gameArea) {
-        return [
-            // left
-            new Wall(gameArea.x, gameArea.y + gameArea.h / 2, WALLTHICKNESS, gameArea.h),
-            // right
-            new Wall(gameArea.x + gameArea.w, gameArea.y + gameArea.h / 2, WALLTHICKNESS, gameArea.h),
-            // bottom
-            new Wall(gameArea.x + gameArea.w / 2, gameArea.y + gameArea.h - 5, gameArea.w - 10, WALLTHICKNESS)
-        ];
-    }
-    
-    createFourWalls(gameArea) {
-        return [
-            // left
-            new Wall(gameArea.x, gameArea.y + gameArea.h / 2, WALLTHICKNESS, gameArea.h),
-            // right
-            new Wall(gameArea.x + gameArea.w, gameArea.y + gameArea.h / 2, WALLTHICKNESS, gameArea.h),
-            // top
-            new Wall(gameArea.x + gameArea.w / 2, gameArea.y + 5, gameArea.w - 10, WALLTHICKNESS),
-            // bottom
-            new Wall(gameArea.x + gameArea.w / 2, gameArea.y + gameArea.h - 5, gameArea.w - 10, WALLTHICKNESS)
-        ];
-    }
+    checkIsGameOver() {
+        if (this.isGameOver) return;
 
-    drawDashRect(leftBound, rightBound, y, dashLength, h, gap) {
-        let dashes = [];
-        let totalLength = rightBound - leftBound;
-        let dashNumbers = (totalLength + gap) / (dashLength + gap);
-        let usedWidth = dashNumbers * dashLength + (dashNumbers - 1) * gap;
-        let offset = (totalLength - usedWidth) / 2;
-        
-        for (let i = 0; i < dashNumbers; i++) {
-            let centerX = leftBound + offset + i * (dashLength + gap) + dashLength / 2;
-            let dash = new Wall(centerX, y, dashLength, h);
-            dash.setShapeColour('#ff0000');
-            dash.setStrokeColour('#ff0000');
-            dash.closeCollider();
-            dashes.push(dash);
+        if (this.board.checkFruitOverLine(this.AREAS.dashLine.y1)) {
+            this.isGameOver = true;
+            console.log("draw game over");
         }
-        return dashes;
     }
 
 }

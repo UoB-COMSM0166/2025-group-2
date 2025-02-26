@@ -9,9 +9,17 @@ export class Fruit {
 		'#277da1',
 	];
 
+	static STATE = {
+		WAITING: 0, // in the nextfruit position
+		FALLING: 1, // current falling fruit
+		LANDED: 2 // already clicked to drop
+	}
+
 	static maxFruitLevel = this.fruitColors.length - 1;
 
 	constructor(level, x, y, size, scaleVal) {
+		this.state = Fruit.STATE.WAITING;
+		this.safePeriod = 40;
 		this.level = level;
 		this.removed = false;
         this.initialY = y;
@@ -30,6 +38,26 @@ export class Fruit {
 
 			pop();
 		};
+	}
+
+	startFalling() {
+		console.log("fruit change to falling state.");
+		this.state = Fruit.STATE.FALLING;
+	}
+
+	getState() {
+		return this.state;
+	}
+
+	getSafePeriod() {
+		return this.safePeriod;
+	}
+
+	updateState() {
+		if (this.state === Fruit.STATE.FALLING) {
+			if (this.safePeriod > 0) this.safePeriod--;
+			console.log("safeperiod is reducing");
+		}
 	}
 
 	drawFace() {
@@ -106,9 +134,9 @@ export class Fruit {
 		this.scaleVal = newScale;
 	}
 
-	moveWithMouse(leftBound, rightBound) {
+	moveWithMouse(leftBound, rightBound, y) {
 		let scaledMouseX = mouseX / this.scaleVal;
-		this.sprite.y = this.initialY;
+		this.sprite.y = y;
 		this.sprite.x = constrain(
 			scaledMouseX,
 			leftBound + this.sprite.d / 2,
