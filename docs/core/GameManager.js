@@ -10,7 +10,7 @@ const colourAfterClick = '#F4D8C6';
 const textColour = '#6B4F3F';
 const textAfterClick = '#A3785F';
 
-export class Game {
+export class GameManager {
 	constructor(scaleVal) {
 		this.boards = null;
 		this.players = null;
