@@ -11,14 +11,10 @@ export class DoubleScoreTool {
 		if(this.doubleScoreActive) return;
 
 		this.doubleScoreActive = true;
-		console.log('this.active :>> ', this.doubleScoreActive);
-		console.log('Double Score activated!');
+
 		this.doubleScoreTimer = setInterval(() => {
 			if (this.doubleScoreTimeLeft > 0) {
 				this.doubleScoreTimeLeft--;
-				//console.log('Double Score activated! :', this.doubleScoreTimeLeft);
-				//console.log(this.doubleScoreTimeLeft);
-
 			} else {
 				this.deactivate();
 				console.log('Double Score Deactivated!');
@@ -39,6 +35,5 @@ export class DoubleScoreTool {
 		clearInterval(this.doubleScoreTimer);
 		this.doubleScoreTimeLeft = 20;
 		this.doubleScoreTimer = null;
-
 	}
 }
