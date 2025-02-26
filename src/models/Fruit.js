@@ -12,13 +12,14 @@ export class Fruit {
 		'#66418a',
 	];
 	static maxFruitLevel = this.fruitColors.length - 1;
-	constructor(i, x, y, size) {
+	constructor(i, x, y, size, scaleVal) {
 		this.i = i;
 		this.removed = false;
 		this.sprite = new Sprite(x, y, size, 'd');
 		this.t = random(1000);
 		this.randomId = int(random(100000));
 		this.isFalling = true;
+		//this.scaleVal = scaleVal;
 
 		this.sprite.draw = () => {
 			push();
@@ -52,6 +53,9 @@ export class Fruit {
 
 		// Pupil Follows Mouse Movement
 		function getPupilOffset(eyeX, eyeY) {
+			//let scaledMouseX = mouseX / this.scaleVal;
+			//let scaledMouseY = mouseY / this.scaleVal;
+
 			let dx = mouseX - (this.sprite.x + eyeX);
 			let dy = mouseY - (this.sprite.y + eyeY);
 			let angle = atan2(dy, dx);
@@ -100,10 +104,11 @@ export class Fruit {
 		pop();
 	}
 
-	moveWithMouse() {
+	moveWithMouse(scaleVal) {
+		let scaledMouseX = mouseX / scaleVal;
 		this.sprite.y = 45;
 		this.sprite.x = constrain(
-			mouseX,
+			scaledMouseX,
 			10 + this.sprite.d / 2,
 			490 - this.sprite.d / 2
 		);

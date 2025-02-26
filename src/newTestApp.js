@@ -5,7 +5,7 @@ let game, canvas, scaleVal = 1
 window.setup  = function() {
   canvas = createCanvas(1200, 1000);
   windowResized();
-  game = new Game();
+  game = new Game(scaleVal);
   game.setup();
   document.getElementById("loading").style.display = "none";
 }
@@ -27,6 +27,9 @@ window.windowResized = function() {
   canvas.elt.style.position = 'absolute';
   canvas.elt.style.left = leftOffset + 'px';
   canvas.elt.style.top = '0px';
+  if (game) {
+    game.updateScale(scaleVal);
+  }
 }
 
 

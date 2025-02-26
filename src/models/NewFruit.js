@@ -11,13 +11,14 @@ export class Fruit {
 
 	static maxFruitLevel = this.fruitColors.length - 1;
 
-	constructor(level, x, y, size) {
+	constructor(level, x, y, size, scaleVal) {
 		this.level = level;
 		this.removed = false;
         this.initialY = y;
 		this.sprite = new Sprite(x, y, size, 'd');
 		this.t = random(1000);
 		this.randomId = int(random(100000));
+		this.scaleVal = scaleVal;
 
 		this.sprite.draw = () => {
 			push();
@@ -51,8 +52,10 @@ export class Fruit {
 
 		// Pupil Follows Mouse Movement
 		function getPupilOffset(eyeX, eyeY) {
-			let dx = mouseX - (this.sprite.x + eyeX);
-			let dy = mouseY - (this.sprite.y + eyeY);
+			let scaledMouseX = mouseX / this.scaleVal;
+			let scaledMouseY = mouseY / this.scaleVal;
+			let dx = scaledMouseX - (this.sprite.x + eyeX);
+			let dy = scaledMouseY - (this.sprite.y + eyeY);
 			let angle = atan2(dy, dx);
 			let maxOffset = eyeSize * 0.4;
 
@@ -99,10 +102,15 @@ export class Fruit {
 		pop();
 	}
 
+	updateScale(newScale) {
+		this.scaleVal = newScale;
+	}
+
 	moveWithMouse(leftBound, rightBound) {
+		let scaledMouseX = mouseX / this.scaleVal;
 		this.sprite.y = this.initialY;
 		this.sprite.x = constrain(
-			mouseX,
+			scaledMouseX,
 			leftBound + this.sprite.d / 2,
 			rightBound - this.sprite.d / 2
 		);
@@ -127,7 +135,7 @@ export class Fruit {
 
 			a.remove();
 			b.remove();
-			return new Fruit(newType, newX, newY, newSize);
+			return new Fruit(newType, newX, newY, newSize, this.scaleVal);
 		}
 
 		return null;

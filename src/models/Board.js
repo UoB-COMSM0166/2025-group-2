@@ -14,7 +14,7 @@ const DISTFROMGAME = 20;
 const DISTFROMSHOP = 150;
 
 export class Board {
-  constructor(gameArea, shopArea, wallWidth) {
+  constructor(gameArea, shopArea, wallWidth, scaleVal) {
     this.gameArea = gameArea;  // { x, y, w, h }
     this.shopArea = shopArea;  // { x, y, w, h }
     this.wallWidth = wallWidth;
@@ -23,15 +23,16 @@ export class Board {
     this.currentFruit = null;
     this.nextFruit = null;
     this.timer = 0;
+    this.scaleVal = scaleVal;
   }
 
   setup() {
     world.gravity.y = this.gravity;
 
     // Create the first fruit, and put it in the top center of the game area.
-    this.currentFruit = new Fruit(0, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - DISTFROMGAME , 30);
+    this.currentFruit = new Fruit(0, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - DISTFROMGAME , 30, this.scaleVal);
     let newType = int(random(4));
-    this.nextFruit = new Fruit(newType, this.shopArea.x + this.shopArea.w / 2, this.shopArea.y - DISTFROMSHOP, 30 + 20 * newType);
+    this.nextFruit = new Fruit(newType, this.shopArea.x + this.shopArea.w / 2, this.shopArea.y - DISTFROMSHOP, 30 + 20 * newType, this.scaleVal);
     this.nextFruit.doNotFall();
   }
 
@@ -43,6 +44,19 @@ export class Board {
     // Filter out fruits that have been marked removed
     this.fruits = this.fruits.filter(fruit => !fruit.removed);
     
+  }
+
+  updateScale(newScale) {
+    this.scaleVal = newScale;
+    if (this.currentFruit) {
+      this.currentFruit.updateScale(newScale);
+    }
+    if (this.nextFruit) {
+      this.nextFruit.updateScale(newScale);
+    }
+    for (let fruit of this.fruits) {
+      fruit.updateScale(newScale);
+    }
   }
 
   draw() {
@@ -75,7 +89,7 @@ export class Board {
         // the y position of the next fruit = the prevY + prevSize / 2 + currentSize / 2 + gap
         y = prevY + prevSize / 2 + size / 2 + gap;
       }
-      let fruit = new Fruit(i, x, y, size);
+      let fruit = new Fruit(i, x, y, size, this.scaleVal);
       fruit.doNotFall();
       fruitsLevel.push(fruit);
       prevY = y;
@@ -89,7 +103,7 @@ export class Board {
       // allow current fruit move with mouse
       let leftBound = this.gameArea.x + this.wallWidth;
       let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
-      this.currentFruit.moveWithMouse(leftBound, rightBound);
+      this.currentFruit.moveWithMouse(leftBound, rightBound, this.scaleVal);
     } else {
       // Timer increments when there is no current fruit
       this.timer++;
@@ -98,7 +112,7 @@ export class Board {
         // Generate new fruit at the top of the game area
         this.nextFruit.letFall();
         this.currentFruit = this.nextFruit;
-        this.nextFruit = new Fruit(newType, this.shopArea.x + this.shopArea.w / 2, this.shopArea.y - DISTFROMSHOP, 30 + 20 * newType);
+        this.nextFruit = new Fruit(newType, this.shopArea.x + this.shopArea.w / 2, this.shopArea.y - DISTFROMSHOP, 30 + 20 * newType, this.scaleVal);
         this.nextFruit.doNotFall();
         this.timer = 0;
       }
@@ -127,6 +141,7 @@ export class Board {
         ) {
           const mergedFruit = Fruit.merge(a, b);
           if (mergedFruit) {
+            mergedFruit.updateScale(this.scaleVal);
             this.fruits.push(mergedFruit);
           }
         }

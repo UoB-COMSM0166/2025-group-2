@@ -8,12 +8,13 @@ import { Wall } from '../models/NewWall.js';
 const WALLTHICKNESS = 10;
 
 export class Game {
-    constructor() {
+    constructor(scaleVal) {
         this.board = null;
         this.players = null;
         this.ui = new UIControllor();
         this.AREAS = null;
         this.isGameOver = false;
+        this.scaleVal = scaleVal;
 
 
         this.gameWalls = [];
@@ -64,7 +65,7 @@ export class Game {
 
 
         // Intialise control board.
-        this.board = new Board(this.AREAS.game, this.AREAS.shop, WALLTHICKNESS);
+        this.board = new Board(this.AREAS.game, this.AREAS.shop, WALLTHICKNESS, this.scaleVal);
         this.board.setup();
         // Create the fruits to show in the level
         this.fruitsLevel = this.board.createFruitsLevel(this.AREAS.display);
@@ -74,7 +75,12 @@ export class Game {
     }
 
     update() {
-        this.board.update();     
+        this.board.update();    
+    }
+
+    updateScale(newScale) {
+        this.scaleVal = newScale;
+        this.board.updateScale(newScale);
     }
 
     createThreeWalls(gameArea) {
