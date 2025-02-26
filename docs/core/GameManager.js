@@ -7,7 +7,7 @@ import { checkCollision } from '../utils/CheckCollision.js';
 import { IncidentManager } from './IncidentManager.js';
 import { ToolManager } from './ToolManager.js';
 
-export class Game {
+export class GameManager {
 	constructor() {
 		this.fruits = [];
 		this.timer = 0;
