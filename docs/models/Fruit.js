@@ -18,7 +18,7 @@ export class Fruit {
 
 	constructor(level, x, y, size, scaleVal) {
 		this.state = Fruit.STATE.WAITING;
-		this.safePeriod = 40;
+		this.safePeriod = 60;
 		this.level = level;
 		this.removed = false;
 		this.initialY = y;
@@ -50,6 +50,10 @@ export class Fruit {
 
 	getSafePeriod() {
 		return this.safePeriod;
+	}
+
+	getXPosition() {
+		return this.sprite.x;
 	}
 
 	updateState() {

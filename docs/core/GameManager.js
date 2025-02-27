@@ -12,12 +12,6 @@ export class Game {
 		this.AREAS = null;
 		this.isGameOver = false;
 		this.scaleVal = scaleVal;
-
-		this.fruits = [];
-		this.timer = 0;
-		this.currentFruit = null;
-		this.gravity = 15;
-		this.walls = [];
 		this.score = new Score();
 
 		this.incidentManager = new IncidentManager(this);
@@ -145,7 +139,6 @@ export class Game {
 
 		if (this.board.checkFruitOverLine(this.AREAS.dashLine.y1)) {
 			this.isGameOver = true;
-			console.log('draw game over');
 		}
 	}
 

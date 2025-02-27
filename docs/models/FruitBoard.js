@@ -117,19 +117,20 @@ export class Board {
 	}
 
 	handleCurrentFruit() {
+		let leftBound = this.gameArea.x + this.wallWidth;
+		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+
 		if (this.currentFruit) {
 			// allow current fruit move with mouse
-			let leftBound = this.gameArea.x + this.wallWidth;
-			let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
 			this.currentFruit.moveWithMouse(leftBound, rightBound, this.gameArea.y - DISTFROMGAME);
+			this.currentFruit.letFall();
 		} else {
 			// Timer increments when there is no current fruit
 			this.timer++;
 			if (this.timer > 10) {
 				// Change the next fruit to the current fruit
-				this.nextFruit.letFall();
 				this.currentFruit = this.nextFruit;
-				// Generate new fruit at the top of the game area
+				// Generate new fruit at the top of the shop area
 				let newType = int(random(4));
 				this.nextFruit = new Fruit(
 					newType,
@@ -142,9 +143,13 @@ export class Board {
 				this.timer = 0;
 			}
 		}
-
 		// When the mouse is pressed, put the current fruit into the fruits array and clear currentFruit
-		if (mouseIsPressed && this.currentFruit) {
+		if (
+			mouseIsPressed &&
+			this.currentFruit &&
+			this.currentFruit.getXPosition() < rightBound &&
+			this.currentFruit.getXPosition() > leftBound
+		) {
 			this.currentFruit.sprite.vel.y = this.gravity;
 			this.currentFruit.startFalling();
 			this.fruits.push(this.currentFruit);
