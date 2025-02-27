@@ -1,15 +1,17 @@
 export class DoubleScoreTool {
 	constructor(game) {
 		this.game = game;
-		this.doubleScoreTimeLeft = 10;
+		this.doubleScoreTimeLeft = 20;
 		this.doubleScoreTimer = null;
 		this.doubleScoreActive = false;
 	}
 
 	activate() {
-		this.isDoubleScoreActive = true;
-		console.log('this.active :>> ', this.active);
-		console.log('Double Score activated!');
+		//for not calling multiple times
+		if(this.doubleScoreActive) return;
+
+		this.doubleScoreActive = true;
+
 		this.doubleScoreTimer = setInterval(() => {
 			if (this.doubleScoreTimeLeft > 0) {
 				this.doubleScoreTimeLeft--;
@@ -23,12 +25,14 @@ export class DoubleScoreTool {
 		if (this.doubleScoreActive) {
 			fill(0);
 			textSize(20);
-			text('Double socre Time Left: ' + this.doubleScoreTimeLeft, 240, 30);
+			text('Double score Time Left: ' + this.doubleScoreTimeLeft, 240, 30);
 		}
 	}
 
 	deactivate() {
 		this.doubleScoreActive = false;
 		clearInterval(this.doubleScoreTimer);
+		this.doubleScoreTimeLeft = 20;
+		this.doubleScoreTimer = null;
 	}
 }
