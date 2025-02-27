@@ -10,7 +10,7 @@ export class Game {
 	constructor() {
 		this.fruits = [];
 		this.timer = 0;
-		this.counter = new Timer(20);
+		this.counter = new Timer(120);
 		this.currentFruit = null;
 		this.gravity = 15;
 		this.walls = [];
