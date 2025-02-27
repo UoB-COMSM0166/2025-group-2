@@ -17,7 +17,6 @@ export class DoubleScoreTool {
 				this.doubleScoreTimeLeft--;
 			} else {
 				this.deactivate();
-				console.log('Double Score Deactivated!');
 			}
 		}, 1000);
 	}
