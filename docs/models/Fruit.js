@@ -4,25 +4,32 @@ export class Fruit {
 		'#f8961e',
 		'#7fc96b',
 		'#43aa8b',
-		'#2d92d1 ',
+		'#2d92d1',
 		'#f6aeae',
 		'#277da1',
-		'#3b498e',
-		'#ffd043',
-		'#66418a',
 	];
+
+	static STATE = {
+		WAITING: 0, // in the nextfruit position
+		FALLING: 1, // current falling fruit
+	};
+
 	static maxFruitLevel = this.fruitColors.length - 1;
-	constructor(i, x, y, size) {
-		this.i = i;
+
+	constructor(level, x, y, size, scaleVal) {
+		this.state = Fruit.STATE.WAITING;
+		this.safePeriod = 40;
+		this.level = level;
 		this.removed = false;
+		this.initialY = y;
 		this.sprite = new Sprite(x, y, size, 'd');
 		this.t = random(1000);
 		this.randomId = int(random(100000));
-		this.isFalling = true;
+		this.scaleVal = scaleVal;
 
 		this.sprite.draw = () => {
 			push();
-			fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]);
+			fill(Fruit.fruitColors[this.level % Fruit.fruitColors.length]);
 			stroke(10);
 			ellipse(0, 0, this.sprite.d, this.sprite.d);
 
@@ -30,6 +37,26 @@ export class Fruit {
 
 			pop();
 		};
+	}
+
+	startFalling() {
+		console.log('fruit change to falling state.');
+		this.state = Fruit.STATE.FALLING;
+	}
+
+	getState() {
+		return this.state;
+	}
+
+	getSafePeriod() {
+		return this.safePeriod;
+	}
+
+	updateState() {
+		if (this.state === Fruit.STATE.FALLING) {
+			if (this.safePeriod > 0) this.safePeriod--;
+			console.log('safeperiod is reducing');
+		}
 	}
 
 	drawFace() {
@@ -52,8 +79,10 @@ export class Fruit {
 
 		// Pupil Follows Mouse Movement
 		function getPupilOffset(eyeX, eyeY) {
-			let dx = mouseX - (this.sprite.x + eyeX);
-			let dy = mouseY - (this.sprite.y + eyeY);
+			let scaledMouseX = mouseX / this.scaleVal;
+			let scaledMouseY = mouseY / this.scaleVal;
+			let dx = scaledMouseX - (this.sprite.x + eyeX);
+			let dy = scaledMouseY - (this.sprite.y + eyeY);
 			let angle = atan2(dy, dx);
 			let maxOffset = eyeSize * 0.4;
 
@@ -85,9 +114,18 @@ export class Fruit {
 		pop();
 	}
 
-	moveWithMouse() {
-		this.sprite.y = 45;
-		this.sprite.x = constrain(mouseX, 10 + this.sprite.d / 2, 490 - this.sprite.d / 2);
+	updateScale(newScale) {
+		this.scaleVal = newScale;
+	}
+
+	moveWithMouse(leftBound, rightBound, y) {
+		let scaledMouseX = mouseX / this.scaleVal;
+		this.sprite.y = y;
+		this.sprite.x = constrain(
+			scaledMouseX,
+			leftBound + this.sprite.d / 2,
+			rightBound - this.sprite.d / 2
+		);
 		this.sprite.vel.y = 0;
 	}
 
@@ -97,18 +135,26 @@ export class Fruit {
 	}
 
 	static merge(a, b) {
-		if (a.i === b.i && a.i < Fruit.maxFruitLevel) {
-			const newType = a.i + 1;
+		if (a.level === b.level && a.level < Fruit.maxFruitLevel) {
+			const newType = a.level + 1;
 			const newX = (a.sprite.x + b.sprite.x) / 2;
 			const newY = (a.sprite.y + b.sprite.y) / 2;
 			const newSize = 30 + 20 * newType;
 
 			a.remove();
 			b.remove();
-			return new Fruit(newType, newX, newY, newSize);
+			return new Fruit(newType, newX, newY, newSize, this.scaleVal);
 		}
 
 		return null;
+	}
+
+	doNotFall() {
+		this.sprite.collider = 'static';
+	}
+
+	letFall() {
+		this.sprite.collider = 'd';
 	}
 
 	applyWind(windSpeed) {
