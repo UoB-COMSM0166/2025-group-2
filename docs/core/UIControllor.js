@@ -3,6 +3,7 @@ import { Wall } from '../models/Wall.js';
 export class UIControllor {
 	constructor() {
 		this.labels = {};
+		this.buttons = [];
 	}
 	createNoneCappedWalls(area, w) {
 		// left
@@ -42,22 +43,46 @@ export class UIControllor {
 		pop();
 	}
 
-	createLabel(id, x, y, text, colour, size) {
-		this.labels[id] = { x, y, text, colour, size };
+	createLabel(id, x, y, text, colour = '#000000', size = 12, bgColour = null, type = null) {
+		textSize(size);
+		let w = textWidth(text);
+		let h = textAscent() + textDescent();
+		this.labels[id] = { x, y, text, colour, size, bgColour, w, h, type };
 	}
 
-	updateLabel(id, newText) {
+	getLabels() {
+		return this.labels;
+	}
+
+	updateLabelText(id, newText) {
 		if (this.labels[id]) {
 			this.labels[id].text = newText;
+			textSize(this.labels[id].size);
+			this.labels[id].w = textWidth(newText);
+			this.labels[id].h = textAscent() + textDescent();
+		}
+	}
+
+	updateLabelColour(id, colour) {
+		if (this.labels[id]) {
+			this.labels[id].colour = colour;
 		}
 	}
 
 	drawLabels() {
 		Object.values(this.labels).forEach(label => {
 			push();
+			// if has background draw the background rect
+			if (label.bgColour) {
+				fill(label.bgColour);
+				noStroke();
+				rectMode(CENTER);
+				rect(label.x, label.y, label.w, label.h, 10);
+			}
+			// draw text
 			fill(label.colour);
 			textSize(label.size);
-			textAlign(CENTER);
+			textAlign(CENTER, CENTER);
 			text(label.text, label.x, label.y);
 			pop();
 		});
