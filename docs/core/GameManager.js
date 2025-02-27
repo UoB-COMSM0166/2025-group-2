@@ -1,6 +1,7 @@
 import { Fruit } from '../models/Fruit.js';
 import { Wall } from '../models/Wall.js';
 import { Score } from '../models/Score.js';
+import { Timer } from '../models/Timer.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { ToolManager } from './ToolManager.js';
 import { IncidentManager } from './IncidentManager.js';
@@ -9,6 +10,7 @@ export class Game {
 	constructor() {
 		this.fruits = [];
 		this.timer = 0;
+		this.counter = new Timer(20);
 		this.currentFruit = null;
 		this.gravity = 15;
 		this.walls = [];
@@ -24,6 +26,8 @@ export class Game {
 		world.gravity.y = this.gravity;
 
 		this.walls = Wall.createDefaultWalls();
+		//Start counter
+		this.counter.start();
 
 		this.currentFruit = new Fruit(0, 300, 25, 30);
 		let shuffleButton = createButton('Shake Tool');
@@ -45,6 +49,11 @@ export class Game {
 		let windButton = createButton('Wind Incident');
 		windButton.mousePressed(() =>
 			this.incidentManager.activateIncident('wind')
+		);
+		// fog incident
+		let fogButton = createButton('Fog Incident');
+		fogButton.mousePressed(() =>
+		this.incidentManager.activateIncident('fog')
 		);
 
 		let rainbowButton = createButton('rainbow');
@@ -68,6 +77,15 @@ export class Game {
 		this.incidentManager.update();
 
 		this.displayScore();
+		this.displayCounter();
+
+		// If counter is 0, end game
+		if (this.counter.getTimeLeft() <= 0) {
+			console.log("End of game because counter");
+			noLoop();
+		}
+
+
 	}
 
 	setCurrentFruit(fruit) {
@@ -132,6 +150,13 @@ export class Game {
 		textSize(16);
 		text(`Score: ${this.score.getScore()}`, 10, 30);
 	}
+
+	displayCounter() {
+		fill(0);
+		textSize(16);
+		text(`Timer: ${this.counter.getTimeLeft()}s`, 300, 60);
+	}
+
 
 	isClickingUI(mx, my) {
 		let uiButtons = selectAll('button');
