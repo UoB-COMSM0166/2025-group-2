@@ -1,4 +1,4 @@
-import { WindIncident, TestIncident } from '../incidents/index.js';
+import { TestIncident, WindIncident } from '../incidents/index.js';
 
 export class IncidentManager {
 	constructor(game) {
@@ -11,7 +11,7 @@ export class IncidentManager {
 	}
 
 	update() {
-		this.activeIncidents.forEach((incident) => incident.update());
+		this.activeIncidents.forEach(incident => incident.update());
 	}
 
 	activateIncident(incidentName) {
@@ -26,15 +26,15 @@ export class IncidentManager {
 		const incident = this.incidents[incidentName];
 		if (incident) {
 			incident.disable();
-			this.activeIncidents = this.activeIncidents.filter((i) => i !== incident);
+			this.activeIncidents = this.activeIncidents.filter(incident => incident !== incident);
 		}
 	}
 
 	pauseActiveIncidents() {
-		this.activeIncidents.forEach((incident) => incident.pause());
+		this.activeIncidents.forEach(incident => incident.pause());
 	}
 
 	resumePausedIncidents() {
-		this.activeIncidents.forEach((incident) => incident.resume());
+		this.activeIncidents.forEach(incident => incident.resume());
 	}
 }
