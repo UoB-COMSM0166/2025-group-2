@@ -1,10 +1,12 @@
 export class Incident {
-	constructor(game, duration = 10) {
+	constructor(game, name, duration = 10) {
 		this.game = game;
+		this.name = name;
 		this.active = false;
 		this.duration = duration;
 		this.timeLeft = duration;
 		this.timer = null;
+		this.manager = null;
 	}
 
 	enable() {
@@ -14,19 +16,16 @@ export class Incident {
 			if (this.timeLeft > 0) {
 				this.timeLeft--;
 			} else {
-				this.disable();
+				this.manager.deactivateIncident(this.name);
 			}
 		}, 1000);
-
-		if(this.timeLeft == 0){
-			this.timeLeft = this.duration;
-		}
 	}
 
 	disable() {
 		if (!this.active) return;
 		this.active = false;
 		clearInterval(this.timer);
+		this.timeLeft = this.duration;
 	}
 
 	pause() {
