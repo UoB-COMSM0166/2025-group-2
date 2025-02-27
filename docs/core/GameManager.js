@@ -1,10 +1,11 @@
 import { Fruit } from '../models/Fruit.js';
-import { Wall } from '../models/Wall.js';
 import { Score } from '../models/Score.js';
 import { Timer } from '../models/Timer.js';
+import { Wall } from '../models/Wall.js';
+import { RainbowFruit } from '../shop/index.js';
 import { checkCollision } from '../utils/CheckCollision.js';
-import { ToolManager } from './ToolManager.js';
 import { IncidentManager } from './IncidentManager.js';
+import { ToolManager } from './ToolManager.js';
 
 export class Game {
 	constructor() {
@@ -34,39 +35,29 @@ export class Game {
 		shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
 
 		let divineButton = createButton('Divine Shield');
-		divineButton.mousePressed(() =>
-			this.toolManager.activateTool('divineShield')
-		);
+		divineButton.mousePressed(() => this.toolManager.activateTool('divineShield'));
 
 		let randomToolButton = createButton('Random Tool');
 		randomToolButton.mousePressed(() => this.toolManager.randomTool());
 
 		let doubleScoreToolButton = createButton('double Score');
-		doubleScoreToolButton.mousePressed(() =>
-			this.toolManager.activateTool('doubleScore')
-		);
+		doubleScoreToolButton.mousePressed(() => this.toolManager.activateTool('doubleScore'));
 
 		let windButton = createButton('Wind Incident');
-		windButton.mousePressed(() =>
-			this.incidentManager.activateIncident('wind')
-		);
+		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
 
 		let rainbowButton = createButton('rainbow');
-		rainbowButton.mousePressed(() =>
-			this.toolManager.activateSpecialFruit('rainbowFruit')
-		);
+		rainbowButton.mousePressed(() => this.toolManager.activateSpecialFruit('rainbowFruit'));
 
 		let bombButton = createButton('bomb');
-		bombButton.mousePressed(() =>
-			this.toolManager.activateSpecialFruit('bombFruit')
-		);
+		bombButton.mousePressed(() => this.toolManager.activateSpecialFruit('bombFruit'));
 	}
 
 	update() {
 		background('#f5ebe0');
 		this.handleCurrentFruit();
 		this.handleMerging();
-		this.fruits = this.fruits.filter((fruit) => !fruit.removed);
+		this.fruits = this.fruits.filter(fruit => !fruit.removed);
 
 		this.toolManager.update();
 		this.incidentManager.update();
@@ -76,11 +67,9 @@ export class Game {
 
 		// If counter is 0, end game
 		if (this.counter.getTimeLeft() <= 0) {
-			console.log("End of game because counter");
+			console.log('End of game because counter');
 			noLoop();
 		}
-
-
 	}
 
 	setCurrentFruit(fruit) {
@@ -103,11 +92,7 @@ export class Game {
 			}
 		}
 
-		if (
-			mouseIsPressed &&
-			this.currentFruit &&
-			!this.isClickingUI(mouseX, mouseY)
-		) {
+		if (mouseIsPressed && this.currentFruit && !this.isClickingUI(mouseX, mouseY)) {
 			this.fruits.push(this.currentFruit);
 			this.currentFruit = null;
 		}
@@ -118,14 +103,13 @@ export class Game {
 			for (let j = i + 1; j < this.fruits.length; j++) {
 				const a = this.fruits[i];
 				const b = this.fruits[j];
-
 				if (
-					a.i === b.i &&
+					(a.i === -1 || b.i === -1) &&
 					checkCollision(a.sprite, b.sprite) &&
 					!a.removed &&
 					!b.removed
 				) {
-					const mergedFruit = Fruit.merge(a, b);
+					let mergedFruit = RainbowFruit.universalMerge(a, b);
 					if (mergedFruit) {
 						this.fruits.push(mergedFruit);
 
@@ -136,14 +120,24 @@ export class Game {
 						}
 					}
 				}
+				if (a.i === b.i && checkCollision(a.sprite, b.sprite) && !a.removed && !b.removed) {
+					const mergedFruit = Fruit.merge(a, b);
+					if (mergedFruit) {
+						this.fruits.push(mergedFruit);
+
+						if (this.toolManager.tools.doubleScore.isDoubleScoreActive) {
+							console.log(
+								'this.toolManager.tools.doubleScore.isActive() :>> ',
+								this.toolManager.tools.doubleScore.isDoubleScoreActive
+							);
+							this.score.addScore(mergedFruit.i * 2);
+						} else {
+							this.score.addScore(mergedFruit.i);
+						}
+					}
+				}
 			}
 		}
-	}
-
-	displayScore() {
-		fill(0);
-		textSize(16);
-		text(`Score: ${this.score.getScore()}`, 10, 30);
 	}
 
 	displayCounter() {
@@ -152,6 +146,11 @@ export class Game {
 		text(`Timer: ${this.counter.getTimeLeft()}s`, 300, 60);
 	}
 
+	displayScore() {
+		fill(0);
+		textSize(16);
+		text(`Score: ${this.score.getScore()}`, 10, 30);
+	}
 
 	isClickingUI(mx, my) {
 		let uiButtons = selectAll('button');
