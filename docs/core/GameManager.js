@@ -117,11 +117,9 @@ export class Game {
 						this.fruits.push(mergedFruit);
 
 						if (this.toolManager.tools.doubleScore.doubleScoreActive) {
-							console.log('adding double score fruit : ', mergedFruit.i*2);
 							this.score.addScore(mergedFruit.i * 2);
 						} else {
 							this.score.addScore(mergedFruit.i);
-							console.log('adding standard score fruit : ', mergedFruit.i);
 						}
 					}
 				}
