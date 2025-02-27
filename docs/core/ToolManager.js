@@ -1,24 +1,24 @@
 import {
-	ShuffleTool,
+	BombFruit,
 	DivineShieldTool,
 	DoubleScoreTool,
 	RainbowFruit,
-	BombFruit,
+	ShuffleTool,
 } from '../shop/index.js';
 export class ToolManager {
-	constructor(game, incidentManager) {
-		this.game = game;
+	constructor(board, incidentManager) {
+		this.board = board;
 		this.incidentManager = incidentManager;
 
 		this.tools = {
-			shuffle: new ShuffleTool(game),
-			divineShield: new DivineShieldTool(game, this.incidentManager),
-			doubleScore: new DoubleScoreTool(game),
+			shuffle: new ShuffleTool(board),
+			divineShield: new DivineShieldTool(board, this.incidentManager),
+			doubleScore: new DoubleScoreTool(board),
 		};
 
 		this.specialFruits = {
-			rainbowFruit: () => this.createSpecialFruit(RainbowFruit),
-			bombFruit: () => this.createSpecialFruit(BombFruit),
+			rainbowTool: () => this.createSpecialFruit(RainbowFruit),
+			bombTool: () => this.createSpecialFruit(BombFruit),
 		};
 	}
 
@@ -51,7 +51,7 @@ export class ToolManager {
 	activateSpecialFruit(fruitName) {
 		if (this.specialFruits[fruitName]) {
 			const fruit = this.specialFruits[fruitName]();
-			this.game.setCurrentFruit(fruit); // set to current fruit
+			this.board.setCurrentFruit(fruit); // set to current fruit
 			// but maybe should ne the next one
 			console.log(`${fruitName} activated with size  ${fruit.sprite.d}`);
 		} else {
@@ -60,10 +60,7 @@ export class ToolManager {
 	}
 
 	randomTool() {
-		const allKeys = [
-			...Object.keys(this.tools),
-			...Object.keys(this.specialFruits),
-		];
+		const allKeys = [...Object.keys(this.tools), ...Object.keys(this.specialFruits)];
 		if (allKeys.length === 0) {
 			return;
 		}
