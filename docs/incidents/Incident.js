@@ -10,8 +10,6 @@ export class Incident {
 	enable() {
 		if (this.active) return;
 		this.active = true;
-		this.timeLeft = this.duration;
-
 		this.timer = setInterval(() => {
 			if (this.timeLeft > 0) {
 				this.timeLeft--;
@@ -19,6 +17,10 @@ export class Incident {
 				this.disable();
 			}
 		}, 1000);
+
+		if(this.timeLeft == 0){
+			this.timeLeft = this.duration;
+		}
 	}
 
 	disable() {
@@ -29,7 +31,6 @@ export class Incident {
 
 	pause() {
 		if (!this.active) return;
-		clearInterval(this.timer);
 	}
 
 	resume() {

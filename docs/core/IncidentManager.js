@@ -16,7 +16,7 @@ export class IncidentManager {
 
 	activateIncident(incidentName) {
 		const incident = this.incidents[incidentName];
-		if (incident && !this.activeIncidents.includes(incident)) {
+		if (incident) {
 			incident.enable();
 			this.activeIncidents.push(incident);
 		}
