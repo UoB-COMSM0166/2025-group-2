@@ -88,45 +88,103 @@ export class Game {
 			this.AREAS.game.y - 150,
 			'Time: 2:00',
 			'#000000',
-			50
+			50,
+			undefined,
+			'timer'
 		);
 
-		// Intialise control board.
+		// Create score label
+		this.ui.createLabel(
+			'score',
+			this.AREAS.shop.x + this.AREAS.shop.w / 2,
+			this.AREAS.shop.y - 60,
+			`Score: ${this.score.getScore()}`,
+			'#000000',
+			20,
+			undefined,
+			'coin'
+		);
+
+		// Create coin label
+		this.ui.createLabel(
+			'coin',
+			this.AREAS.shop.x + this.AREAS.shop.w / 2,
+			this.AREAS.shop.y - 30,
+			'Coin: 0',
+			'#000000',
+			20,
+			undefined,
+			'coin'
+		);
+
+		const shopTextSize = 25;
+
+		// Intialise fruit play board.
 		this.board = new Board(this.AREAS.game, this.AREAS.shop, thickness, this.scaleVal);
 		this.board.setup();
 		// Create the fruits to show in the level
 		this.board.createFruitsLevel(this.AREAS.display);
 
 		// Create tool buttons
-		let shuffleButton = createButton('Shake Tool');
-		shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
+		this.ui.createLabel('shake', 0, 0, '🫨Shake Tool', undefined, shopTextSize, '#ccc', 'shopItem');
+		//shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
 
-		let divineButton = createButton('Divine Shield');
-		divineButton.mousePressed(() => this.toolManager.activateTool('divineShield'));
+		this.ui.createLabel(
+			'divine',
+			0,
+			0,
+			'🛡️Divine Shield',
+			undefined,
+			shopTextSize,
+			'#ccc',
+			'shopItem'
+		);
+		//divineButton.mousePressed(() => this.toolManager.activateTool('divineShield'));
 
-		let randomToolButton = createButton('Random Tool');
-		randomToolButton.mousePressed(() => this.toolManager.randomTool());
+		this.ui.createLabel(
+			'random',
+			0,
+			0,
+			'🗃️Random Tool',
+			undefined,
+			shopTextSize,
+			'#ccc',
+			'shopItem'
+		);
+		//randomToolButton.mousePressed(() => this.toolManager.randomTool());
 
-		let doubleScoreToolButton = createButton('double Score');
-		doubleScoreToolButton.mousePressed(() => this.toolManager.activateTool('doubleScore'));
+		this.ui.createLabel(
+			'double',
+			0,
+			0,
+			'💰Double Score',
+			undefined,
+			shopTextSize,
+			'#ccc',
+			'shopItem'
+		);
+		//doubleScoreToolButton.mousePressed(() => this.toolManager.activateTool('doubleScore'));
 
-		let windButton = createButton('Wind Incident');
-		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
+		this.ui.createLabel(
+			'wind',
+			0,
+			0,
+			'🌪️Wind Incident',
+			undefined,
+			shopTextSize,
+			'#ccc',
+			'shopItem'
+		);
+		//windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
 
-		let fogButton = createButton('Fog Incident');
-		fogButton.mousePressed(() => this.incidentManager.activateIncident('fog'));
+		this.ui.createLabel('rainbow', 0, 0, '🌈Rainbow', undefined, shopTextSize, '#ccc', 'shopItem');
+		//rainbowButton.mousePressed(() => this.toolManager.activateSpecialFruit('rainbowFruit'));
 
-		let freezeButton = createButton('Freeze Incident');
-		freezeButton.mousePressed(() => this.incidentManager.activateIncident('freeze'));
+		this.ui.createLabel('bomb', 0, 0, '💣Bomb', undefined, shopTextSize, '#ccc', 'shopItem');
+		//bombButton.mousePressed(() => this.toolManager.activateSpecialFruit('bombFruit'));
 
-		let rainbowButton = createButton('rainbow');
-		rainbowButton.mousePressed(() => this.toolManager.activateSpecialFruit('rainbowFruit'));
-
-		let bombButton = createButton('bomb');
-		bombButton.mousePressed(() => this.toolManager.activateSpecialFruit('bombFruit'));
-
-		let fireButton = createButton('Fire Incident');
-		fireButton.mousePressed(() => this.incidentManager.activateIncident('fire'));
+		// List all the shopButtons in shop area.
+		this.listShopItems(this.ui.getLabels(), 'shopItem', this.AREAS.shop);
 	}
 
 	update() {
@@ -136,7 +194,7 @@ export class Game {
 		}
 
 		if (this.isGameOver) {
-			this.ui.drawGameOver(this.AREAS.game.x + this.AREAS.game.w / 2, this.AREAS.game.y - 20);
+			this.ui.drawGameOver(this.AREAS.game.x + this.AREAS.game.w / 2, this.AREAS.game.y - 60);
 		}
 
 		this.ui.createDashedLine(this.AREAS.dashLine);
@@ -144,34 +202,41 @@ export class Game {
 
 		this.toolManager.update();
 		this.incidentManager.update();
-
-		this.displayScore();
+		
+	    this.displayScore();
 		this.displayCounter();
-
-		//check for collisions with bomb fruits
-		this.fruits.forEach(fruit => {
-			//check if the fruit is in fog
-			if (
-				this.incidentManager.incidents.fog.active &&
-				fruit.sprite.y > 200 &&
-				!this.incidentManager.incidents.fog.paused &&
-				!this.incidentManager.incidents.fog.disabled
-			) {
-				fruit.isInFog = true;
-				fruit.setColor(66, 84, 84);
-			} else {
-				// Si quieres restaurar el color original de la fruta cuando no está bajo la niebla
-				fruit.isInFog = false; // Marcar como dentro de la niebla
-			}
-			if (fruit instanceof BombFruit) {
-				fruit.checkCollision(this);
-			}
-		});
-
+		
 		// If counter is 0, end game
 		if (this.counter.getTimeLeft() <= 0) {
 			console.log('End of game because counter');
 			noLoop();
+        }
+	}
+
+
+		this.ui.updateLabelText('score', `Score: ${this.score.getScore()}`);
+		/*
+		if (mouseIsPressed) {
+			let logicX = mouseX / this.scaleVal;
+			let logicY = mouseY / this.scaleVal;
+			console.log('mouse clicked and check if it clicks shopitem');
+			let clickedTool = this.checkShopItemClick(this.ui.getLabels(), logicX, logicY);
+			if (clickedTool) {
+				console.log(`tool clicked: ${clickedTool}`);
+				this.handleToolClick(clickedTool);
+			}
+		}
+			*/
+	}
+
+	mousePressed() {
+		let logicX = mouseX / this.scaleVal;
+		let logicY = mouseY / this.scaleVal;
+		console.log('mouse clicked and check if it clicks shopitem');
+		let clickedTool = this.checkShopItemClick(this.ui.getLabels(), logicX, logicY);
+		if (clickedTool) {
+			console.log(`tool clicked: ${clickedTool}`);
+			this.handleToolClick(clickedTool);
 		}
 	}
 
@@ -213,5 +278,92 @@ export class Game {
 			}
 		}
 		return false;
+	}
+
+	listShopItems(labelList, type, shopArea) {
+		console.log('starting to list shop items');
+		let shopItemList = Object.values(labelList).filter(label => label.type === type);
+		if (shopItemList.length === 0) return;
+		let maxWidth = Math.max(...shopItemList.map(label => label.w));
+		let maxHeight = Math.max(...shopItemList.map(label => label.h));
+
+		let gap = 10;
+		let cellWidth = maxWidth + gap;
+		let cellHeight = maxHeight + gap;
+
+		// Calculate the max column numbers
+		let cols = floor(shopArea.w / cellWidth);
+		if (cols < 1) cols = 1;
+		let rows = ceil(shopItemList.length / cols);
+
+		// Calculate margin center the shopItems
+		let totalGridWidth = cols * cellWidth;
+		let totalGridHeight = rows * cellHeight;
+		let offsetX = shopArea.x + (shopArea.w - totalGridWidth) / 2;
+		let offsetY = shopArea.y + (shopArea.h - totalGridHeight) / 2;
+
+		shopItemList.forEach((label, i) => {
+			let row = floor(i / cols);
+			let col = i % cols;
+			let centerX = offsetX + col * cellWidth + cellWidth / 2;
+			let centerY = offsetY + row * cellHeight + cellHeight / 2;
+
+			label.x = centerX;
+			label.y = centerY;
+		});
+
+		console.log('finish listing shop items');
+	}
+
+	checkShopItemClick(labelList, clickedX, clickedY) {
+		let shopItemList = Object.values(labelList).filter(label => label.type === 'shopItem');
+		for (let tool of shopItemList) {
+			let halfW = tool.w / 2;
+			let halfH = tool.h / 2;
+			if (
+				clickedX > tool.x - halfW &&
+				clickedX < tool.x + halfW &&
+				clickedY > tool.y - halfH &&
+				clickedY < tool.y + halfH
+			) {
+				return tool.id;
+			}
+		}
+		return null;
+	}
+
+	handleToolClick(type) {
+		switch (type) {
+			case 'shake':
+				console.log('shuffle active');
+				this.toolManager.activateTool('shuffle');
+				break;
+			case 'divine':
+				console.log('divine sheild active');
+				this.toolManager.activateTool('divineSheild');
+				break;
+			case 'double':
+				console.log('double score active');
+				this.toolManager.activateTool('doubleScore');
+				break;
+			case 'random':
+				console.log('random tool active');
+				this.toolManager.randomTool();
+				break;
+			case 'rainbow':
+				console.log('rainbow tool active');
+				this.toolManager.activateSpecialFruit('rainbowFruit');
+				break;
+			case 'bomb':
+				console.log('bomb tool active');
+				this.toolManager.activateSpecialFruit('bombFruit');
+				break;
+			case 'wind':
+				console.log('wind effect active');
+				this.incidentManager.activateIncident('wind');
+				break;
+			default:
+				console.log(`Unknow type: ${type}`);
+		}
 	}
 }

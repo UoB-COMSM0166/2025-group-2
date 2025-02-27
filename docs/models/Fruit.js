@@ -12,13 +12,14 @@ export class Fruit {
 	static STATE = {
 		WAITING: 0, // in the nextfruit position
 		FALLING: 1, // current falling fruit
+		LANDED: 2, // fruit already landed
 	};
 
 	static maxFruitLevel = this.fruitColors.length - 1;
 
 	constructor(level, x, y, size, scaleVal) {
 		this.state = Fruit.STATE.WAITING;
-		this.safePeriod = 60;
+		this.safePeriod = 80;
 		this.level = level;
 		this.removed = false;
 		this.initialY = y;
@@ -212,7 +213,7 @@ export class Fruit {
 	}
 
 	applyWind(windSpeed) {
-		if (!this.isFalling) return;
+		if (this.state !== STATE.FALLING) return;
 
 		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // bigger fruit has larger stifness
 		let windForce = windSpeed * stiffness * 0.05; // apply wind effect

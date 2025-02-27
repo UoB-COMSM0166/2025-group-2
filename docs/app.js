@@ -18,6 +18,12 @@ window.draw = function () {
 	game.update();
 };
 
+window.mousePressed = function () {
+	if (game && typeof game.mousePressed === 'function') {
+		game.mousePressed();
+	}
+};
+
 window.windowResized = function () {
 	let scaleX = windowWidth / width;
 	let scaleY = windowHeight / height;
