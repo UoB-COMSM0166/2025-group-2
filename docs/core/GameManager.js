@@ -18,12 +18,8 @@ export class Game {
 		this.isGameOver = false;
 		this.scaleVal = scaleVal;
 
-		this.fruits = [];
 		this.timer = 0;
 		this.counter = new Timer(120);
-		this.currentFruit = null;
-		this.gravity = 15;
-		this.walls = [];
 		this.score = new Score();
 
 		this.incidentManager = new IncidentManager(this);
@@ -134,10 +130,6 @@ export class Game {
 	}
 
 	update() {
-		background('#f5ebe0');
-		this.handleCurrentFruit();
-		this.handleMerging();
-		this.fruits = this.fruits.filter(fruit => !fruit.removed);
 		if (!this.isGameOver) {
 			this.board.update();
 			this.checkIsGameOver(this.AREAS.dashLine.y1);
@@ -191,70 +183,8 @@ export class Game {
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
-		if (mouseIsPressed && this.currentFruit && !this.isClickingUI(mouseX, mouseY)) {
-			this.fruits.push(this.currentFruit);
-			this.currentFruit = null;
-		}
-	}
-
-	handleMerging() {
-		for (let i = 0; i < this.fruits.length; i++) {
-			for (let j = i + 1; j < this.fruits.length; j++) {
-				const a = this.fruits[i];
-				const b = this.fruits[j];
-				if (a instanceof BombFruit || b instanceof BombFruit) {
-					if (checkCollision(a.sprite, b.sprite)) {
-						const mergedFruit = BombFruit.merge(a, b);
-					}
-				}
-				if (a.isFrozen || b.isFrozen) {
-					continue; //skip merging if fruit is frozen
-				}
-				if (
-					(a.i === -1 || b.i === -1) &&
-					checkCollision(a.sprite, b.sprite) &&
-					!a.removed &&
-					!b.removed
-				) {
-					let mergedFruit = RainbowFruit.universalMerge(a, b);
-					if (mergedFruit) {
-						this.fruits.push(mergedFruit);
-
-						if (this.toolManager.tools.doubleScore.doubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
-							this.score.addScore(mergedFruit.i * 2);
-						}
-						else if(a.fireAffected || b.fireAffected){
-							this.score.minusScore(mergedFruit.i);
-						}
-						else {
-							this.score.addScore(mergedFruit.i);
-						}
-					}
-				}
-				if (a.i === b.i && checkCollision(a.sprite, b.sprite) && !a.removed && !b.removed) {
-					const mergedFruit = Fruit.merge(a, b);
-					if (mergedFruit) {
-						this.fruits.push(mergedFruit);
-
-						if (this.toolManager.tools.doubleScore.isDoubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
-							console.log(
-								'this.toolManager.tools.doubleScore.isActive() :>> ',
-								this.toolManager.tools.doubleScore.isDoubleScoreActive
-							);
-							this.score.addScore(mergedFruit.i * 2);
-						}
-						else if(a.fireAffected || b.fireAffected){
-							this.score.minusScore(mergedFruit.i);
-						}
-						else {
-							this.score.addScore(mergedFruit.i);
-						}
-					}
-				}
-			}
 		if (this.board.checkFruitOverLine(this.AREAS.dashLine.y1)) {
 			this.isGameOver = true;
-			console.log('draw game over');
 		}
 	}
 
