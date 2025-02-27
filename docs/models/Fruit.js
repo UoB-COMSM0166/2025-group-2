@@ -63,21 +63,11 @@ export class Fruit {
 		// Left Eye Pupil
 		let leftPupilOffset = getPupilOffset.call(this, leftEyeX, eyeY);
 		fill(0);
-		ellipse(
-			leftEyeX + leftPupilOffset.x,
-			eyeY + leftPupilOffset.y,
-			eyeSize,
-			eyeSize
-		);
+		ellipse(leftEyeX + leftPupilOffset.x, eyeY + leftPupilOffset.y, eyeSize, eyeSize);
 
 		// Right Eye Pupil
 		let rightPupilOffset = getPupilOffset.call(this, rightEyeX, eyeY);
-		ellipse(
-			rightEyeX + rightPupilOffset.x,
-			eyeY + rightPupilOffset.y,
-			eyeSize,
-			eyeSize
-		);
+		ellipse(rightEyeX + rightPupilOffset.x, eyeY + rightPupilOffset.y, eyeSize, eyeSize);
 
 		// Mouth
 		let mouthY = eyeY + eyeSize * 2;
@@ -90,23 +80,14 @@ export class Fruit {
 		);
 		stroke(0);
 		strokeWeight(2);
-		line(
-			-eyeOffsetX / 2,
-			mouthY + mouthOffset,
-			eyeOffsetX / 2,
-			mouthY - mouthOffset
-		);
+		line(-eyeOffsetX / 2, mouthY + mouthOffset, eyeOffsetX / 2, mouthY - mouthOffset);
 
 		pop();
 	}
 
 	moveWithMouse() {
 		this.sprite.y = 45;
-		this.sprite.x = constrain(
-			mouseX,
-			10 + this.sprite.d / 2,
-			490 - this.sprite.d / 2
-		);
+		this.sprite.x = constrain(mouseX, 10 + this.sprite.d / 2, 490 - this.sprite.d / 2);
 		this.sprite.vel.y = 0;
 	}
 
