@@ -1,12 +1,18 @@
-import { Fruit } from '../models/Fruit.js';
-import { Wall } from '../models/Wall.js';
+import { Board } from '../models/FruitBoard.js';
 import { Score } from '../models/Score.js';
-import { checkCollision } from '../utils/CheckCollision.js';
-import { ToolManager } from './ToolManager.js';
 import { IncidentManager } from './IncidentManager.js';
+import { ToolManager } from './ToolManager.js';
+import { UIControllor } from './UIControllor.js';
 
 export class Game {
-	constructor() {
+	constructor(scaleVal) {
+		this.boards = null;
+		this.players = null;
+		this.ui = new UIControllor();
+		this.AREAS = null;
+		this.isGameOver = false;
+		this.scaleVal = scaleVal;
+
 		this.fruits = [];
 		this.timer = 0;
 		this.currentFruit = null;
@@ -19,50 +25,109 @@ export class Game {
 	}
 
 	setup() {
-		new Canvas(500, 600);
-		background('#f5ebe0');
-		world.gravity.y = this.gravity;
+		const canvasWidth = width;
+		const canvasHeight = height;
 
-		this.walls = Wall.createDefaultWalls();
+		const gameWidth = canvasWidth * 0.4;
+		const gameHeight = canvasHeight * 0.6;
+		const shopWidth = canvasWidth * 0.2;
+		const shopHeight = canvasHeight * 0.5;
+		const displayWidth = canvasWidth * 0.15;
+		const displayHeight = canvasHeight * 0.5;
+		const gap = canvasWidth * 0.05;
+		const totalWidth = displayWidth + gameWidth + shopWidth + gap * 2;
+		const leftMargin = (canvasWidth - totalWidth) / 2;
+		const thickness = 10;
 
-		this.currentFruit = new Fruit(0, 300, 25, 30);
+		this.AREAS = {
+			game: {
+				x: leftMargin + displayWidth + gap,
+				y: canvasHeight - gameHeight - gap,
+				w: gameWidth,
+				h: gameHeight,
+			},
+			shop: {
+				x: leftMargin + displayWidth + gameWidth + gap * 2,
+				y: canvasHeight - shopHeight - gap,
+				w: shopWidth,
+				h: shopHeight,
+			},
+			display: {
+				x: leftMargin,
+				y: canvasHeight - displayHeight - gap,
+				w: displayWidth,
+				h: displayHeight,
+			},
+			dashLine: {
+				x1: leftMargin + displayWidth + gap + thickness / 2,
+				y1: canvasHeight - gameHeight - gap + 20,
+				x2: leftMargin + displayWidth + gap + gameWidth - thickness / 2,
+				y2: canvasHeight - gameHeight - gap + 20,
+				dashLength: 15,
+				gapLength: 10,
+				thickness: 10,
+			},
+		};
+
+		// Creating game walls
+		this.ui.createNoneCappedWalls(this.AREAS.game, thickness);
+		// Creating shop walls
+		this.ui.createFourWalls(this.AREAS.shop, thickness);
+		// Creating display area
+		this.ui.createFourWalls(this.AREAS.display, thickness);
+		// Creating the top dashed line
+		this.ui.createDashedLine(this.AREAS.dashLine);
+		// Create timer label
+		this.ui.createLabel(
+			'timer',
+			this.AREAS.game.x + this.AREAS.game.w / 2,
+			this.AREAS.game.y - 150,
+			'Time: 2:00',
+			'#000000',
+			50
+		);
+
+		// Intialise control board.
+		this.board = new Board(this.AREAS.game, this.AREAS.shop, thickness, this.scaleVal);
+		this.board.setup();
+		// Create the fruits to show in the level
+		this.board.createFruitsLevel(this.AREAS.display);
+
+		// Create tool buttons
 		let shuffleButton = createButton('Shake Tool');
 		shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
 
 		let divineButton = createButton('Divine Shield');
-		divineButton.mousePressed(() =>
-			this.toolManager.activateTool('divineShield')
-		);
+		divineButton.mousePressed(() => this.toolManager.activateTool('divineShield'));
 
 		let randomToolButton = createButton('Random Tool');
 		randomToolButton.mousePressed(() => this.toolManager.randomTool());
 
 		let doubleScoreToolButton = createButton('double Score');
-		doubleScoreToolButton.mousePressed(() =>
-			this.toolManager.activateTool('doubleScore')
-		);
+		doubleScoreToolButton.mousePressed(() => this.toolManager.activateTool('doubleScore'));
 
 		let windButton = createButton('Wind Incident');
-		windButton.mousePressed(() =>
-			this.incidentManager.activateIncident('wind')
-		);
+		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
 
 		let rainbowButton = createButton('rainbow');
-		rainbowButton.mousePressed(() =>
-			this.toolManager.activateSpecialFruit('rainbowFruit')
-		);
+		rainbowButton.mousePressed(() => this.toolManager.activateSpecialFruit('rainbowFruit'));
 
 		let bombButton = createButton('bomb');
-		bombButton.mousePressed(() =>
-			this.toolManager.activateSpecialFruit('bombFruit')
-		);
+		bombButton.mousePressed(() => this.toolManager.activateSpecialFruit('bombFruit'));
 	}
 
 	update() {
-		background('#f5ebe0');
-		this.handleCurrentFruit();
-		this.handleMerging();
-		this.fruits = this.fruits.filter((fruit) => !fruit.removed);
+		if (!this.isGameOver) {
+			this.board.update();
+			this.checkIsGameOver(this.AREAS.dashLine.y1);
+		}
+
+		if (this.isGameOver) {
+			this.ui.drawGameOver(this.AREAS.game.x + this.AREAS.game.w / 2, this.AREAS.game.y - 20);
+		}
+
+		this.ui.createDashedLine(this.AREAS.dashLine);
+		this.ui.drawLabels();
 
 		this.toolManager.update();
 		this.incidentManager.update();
@@ -70,60 +135,17 @@ export class Game {
 		this.displayScore();
 	}
 
-	setCurrentFruit(fruit) {
-		if (this.currentFruit) {
-			this.currentFruit.remove();
-		}
-		this.currentFruit = fruit;
-		console.log(`Current fruit set to ${fruit.constructor.name}`);
+	updateScale(newScale) {
+		this.scaleVal = newScale;
+		this.board.updateScale(newScale);
 	}
 
-	handleCurrentFruit() {
-		if (this.currentFruit) {
-			this.currentFruit.moveWithMouse();
-		} else {
-			this.timer++;
-			if (this.timer > 50) {
-				const newType = int(random(7));
-				this.currentFruit = new Fruit(newType, mouseX, 25, 30 + 20 * newType);
-				this.timer = 0;
-			}
-		}
+	checkIsGameOver() {
+		if (this.isGameOver) return;
 
-		if (
-			mouseIsPressed &&
-			this.currentFruit &&
-			!this.isClickingUI(mouseX, mouseY)
-		) {
-			this.fruits.push(this.currentFruit);
-			this.currentFruit = null;
-		}
-	}
-
-	handleMerging() {
-		for (let i = 0; i < this.fruits.length; i++) {
-			for (let j = i + 1; j < this.fruits.length; j++) {
-				const a = this.fruits[i];
-				const b = this.fruits[j];
-
-				if (
-					a.i === b.i &&
-					checkCollision(a.sprite, b.sprite) &&
-					!a.removed &&
-					!b.removed
-				) {
-					const mergedFruit = Fruit.merge(a, b);
-					if (mergedFruit) {
-						this.fruits.push(mergedFruit);
-
-						if (this.toolManager.tools.doubleScore.doubleScoreActive) {
-							this.score.addScore(mergedFruit.i * 2);
-						} else {
-							this.score.addScore(mergedFruit.i);
-						}
-					}
-				}
-			}
+		if (this.board.checkFruitOverLine(this.AREAS.dashLine.y1)) {
+			this.isGameOver = true;
+			console.log('draw game over');
 		}
 	}
 
