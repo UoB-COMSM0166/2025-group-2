@@ -50,11 +50,6 @@ export class Game {
 		windButton.mousePressed(() =>
 			this.incidentManager.activateIncident('wind')
 		);
-		// fog incident
-		let fogButton = createButton('Fog Incident');
-		fogButton.mousePressed(() =>
-		this.incidentManager.activateIncident('fog')
-		);
 
 		let rainbowButton = createButton('rainbow');
 		rainbowButton.mousePressed(() =>
