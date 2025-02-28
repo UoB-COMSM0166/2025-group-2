@@ -24,6 +24,20 @@ export class Fruit {
 		//modified to account for frozen state caused by Freeze Incident
 		this.sprite.draw = () => {
 			push();
+			// Changing the value of color of the stroke of the fruit when in fog
+			if (this.isInFog) {
+				stroke(66, 84, 84);
+			} else {
+				stroke(10);
+			}
+
+			if(this.isInFog){
+				fill(this.color)
+			}
+			else {
+				fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]); // Color normal si no se ha cambiado
+			}
+			ellipse(0, 0, this.sprite.d, this.sprite.d);
 
 			if (this.isFrozen) {
 				fill('#ADD8E6');
@@ -47,6 +61,11 @@ export class Fruit {
 		};
 	}
 
+  // Method to change color of fruit itself
+  setColor(r, g, b) {
+		this.color = color(r, g, b);
+	}
+
 	drawFace() {
 		push();
 		let d = this.sprite.d;
@@ -59,8 +78,13 @@ export class Fruit {
 		let rightEyeX = eyeOffsetX;
 		let eyeY = -eyeOffsetY;
 
-		// Draw Eyeball (Sclera)
-		fill(255);
+		// Changing color of Sclera
+		if (this.isInFog) {
+			fill(66, 84, 84); // Gris para el borde en la niebla
+		} else {
+			fill(255);; // Color original del borde
+		}
+
 		noStroke();
 		ellipse(leftEyeX, eyeY, eyeSize * 2, eyeSize * 2);
 		ellipse(rightEyeX, eyeY, eyeSize * 2, eyeSize * 2);
@@ -77,7 +101,14 @@ export class Fruit {
 
 		// Left Eye Pupil
 		let leftPupilOffset = getPupilOffset.call(this, leftEyeX, eyeY);
-		fill(0);
+
+		//changing color of pupils
+		if (this.isInFog) {
+			fill(66, 84, 84);
+		} else {
+			fill(0);
+		}
+
 		ellipse(leftEyeX + leftPupilOffset.x, eyeY + leftPupilOffset.y, eyeSize, eyeSize);
 
 		// Right Eye Pupil
@@ -93,7 +124,16 @@ export class Fruit {
 			-eyeOffsetX / 4,
 			eyeOffsetX / 4
 		);
+
 		stroke(0);
+
+		//changing color of mouth
+		if (this.isInFog) {
+			stroke(66, 84, 84);
+		} else {
+			stroke(0);
+		}
+
 		strokeWeight(2);
 		line(-eyeOffsetX / 2, mouthY + mouthOffset, eyeOffsetX / 2, mouthY - mouthOffset);
 

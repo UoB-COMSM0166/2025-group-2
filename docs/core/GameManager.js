@@ -19,6 +19,7 @@ export class Game {
 
 		this.incidentManager = new IncidentManager(this);
 		this.toolManager = new ToolManager(this, this.incidentManager);
+
 	}
 
 	setup() {
@@ -46,6 +47,9 @@ export class Game {
 		let windButton = createButton('Wind Incident');
 		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
 
+		let fogButton = createButton('Fog Incident');
+		fogButton.mousePressed(() => this.incidentManager.activateIncident('fog'));
+		
 		let freezeButton = createButton('Freeze Incident');
 		freezeButton.mousePressed(() => this.incidentManager.activateIncident('freeze'));
 
@@ -72,6 +76,15 @@ export class Game {
 		this.fruits.forEach(fruit => {
 			if (fruit instanceof BombFruit) {
 				fruit.checkCollision(this);
+			}
+//check if the fruit is in fog
+			if (this.incidentManager.incidents.fog.active && fruit.sprite.y > 200 && !this.incidentManager.incidents.fog.paused && !this.incidentManager.incidents.fog.disabled) {
+        fruit.isInFog = true;
+				fruit.setColor(66, 84, 84);
+			}
+			else {
+				// Si quieres restaurar el color original de la fruta cuando no está bajo la niebla
+        fruit.isInFog = false;  // Marcar como dentro de la niebla
 			}
 		});
 
