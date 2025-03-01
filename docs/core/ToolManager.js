@@ -1,9 +1,9 @@
 import {
-	ShuffleTool,
+	BombFruit,
 	DivineShieldTool,
 	DoubleScoreTool,
 	RainbowFruit,
-	BombFruit,
+	ShuffleTool,
 } from '../shop/index.js';
 export class ToolManager {
 	constructor(game, incidentManager) {
@@ -60,10 +60,7 @@ export class ToolManager {
 	}
 
 	randomTool() {
-		const allKeys = [
-			...Object.keys(this.tools),
-			...Object.keys(this.specialFruits),
-		];
+		const allKeys = [...Object.keys(this.tools), ...Object.keys(this.specialFruits)];
 		if (allKeys.length === 0) {
 			return;
 		}

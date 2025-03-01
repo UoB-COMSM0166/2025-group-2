@@ -81,10 +81,13 @@ export class Fruit {
 		return this.sprite.x;
 	}
 
+	getYPosition() {
+		return this.sprite.y;
+	}
+
 	updateState() {
 		if (this.state === Fruit.STATE.FALLING) {
 			if (this.safePeriod > 0) this.safePeriod--;
-			console.log('safeperiod is reducing');
 		}
 	}
 	
