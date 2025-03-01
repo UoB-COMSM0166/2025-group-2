@@ -119,6 +119,9 @@ export class Board {
 	handleCurrentFruit() {
 		let leftBound = this.gameArea.x + this.wallWidth;
 		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+		let topBound = this.gameArea.y + this.gameArea.h;
+		let currentMouseX = mouseX / this.scaleVal;
+		let currentMouseY = mouseY / this.scaleVal;
 
 		if (this.currentFruit) {
 			// allow current fruit move with mouse
@@ -131,7 +134,7 @@ export class Board {
 				// Change the next fruit to the current fruit
 				this.currentFruit = this.nextFruit;
 				// Generate new fruit at the top of the shop area
-				let newType = int(random(4));
+				let newType = int(random(5));
 				this.nextFruit = new Fruit(
 					newType,
 					this.shopArea.x + this.shopArea.w / 2,
@@ -148,7 +151,10 @@ export class Board {
 			mouseIsPressed &&
 			this.currentFruit &&
 			this.currentFruit.getXPosition() < rightBound &&
-			this.currentFruit.getXPosition() > leftBound
+			this.currentFruit.getXPosition() > leftBound &&
+			currentMouseX < rightBound &&
+			currentMouseX > leftBound &&
+			currentMouseY < topBound
 		) {
 			this.currentFruit.sprite.vel.y = this.gravity;
 			this.currentFruit.startFalling();

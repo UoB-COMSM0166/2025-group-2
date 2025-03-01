@@ -45,9 +45,9 @@ export class UIControllor {
 
 	createLabel(id, x, y, text, colour = '#000000', size = 12, bgColour = null, type = null) {
 		textSize(size);
-		let w = textWidth(text);
-		let h = textAscent() + textDescent();
-		this.labels[id] = { x, y, text, colour, size, bgColour, w, h, type };
+		let w = textWidth(text) + 15;
+		let h = textAscent() + textDescent() + 10;
+		this.labels[id] = { id, x, y, text, colour, size, bgColour, w, h, type };
 	}
 
 	getLabels() {
@@ -69,6 +69,12 @@ export class UIControllor {
 		}
 	}
 
+	updateLabelBgColour(id, colour) {
+		if (this.labels[id]) {
+			this.labels[id].bgColour = colour;
+		}
+	}
+
 	drawLabels() {
 		Object.values(this.labels).forEach(label => {
 			push();
@@ -79,6 +85,7 @@ export class UIControllor {
 				rectMode(CENTER);
 				rect(label.x, label.y, label.w, label.h, 10);
 			}
+
 			// draw text
 			fill(label.colour);
 			textSize(label.size);
