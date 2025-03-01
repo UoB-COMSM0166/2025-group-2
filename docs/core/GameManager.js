@@ -1,13 +1,14 @@
-import { Fruit } from '../models/Fruit.js';
+import { Board } from '../models/FruitBoard.js';
 import { Score } from '../models/Score.js';
 import { Timer } from '../models/Timer.js';
-import { Wall } from '../models/Wall.js';
-import { RainbowFruit } from '../shop/index.js';
-import { checkCollision } from '../utils/CheckCollision.js';
 import { IncidentManager } from './IncidentManager.js';
 import { ToolManager } from './ToolManager.js';
-import { Board } from '../models/FruitBoard.js';
 import { UIControllor } from './UIControllor.js';
+
+const bgColour = '#E5C3A6';
+const colourAfterClick = '#F4D8C6';
+const textColour = '#6B4F3F';
+const textAfterClick = '#A3785F';
 
 export class Game {
 	constructor(scaleVal) {
@@ -21,9 +22,9 @@ export class Game {
 		this.timer = 0;
 		this.counter = new Timer(120);
 		this.score = new Score();
-
-		this.incidentManager = new IncidentManager(this);
-		this.toolManager = new ToolManager(this, this.incidentManager);
+		this.incidentManager = null;
+		this.toolManager = null;
+		this.shopItems = null;
 	}
 
 	setup() {
@@ -82,75 +83,26 @@ export class Game {
 		// Creating the top dashed line
 		this.ui.createDashedLine(this.AREAS.dashLine);
 		// Create timer label
-		this.ui.createLabel(
-			'timer',
-			this.AREAS.game.x + this.AREAS.game.w / 2,
-			this.AREAS.game.y - 150,
-			'Time: 2:00',
-			'#000000',
-			50,
-			undefined,
-			'timer'
-		);
-
-		// Create score label
-		this.ui.createLabel(
-			'score',
-			this.AREAS.shop.x + this.AREAS.shop.w / 2,
-			this.AREAS.shop.y - 60,
-			`Score: ${this.score.getScore()}`,
-			'#000000',
-			20,
-			undefined,
-			'coin'
-		);
-
-		// Create coin label
-		this.ui.createLabel(
-			'coin',
-			this.AREAS.shop.x + this.AREAS.shop.w / 2,
-			this.AREAS.shop.y - 30,
-			'Coin: 0',
-			'#000000',
-			20,
-			undefined,
-			'coin'
-		);
 
 		const shopTextSize = 25;
 
 		// Intialise fruit play board.
-		this.board = new Board(this.AREAS.game, this.AREAS.shop, thickness, this.scaleVal);
-		this.board.setup();
+		this.boards = new Board(this.AREAS.game, this.AREAS.shop, thickness, this.scaleVal);
+		this.boards.setup();
 		// Create the fruits to show in the level
-		this.board.createFruitsLevel(this.AREAS.display);
+		this.boards.createFruitsLevel(this.AREAS.display);
+
+		this.incidentManager = new IncidentManager(this);
+		this.toolManager = new ToolManager(this, this.boards, this.incidentManager);
 
 		// Create tool buttons
-		this.ui.createLabel('shake', 0, 0, '🫨Shake Tool', undefined, shopTextSize, '#ccc', 'shopItem');
+		this.ui.createLabel('shake', 0, 0, '🫨Shuffle', textColour, shopTextSize, bgColour, 'shopItem');
 		//shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
 
-		this.ui.createLabel(
-			'divine',
-			0,
-			0,
-			'🛡️Divine Shield',
-			undefined,
-			shopTextSize,
-			'#ccc',
-			'shopItem'
-		);
+		this.ui.createLabel('divine', 0, 0, '🛡️Divine', textColour, shopTextSize, bgColour, 'shopItem');
 		//divineButton.mousePressed(() => this.toolManager.activateTool('divineShield'));
 
-		this.ui.createLabel(
-			'random',
-			0,
-			0,
-			'🗃️Random Tool',
-			undefined,
-			shopTextSize,
-			'#ccc',
-			'shopItem'
-		);
+		this.ui.createLabel('random', 0, 0, '🗃️Random', textColour, shopTextSize, bgColour, 'shopItem');
 		//randomToolButton.mousePressed(() => this.toolManager.randomTool());
 
 		this.ui.createLabel(
@@ -158,38 +110,39 @@ export class Game {
 			0,
 			0,
 			'💰Double Score',
-			undefined,
+			textColour,
 			shopTextSize,
-			'#ccc',
+			bgColour,
 			'shopItem'
 		);
 		//doubleScoreToolButton.mousePressed(() => this.toolManager.activateTool('doubleScore'));
 
-		this.ui.createLabel(
-			'wind',
-			0,
-			0,
-			'🌪️Wind Incident',
-			undefined,
-			shopTextSize,
-			'#ccc',
-			'shopItem'
-		);
+		this.ui.createLabel('wind', 0, 0, '🌪️Wind', textColour, shopTextSize, bgColour, 'shopItem');
 		//windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
 
-		this.ui.createLabel('rainbow', 0, 0, '🌈Rainbow', undefined, shopTextSize, '#ccc', 'shopItem');
+		this.ui.createLabel(
+			'rainbow',
+			0,
+			0,
+			'🌈Rainbow',
+			textColour,
+			shopTextSize,
+			bgColour,
+			'shopItem'
+		);
 		//rainbowButton.mousePressed(() => this.toolManager.activateSpecialFruit('rainbowFruit'));
 
-		this.ui.createLabel('bomb', 0, 0, '💣Bomb', undefined, shopTextSize, '#ccc', 'shopItem');
+		this.ui.createLabel('bomb', 0, 0, '💣Bomb', textColour, shopTextSize, bgColour, 'shopItem');
 		//bombButton.mousePressed(() => this.toolManager.activateSpecialFruit('bombFruit'));
 
+		this.shopItems = Object.values(this.ui.getLabels()).filter(label => label.type === 'shopItem');
 		// List all the shopButtons in shop area.
-		this.listShopItems(this.ui.getLabels(), 'shopItem', this.AREAS.shop);
+		this.listShopItems(this.shopItems, 'shopItem', this.AREAS.shop);
 	}
 
 	update() {
 		if (!this.isGameOver) {
-			this.board.update();
+			this.boards.update();
 			this.checkIsGameOver(this.AREAS.dashLine.y1);
 		}
 
@@ -202,38 +155,25 @@ export class Game {
 
 		this.toolManager.update();
 		this.incidentManager.update();
-		
-	    this.displayScore();
+
+		this.displayScore();
 		this.displayCounter();
-		
+		this.displayCoin();
+
 		// If counter is 0, end game
 		if (this.counter.getTimeLeft() <= 0) {
 			console.log('End of game because counter');
 			noLoop();
-        }
-	}
-
-
-		this.ui.updateLabelText('score', `Score: ${this.score.getScore()}`);
-		/*
-		if (mouseIsPressed) {
-			let logicX = mouseX / this.scaleVal;
-			let logicY = mouseY / this.scaleVal;
-			console.log('mouse clicked and check if it clicks shopitem');
-			let clickedTool = this.checkShopItemClick(this.ui.getLabels(), logicX, logicY);
-			if (clickedTool) {
-				console.log(`tool clicked: ${clickedTool}`);
-				this.handleToolClick(clickedTool);
-			}
 		}
-			*/
+
+		// this.ui.updateLabelText('score', `Score2: ${this.score.getScore()}`);
 	}
 
 	mousePressed() {
 		let logicX = mouseX / this.scaleVal;
 		let logicY = mouseY / this.scaleVal;
 		console.log('mouse clicked and check if it clicks shopitem');
-		let clickedTool = this.checkShopItemClick(this.ui.getLabels(), logicX, logicY);
+		let clickedTool = this.checkShopItemClick(this.shopItems, logicX, logicY);
 		if (clickedTool) {
 			console.log(`tool clicked: ${clickedTool}`);
 			this.handleToolClick(clickedTool);
@@ -242,50 +182,68 @@ export class Game {
 
 	updateScale(newScale) {
 		this.scaleVal = newScale;
-		this.board.updateScale(newScale);
+		this.boards.updateScale(newScale);
 	}
 
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
-		if (this.board.checkFruitOverLine(this.AREAS.dashLine.y1)) {
+		if (this.boards.checkFruitOverLine(this.AREAS.dashLine.y1)) {
 			this.isGameOver = true;
 		}
 	}
 
 	displayCounter() {
-		fill(0);
-		textSize(16);
-		text(`Timer: ${this.counter.getTimeLeft()}s`, 300, 60);
+		// fill(0);
+		// textSize(16);
+		// text(`Timer: ${this.counter.getTimeLeft()}s`, 300, 60);
+		this.ui.createLabel(
+			'timer',
+			this.AREAS.game.x + this.AREAS.game.w / 2,
+			this.AREAS.game.y - 150,
+			`Time: ${this.counter.getTimeLeft()}s`,
+			textColour,
+			50,
+			undefined,
+			'timer'
+		);
 	}
 
 	displayScore() {
-		fill(0);
-		textSize(16);
-		text(`Score: ${this.score.getScore()}`, 10, 30);
+		// fill(0);
+		// textSize(16);
+		// text(`Score: ${this.score.getScore()}`, 10, 30);
+		// Create score label
+		this.ui.createLabel(
+			'score',
+			this.AREAS.shop.x + this.AREAS.shop.w / 2,
+			this.AREAS.shop.y - 60,
+			`Score: ${this.score.getScore()}`,
+			textColour,
+			20,
+			undefined,
+			'coin'
+		);
 	}
 
-	isClickingUI(mx, my) {
-		let uiButtons = selectAll('button');
-		for (let btn of uiButtons) {
-			let bx = btn.position().x;
-			let by = btn.position().y;
-			let bw = btn.width;
-			let bh = btn.height;
-
-			if (mx > bx && mx < bx + bw && my > by && my < by + bh) {
-				return true;
-			}
-		}
-		return false;
+	displayCoin() {
+		this.ui.createLabel(
+			'coin',
+			this.AREAS.shop.x + this.AREAS.shop.w / 2,
+			this.AREAS.shop.y - 30,
+			'Coin: 0',
+			textColour,
+			20,
+			undefined,
+			'coin'
+		);
 	}
 
-	listShopItems(labelList, type, shopArea) {
+	listShopItems(shopItems, type, shopArea) {
 		console.log('starting to list shop items');
-		let shopItemList = Object.values(labelList).filter(label => label.type === type);
-		if (shopItemList.length === 0) return;
-		let maxWidth = Math.max(...shopItemList.map(label => label.w));
-		let maxHeight = Math.max(...shopItemList.map(label => label.h));
+		if (shopItems.length === 0) return;
+		let maxWidth = Math.max(...shopItems.map(label => label.w));
+		let maxHeight = Math.max(...shopItems.map(label => label.h));
 
 		let gap = 10;
 		let cellWidth = maxWidth + gap;
@@ -294,7 +252,7 @@ export class Game {
 		// Calculate the max column numbers
 		let cols = floor(shopArea.w / cellWidth);
 		if (cols < 1) cols = 1;
-		let rows = ceil(shopItemList.length / cols);
+		let rows = ceil(shopItems.length / cols);
 
 		// Calculate margin center the shopItems
 		let totalGridWidth = cols * cellWidth;
@@ -302,7 +260,7 @@ export class Game {
 		let offsetX = shopArea.x + (shopArea.w - totalGridWidth) / 2;
 		let offsetY = shopArea.y + (shopArea.h - totalGridHeight) / 2;
 
-		shopItemList.forEach((label, i) => {
+		shopItems.forEach((label, i) => {
 			let row = floor(i / cols);
 			let col = i % cols;
 			let centerX = offsetX + col * cellWidth + cellWidth / 2;
@@ -315,9 +273,8 @@ export class Game {
 		console.log('finish listing shop items');
 	}
 
-	checkShopItemClick(labelList, clickedX, clickedY) {
-		let shopItemList = Object.values(labelList).filter(label => label.type === 'shopItem');
-		for (let tool of shopItemList) {
+	checkShopItemClick(shopItems, clickedX, clickedY) {
+		for (let tool of shopItems) {
 			let halfW = tool.w / 2;
 			let halfH = tool.h / 2;
 			if (
@@ -326,6 +283,12 @@ export class Game {
 				clickedY > tool.y - halfH &&
 				clickedY < tool.y + halfH
 			) {
+				console.log(`Tool ${tool.id} clicked!`);
+				this.ui.updateLabelColour(tool.id, textAfterClick);
+				console.log('textAfterClick :>> ', textAfterClick);
+				setTimeout(() => {
+					this.ui.updateLabelColour(tool.id, textColour); // return to original colour
+				}, 200);
 				return tool.id;
 			}
 		}
@@ -333,33 +296,30 @@ export class Game {
 	}
 
 	handleToolClick(type) {
+		this.ui.updateLabelBgColour(type, colourAfterClick);
+		setTimeout(() => {
+			this.ui.updateLabelBgColour(type, bgColour); // return to orginal colour
+		}, 200);
 		switch (type) {
 			case 'shake':
-				console.log('shuffle active');
 				this.toolManager.activateTool('shuffle');
 				break;
 			case 'divine':
-				console.log('divine sheild active');
 				this.toolManager.activateTool('divineSheild');
 				break;
 			case 'double':
-				console.log('double score active');
 				this.toolManager.activateTool('doubleScore');
 				break;
 			case 'random':
-				console.log('random tool active');
 				this.toolManager.randomTool();
 				break;
 			case 'rainbow':
-				console.log('rainbow tool active');
 				this.toolManager.activateSpecialFruit('rainbowFruit');
 				break;
 			case 'bomb':
-				console.log('bomb tool active');
 				this.toolManager.activateSpecialFruit('bombFruit');
 				break;
 			case 'wind':
-				console.log('wind effect active');
 				this.incidentManager.activateIncident('wind');
 				break;
 			default:
