@@ -46,6 +46,9 @@ export class Game {
 		let windButton = createButton('Wind Incident');
 		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
 
+		let freezeButton = createButton('Freeze Incident');
+		freezeButton.mousePressed(() => this.incidentManager.activateIncident('freeze'));
+
 		let rainbowButton = createButton('rainbow');
 		rainbowButton.mousePressed(() => this.toolManager.activateSpecialFruit('rainbowFruit'));
 
@@ -114,6 +117,9 @@ export class Game {
 					if (checkCollision(a.sprite, b.sprite)) {
 						const mergedFruit = BombFruit.merge(a, b);
 					}
+				}
+				if (a.isFrozen || b.isFrozen) {
+					continue; //skip merging if fruit is frozen
 				}
 				if (
 					(a.i === -1 || b.i === -1) &&
