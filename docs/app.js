@@ -1,4 +1,4 @@
-import { Game } from './core/GameManager.js';
+import { Game } from './core/Game.js';
 
 let game,
 	canvas,
@@ -9,13 +9,12 @@ window.setup = function () {
 	canvas = createCanvas(1200, 1000);
 	windowResized();
 	game = new Game(scaleVal);
-	game.setup();
 	document.getElementById('loading').style.display = 'none';
 };
 
 window.draw = function () {
 	background('#f5ebe0');
-	game.update();
+	game.setup();
 };
 
 window.mousePressed = function () {
