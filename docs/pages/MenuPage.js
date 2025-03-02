@@ -1,6 +1,12 @@
 export class MenuPage {
 	constructor(game) {
 		this.game = game;
+
+		this.singlePlayerButton = createButton('Single Player');
+		this.singlePlayerButton.mousePressed(() => this.game.startGame('single'));
+
+		this.doublePlayerButton = createButton('Double Player');
+		this.doublePlayerButton.mousePressed(() => this.game.startGame('double'));
 	}
 
 	display() {
@@ -10,12 +16,20 @@ export class MenuPage {
 		fill(0);
 		text('Select Game Mode', width / 2, height / 3);
 
-		let singlePlayerButton = createButton('Single Player');
-		singlePlayerButton.position(width / 2 - 50, height / 2);
-		singlePlayerButton.mousePressed(() => this.game.startGame('single'));
+		this.singlePlayerButton.position(width / 2 - 50, height / 2);
+		this.doublePlayerButton.position(width / 2 - 50, height / 2 + 50);
 
-		let doublePlayerButton = createButton('Double Player');
-		doublePlayerButton.position(width / 2 - 50, height / 2 + 50);
-		doublePlayerButton.mousePressed(() => this.game.startGame('double'));
+		this.singlePlayerButton.show();
+		this.doublePlayerButton.show();
+	}
+
+	hideButtons() {
+		this.singlePlayerButton.hide();
+		this.doublePlayerButton.hide();
+	}
+
+	showButtons() {
+		this.singlePlayerButton.show();
+		this.doublePlayerButton.show();
 	}
 }
