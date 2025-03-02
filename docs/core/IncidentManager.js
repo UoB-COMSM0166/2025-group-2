@@ -1,4 +1,4 @@
-import { TestIncident, WindIncident } from '../incidents/index.js';
+import { FreezeIncident, TestIncident, WindIncident } from '../incidents/index.js';
 
 export class IncidentManager {
 	constructor(game) {
@@ -6,6 +6,7 @@ export class IncidentManager {
 		this.incidents = {
 			wind: new WindIncident(game),
 			gravity: new TestIncident(game),
+			freeze: new FreezeIncident(game),
 		};
 		this.activeIncidents = [];
 	}

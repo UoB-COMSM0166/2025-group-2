@@ -19,14 +19,29 @@ export class Fruit {
 		this.t = random(1000);
 		this.randomId = int(random(100000));
 		this.isFalling = true;
+		this.isFrozen = false;
 
+		//modified to account for frozen state caused by Freeze Incident
 		this.sprite.draw = () => {
 			push();
-			fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]);
-			stroke(10);
-			ellipse(0, 0, this.sprite.d, this.sprite.d);
 
-			this.drawFace();
+			if (this.isFrozen) {
+				fill('#ADD8E6');
+				stroke(10);
+				ellipse(0, 0, this.sprite.d, this.sprite.d);
+
+				//ice crack patterns
+				stroke(255);
+				strokeWeight(2);
+				line(-this.sprite.d / 4, -this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4);
+				line(-this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4, -this.sprite.d / 4);
+			} else {
+				fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]);
+				stroke(10);
+				ellipse(0, 0, this.sprite.d, this.sprite.d);
+
+				this.drawFace();
+			}
 
 			pop();
 		};
