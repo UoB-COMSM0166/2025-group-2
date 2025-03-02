@@ -8,7 +8,7 @@ export class Score {
 	}
 
 	getScore() {
-		return this.score;
+		return this.score || 0;
 	}
 
 	reset() {

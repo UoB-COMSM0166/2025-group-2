@@ -1,10 +1,9 @@
-import { FruitDisplay } from '../models/index.js';
+import { FruitDisplay, Score, Timer } from '../models/index.js';
 import { Shop } from '../shop/index.js';
 import { UIControllor } from './UIControllor.js';
 
 const bgColour = '#E5C3A6';
 const colourAfterClick = '#F4D8C6';
-const textColour = '#6B4F3F';
 const textAfterClick = '#A3785F';
 
 export class GameUIManager {
@@ -13,12 +12,28 @@ export class GameUIManager {
 		this.ui = new UIControllor();
 		this.AREAS = null;
 		this.shopItems = null;
+		this.timer = 0;
+		this.counter = new Timer(120);
+		this.score = new Score();
 
 		this.fruitDisplay = new FruitDisplay(gameManager.scaleVal);
 		this.shop = new Shop(this, gameManager.scaleVal);
 	}
 
 	setupUI(canvasWidth, canvasHeight) {
+		this.setupAreas(canvasWidth, canvasHeight);
+
+		this.setupWalls();
+
+		this.fruitDisplay.setupFruitDisplay(this.AREAS.display);
+		this.shop.setupShopUI(this.AREAS.shop);
+
+		this.setupLabels();
+		this.counter.start();
+	}
+
+	// **設定遊戲區域**
+	setupAreas(canvasWidth, canvasHeight) {
 		const gameWidth = canvasWidth * 0.4;
 		const gameHeight = canvasHeight * 0.6;
 		const shopWidth = canvasWidth * 0.2;
@@ -59,55 +74,71 @@ export class GameUIManager {
 				thickness: 10,
 			},
 		};
+	}
 
-		// 創建遊戲牆、商店牆、顯示區域
+	// **設置遊戲牆**
+	setupWalls() {
+		const thickness = 10;
 		this.ui.createNoneCappedWalls(this.AREAS.game, thickness);
 		this.ui.createFourWalls(this.AREAS.shop, thickness);
 		this.ui.createFourWalls(this.AREAS.display, thickness);
 		this.ui.createDashedLine(this.AREAS.dashLine);
+	}
 
-		this.fruitDisplay.setupFruitDisplay(this.AREAS.display);
-		this.shop.setupShopUI(this.AREAS.shop);
-
-		// 計時器
+	// **設置 UI Labels**
+	setupLabels() {
+		const textColour = '#6B4F3F';
 		this.ui.createLabel(
 			'timer',
 			this.AREAS.game.x + this.AREAS.game.w / 2,
 			this.AREAS.game.y - 150,
-			'Time: 2:00',
+			`Time: ${this.counter.getTimeLeft()}s`,
 			textColour,
 			50,
 			undefined,
 			'timer'
 		);
 
-		// 分數
-		this.ui.createLabel(
-			'score',
-			this.AREAS.shop.x + this.AREAS.shop.w / 2,
-			this.AREAS.shop.y - 60,
-			`Score: 0`,
-			textColour,
-			20,
-			undefined,
-			'score'
-		);
+		// this.ui.createLabel(
+		// 	'score',
+		// 	this.AREAS.shop.x + this.AREAS.shop.w / 2,
+		// 	this.AREAS.shop.y - 60,
+		// 	`Score: ${this.score.getScore()}`,
+		// 	textColour,
+		// 	20,
+		// 	undefined,
+		// 	'coin'
+		// );
 
-		// 金幣
-		this.ui.createLabel(
-			'coin',
-			this.AREAS.shop.x + this.AREAS.shop.w / 2,
-			this.AREAS.shop.y - 30,
-			'Coin: 0',
-			textColour,
-			20,
-			undefined,
-			'coin'
-		);
+		// this.ui.createLabel(
+		// 	'coin',
+		// 	this.AREAS.shop.x + this.AREAS.shop.w / 2,
+		// 	this.AREAS.shop.y - 30,
+		// 	'Coin: 0',
+		// 	textColour,
+		// 	20,
+		// 	undefined,
+		// 	'coin'
+		// );
 	}
 
 	draw() {
 		this.ui.drawLabels();
 		this.fruitDisplay.draw();
+		// this.displayCoin();
+		// this.displayScore();
+		this.displayCounter();
+	}
+
+	displayCounter() {
+		this.ui.updateLabelText('timer', `Time: ${this.counter.getTimeLeft()}s`);
+	}
+
+	displayScore() {
+		this.ui.updateLabelText('score', `Score: ${this.score.getScore()}`);
+	}
+
+	displayCoin() {
+		this.ui.updateLabelText('coin', `Coin: 0`); // 從 Player 取得當前金幣數量
 	}
 }

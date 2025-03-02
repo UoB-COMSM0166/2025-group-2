@@ -9,12 +9,13 @@ window.setup = function () {
 	canvas = createCanvas(1200, 1000);
 	windowResized();
 	game = new Game(scaleVal);
+	game.setup();
 	document.getElementById('loading').style.display = 'none';
 };
 
 window.draw = function () {
 	background('#f5ebe0');
-	game.setup();
+	game.draw();
 };
 
 window.mousePressed = function () {

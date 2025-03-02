@@ -1,20 +1,22 @@
 import { checkCollision } from '../utils/CheckCollision.js';
-import { Fruit } from './Fruit.js';
+import { Fruit } from './index.js';
 
 const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
 
-export class Board {
-	constructor(gameArea, shopArea, wallWidth, scaleVal) {
+export class FruitBoard {
+	constructor(player, gameArea, shopArea, scaleVal) {
 		this.gameArea = gameArea; // { x, y, w, h }
 		this.shopArea = shopArea; // { x, y, w, h }
-		this.wallWidth = wallWidth;
 		this.gravity = 15;
 		this.fruits = [];
 		this.currentFruit = null;
 		this.nextFruit = null;
 		this.timer = 0;
 		this.scaleVal = scaleVal;
+		this.wallWidth = 10;
+		this.player = player;
+		this.score = this.player.score;
 	}
 
 	setup() {
@@ -88,34 +90,6 @@ export class Board {
 		return false;
 	}
 
-	createFruitsLevel(area) {
-		let fruitType = 7;
-		let fruitsLevel = [];
-		let gap = 18;
-		let prevY = null;
-		let prevSize = null;
-
-		for (let i = 0; i < fruitType; i++) {
-			let size = 20 + 10 * i;
-			let x = area.x + area.w / 2;
-			let y;
-
-			if (i === 0) {
-				// the y position of first fruit: from the top add a gap and the radius
-				y = area.y + gap + size / 2;
-			} else {
-				// the y position of the next fruit = the prevY + prevSize / 2 + currentSize / 2 + gap
-				y = prevY + prevSize / 2 + size / 2 + gap;
-			}
-			let fruit = new Fruit(i, x, y, size, this.scaleVal);
-			fruit.doNotFall();
-			fruitsLevel.push(fruit);
-			prevY = y;
-			prevSize = size;
-		}
-		return fruitsLevel;
-	}
-
 	handleCurrentFruit() {
 		let leftBound = this.gameArea.x + this.wallWidth;
 		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
@@ -175,6 +149,8 @@ export class Board {
 					if (mergedFruit) {
 						mergedFruit.updateScale(this.scaleVal);
 						this.fruits.push(mergedFruit);
+						this.score.addScore(mergedFruit.level);
+						// this.score.addCoins(mergedFruit.level);
 					}
 				}
 			}
