@@ -24,36 +24,29 @@ export class Fruit {
 		//modified to account for frozen state caused by Freeze Incident
 		this.sprite.draw = () => {
 			push();
-			// Changing the value of color of the stroke of the fruit when in fog
-			if (this.isInFog) {
-				stroke(66, 84, 84);
-			} else {
-				stroke(10);
+			switch (true) {
+				case this.isInFog:
+					stroke(66, 84, 84);
+					fill(this.color);
+					break;
+				case this.isFrozen:
+					stroke(10);
+					fill('#ADD8E6');
+					break;
+				default:
+					stroke(10);
+					fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]); // 正常顏色
 			}
 
-			if(this.isInFog){
-				fill(this.color)
-			}
-			else {
-				fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]); // Color normal si no se ha cambiado
-			}
 			ellipse(0, 0, this.sprite.d, this.sprite.d);
 
 			if (this.isFrozen) {
-				fill('#ADD8E6');
-				stroke(10);
-				ellipse(0, 0, this.sprite.d, this.sprite.d);
-
 				//ice crack patterns
 				stroke(255);
 				strokeWeight(2);
 				line(-this.sprite.d / 4, -this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4);
 				line(-this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4, -this.sprite.d / 4);
 			} else {
-				fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]);
-				stroke(10);
-				ellipse(0, 0, this.sprite.d, this.sprite.d);
-
 				this.drawFace();
 			}
 
@@ -61,8 +54,8 @@ export class Fruit {
 		};
 	}
 
-  // Method to change color of fruit itself
-  setColor(r, g, b) {
+	// Method to change color of fruit itself
+	setColor(r, g, b) {
 		this.color = color(r, g, b);
 	}
 
@@ -82,7 +75,7 @@ export class Fruit {
 		if (this.isInFog) {
 			fill(66, 84, 84); // Gris para el borde en la niebla
 		} else {
-			fill(255);; // Color original del borde
+			fill(255); // Color original del borde
 		}
 
 		noStroke();
