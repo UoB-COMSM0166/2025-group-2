@@ -56,7 +56,7 @@ export class GameManager {
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
-		const dashLineY = this.uiManager.AREAS.dashLine.y1;
+		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
 
 		for (const player of this.player) {
 			if (player.boards.checkFruitOverLine(dashLineY)) {

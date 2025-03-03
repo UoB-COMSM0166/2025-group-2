@@ -6,9 +6,10 @@ const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
 
 export class FruitBoard {
-	constructor(player, gameArea, shopArea, scaleVal) {
+	constructor(player, gameArea, shopArea, displayArea, scaleVal) {
 		this.gameArea = gameArea; // { x, y, w, h }
 		this.shopArea = shopArea; // { x, y, w, h }
+		this.displayArea = displayArea; // { x, y, w, h }
 		this.gravity = 15;
 		this.fruits = [];
 		this.currentFruit = null;
@@ -20,6 +21,8 @@ export class FruitBoard {
 		this.score = this.player.score;
 		this.toolManager = null;
 		this.uiControllor = this.player.uiControllor;
+		this.mode = this.player.mode;
+		this.id = this.player.id;
 	}
 
 	setup() {
@@ -34,13 +37,18 @@ export class FruitBoard {
 			this.scaleVal
 		);
 		let newType = int(random(4));
-		this.nextFruit = new Fruit(
-			newType,
-			this.shopArea.x + this.shopArea.w / 2,
-			this.shopArea.y - DISTFROMSHOP,
-			30 + 20 * newType,
-			this.scaleVal
-		);
+
+		const nextFruitX =
+			this.mode === 'single' || this.id === 2
+				? this.shopArea.x + this.shopArea.w / 2 // Default to shop for single mode & Player 2
+				: this.displayArea.x + this.displayArea.w / 2; // Player 1 places nextFruit above display
+
+		const nextFruitY =
+			this.mode === 'single' || this.id === 2
+				? this.shopArea.y - DISTFROMSHOP // Default for single mode & Player 2
+				: this.displayArea.y - DISTFROMSHOP; // Player 1 places it above display
+
+		this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
 		this.nextFruit.doNotFall();
 
 		this.toolManager = this.player.toolManager;
@@ -109,10 +117,20 @@ export class FruitBoard {
 				this.currentFruit = this.nextFruit;
 				// Generate new fruit at the top of the shop area
 				let newType = int(random(5));
+
+				const nextFruitX =
+					this.mode === 'single' || this.id === 2
+						? this.shopArea.x + this.shopArea.w / 2 // Default to shop for single mode & Player 2
+						: this.displayArea.x + this.displayArea.w / 2; // Player 1 places nextFruit above display
+
+				const nextFruitY =
+					this.mode === 'single' || this.id === 2
+						? this.shopArea.y - DISTFROMSHOP // Default for single mode & Player 2
+						: this.displayArea.y - DISTFROMSHOP; // Player 1 places it above display
 				this.nextFruit = new Fruit(
 					newType,
-					this.shopArea.x + this.shopArea.w / 2,
-					this.shopArea.y - DISTFROMSHOP,
+					nextFruitX,
+					nextFruitY,
 					30 + 20 * newType,
 					this.scaleVal
 				);
