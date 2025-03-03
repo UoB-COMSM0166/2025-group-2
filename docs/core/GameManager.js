@@ -57,6 +57,9 @@ export class Game {
 
 		let bombButton = createButton('bomb');
 		bombButton.mousePressed(() => this.toolManager.activateSpecialFruit('bombFruit'));
+
+		let fireButton = createButton('Fire Incident');
+		fireButton.mousePressed(() => this.incidentManager.activateIncident('fire'));
 	}
 
 	update() {
@@ -147,9 +150,13 @@ export class Game {
 					if (mergedFruit) {
 						this.fruits.push(mergedFruit);
 
-						if (this.toolManager.tools.doubleScore.doubleScoreActive) {
+						if (this.toolManager.tools.doubleScore.doubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
 							this.score.addScore(mergedFruit.i * 2);
-						} else {
+						}
+						else if(a.fireAffected || b.fireAffected){
+							this.score.minusScore(mergedFruit.i);
+						}
+						else {
 							this.score.addScore(mergedFruit.i);
 						}
 					}
@@ -159,13 +166,17 @@ export class Game {
 					if (mergedFruit) {
 						this.fruits.push(mergedFruit);
 
-						if (this.toolManager.tools.doubleScore.isDoubleScoreActive) {
+						if (this.toolManager.tools.doubleScore.isDoubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
 							console.log(
 								'this.toolManager.tools.doubleScore.isActive() :>> ',
 								this.toolManager.tools.doubleScore.isDoubleScoreActive
 							);
 							this.score.addScore(mergedFruit.i * 2);
-						} else {
+						}
+						else if(a.fireAffected || b.fireAffected){
+							this.score.minusScore(mergedFruit.i);
+						}
+						else {
 							this.score.addScore(mergedFruit.i);
 						}
 					}

@@ -2,7 +2,7 @@ export class DivineShieldTool {
 	constructor(game, incidentManager) {
 		this.game = game;
 		this.incidentManager = incidentManager;
-		this.shieldTimeLeft = 30;
+		this.shieldTimeLeft = 0;
 		this.shieldTimer = null;
 		this.shieldActive = false;
 	}
@@ -10,6 +10,7 @@ export class DivineShieldTool {
 	activate() {
 		if (this.shieldActive) return;
 
+		this.shieldTimeLeft = 10;
 		this.shieldActive = true;
 		this.incidentManager.pauseActiveIncidents();
 

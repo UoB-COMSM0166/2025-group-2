@@ -19,6 +19,7 @@ export class Fruit {
 		this.t = random(1000);
 		this.randomId = int(random(100000));
 		this.isFalling = true;
+		this.fireAffected = false;
 		this.isFrozen = false;
 
 		//modified to account for frozen state caused by Freeze Incident
@@ -162,8 +163,8 @@ export class Fruit {
 	applyWind(windSpeed) {
 		if (!this.isFalling) return;
 
-		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // 大水果抗風力較強
-		let windForce = windSpeed * stiffness * 0.05; // 調整風的影響力
+		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // bigger fruit has larger stifness
+		let windForce = windSpeed * stiffness * 0.05; // apply wind effect
 		this.sprite.vel.x += windForce;
 	}
 }
