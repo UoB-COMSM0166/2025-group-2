@@ -2,7 +2,7 @@ import { Incident } from './Incident.js';
 
 export class WindIncident extends Incident {
 	constructor(game) {
-		super(game, 10);
+		super(game,"",20);
 		this.windSpeed = 0;
 		this.noisePos = 0;
 		this.windInc = 0.01;
@@ -37,7 +37,7 @@ export class WindIncident extends Incident {
 		if (this.active) {
 			fill(0);
 			textSize(20);
-			text('Wind effect Time Left: ' + this.timeLeft, 10, 30);
+			text('Wind effect Time Left: ' + this.timeLeft, 10, 50);
 		}
 		if (!this.active || this.paused) return;
 		if (this.game.currentFruit) {

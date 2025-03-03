@@ -14,4 +14,8 @@ export class Score {
 	reset() {
 		this.score = 0;
 	}
+
+	minusScore(score){
+		this.score -= score;
+	}
 }
