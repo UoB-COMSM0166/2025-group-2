@@ -1,11 +1,11 @@
 export class ShuffleTool {
-	constructor(game) {
-		this.game = game;
+	constructor(board, area) {
+		this.board = board;
 		this.isShaking = false;
 		this.shakeDuration = 60;
 		this.shakeTimer = 0;
 		this.shakeIntensity = 10;
-		this.endLine = game.AREAS.dashLine.y1 + 10;
+		this.endLine = area.dashLine.y1 + 10;
 	}
 
 	activate() {
@@ -14,7 +14,7 @@ export class ShuffleTool {
 		this.isShaking = true;
 		this.shakeTimer = this.shakeDuration;
 
-		for (let fruit of this.game.boards.getCurrentFruits()) {
+		for (let fruit of this.board.getCurrentFruits()) {
 			let forceX = random(-this.shakeIntensity * 3, this.shakeIntensity * 3);
 			let forceY = random(-this.shakeIntensity, this.shakeIntensity);
 			fruit.sprite.vel.x += forceX;
@@ -29,12 +29,12 @@ export class ShuffleTool {
 			if (this.shakeTimer <= 0) {
 				this.isShaking = false;
 
-				for (let fruit of this.game.boards.getCurrentFruits()) {
+				for (let fruit of this.board.getCurrentFruits()) {
 					fruit.sprite.vel.x *= 0.9;
 					fruit.sprite.vel.y *= 0.9;
 				}
 			}
-			for (let fruit of this.game.boards.getCurrentFruits()) {
+			for (let fruit of this.board.getCurrentFruits()) {
 				this.limitFruitPosition(fruit);
 			}
 		}
