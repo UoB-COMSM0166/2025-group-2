@@ -5,7 +5,7 @@ export class ShuffleTool {
 		this.shakeDuration = 60;
 		this.shakeTimer = 0;
 		this.shakeIntensity = 10;
-		this.endLine = area.dashLine.y1 + 10;
+		this.endLine = area.dashLine1.y1 + 10;
 	}
 
 	activate() {

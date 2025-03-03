@@ -6,7 +6,7 @@ let game,
 
 // Use window.setup because in index.html file use type module to allow import and export file.
 window.setup = function () {
-	canvas = createCanvas(1200, 1000);
+	canvas = createCanvas(1500, 1000);
 	windowResized();
 	game = new Game(scaleVal);
 	game.setup();

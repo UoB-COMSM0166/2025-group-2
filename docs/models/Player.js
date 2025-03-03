@@ -20,7 +20,15 @@ export class Player {
 
 	setup() {
 		this.displayScore();
-		this.boards = new FruitBoard(this, this.area.game, this.area.shop, this.scaleVal);
+		const gameArea =
+			this.gameManager.mode === 'single'
+				? this.area.game1
+				: this.id === 1
+				? this.area.game1
+				: this.area.game2;
+
+		this.boards = new FruitBoard(this, gameArea, this.area.shop, this.area.display, this.scaleVal);
+		// this.boards = new FruitBoard(this, this.area.game, this.area.shop, this.scaleVal);
 		this.toolManager = new ToolManager(this, this.area);
 		this.boards.setup();
 	}
@@ -48,18 +56,27 @@ export class Player {
 	}
 
 	displayScore() {
+		const scorePositionX =
+			this.id === 1
+				? this.area.game1.x + this.area.game1.w / 2
+				: this.area.game2.x + this.area.game2.w / 2; // Player 2's score on the right
+
 		this.uiControllor.createLabel(
-			'score',
-			this.area.shop.x + this.area.shop.w / 2,
-			this.area.shop.y - 60,
-			`Score: ${this.score.getScore()}`,
+			`score_${this.id}`,
+			scorePositionX,
+			this.area.game1.y - 60,
+			`P${this.id} Score: ${this.score.getScore()}`,
 			'#6B4F3F',
 			20
 		);
+
 	}
 
 	updateScore() {
-		this.uiControllor.updateLabelText('score', `Score: ${this.score.getScore()}`);
+		this.uiControllor.updateLabelText(
+			`score_${this.id}`,
+			`P${this.id} Score: ${this.score.getScore()}`
+		);
 	}
 
 	displayCoin() {
