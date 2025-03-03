@@ -2,10 +2,6 @@ import { FruitDisplay, Score, Timer } from '../models/index.js';
 import { Shop } from '../shop/index.js';
 import { UIControllor } from './UIControllor.js';
 
-const bgColour = '#E5C3A6';
-const colourAfterClick = '#F4D8C6';
-const textAfterClick = '#A3785F';
-
 export class GameUIManager {
 	constructor(gameManager) {
 		this.gameManager = gameManager;
@@ -17,7 +13,9 @@ export class GameUIManager {
 		this.score = new Score();
 
 		this.fruitDisplay = new FruitDisplay(gameManager.scaleVal);
-		this.shop = new Shop(this, gameManager.scaleVal);
+		this.shop = new Shop(this.ui, gameManager);
+
+		window.addEventListener('click', event => this.mousePressed(event));
 	}
 
 	setupUI(canvasWidth, canvasHeight) {
@@ -94,40 +92,35 @@ export class GameUIManager {
 			this.AREAS.game.y - 150,
 			`Time: ${this.counter.getTimeLeft()}s`,
 			textColour,
-			50,
-			undefined,
-			'timer'
+			50
 		);
 
-		// this.ui.createLabel(
-		// 	'score',
-		// 	this.AREAS.shop.x + this.AREAS.shop.w / 2,
-		// 	this.AREAS.shop.y - 60,
-		// 	`Score: ${this.score.getScore()}`,
-		// 	textColour,
-		// 	20,
-		// 	undefined,
-		// 	'coin'
-		// );
+		this.ui.createLabel(
+			'score',
+			this.AREAS.shop.x + this.AREAS.shop.w / 2,
+			this.AREAS.shop.y - 60,
+			`Score: ${this.score.getScore()}`,
+			textColour,
+			20
+		);
 
-		// this.ui.createLabel(
-		// 	'coin',
-		// 	this.AREAS.shop.x + this.AREAS.shop.w / 2,
-		// 	this.AREAS.shop.y - 30,
-		// 	'Coin: 0',
-		// 	textColour,
-		// 	20,
-		// 	undefined,
-		// 	'coin'
-		// );
+		this.ui.createLabel(
+			'coin',
+			this.AREAS.shop.x + this.AREAS.shop.w / 2,
+			this.AREAS.shop.y - 30,
+			'Coin: 0',
+			textColour,
+			20
+		);
 	}
 
 	draw() {
 		this.ui.drawLabels();
 		this.fruitDisplay.draw();
-		// this.displayCoin();
-		// this.displayScore();
+		this.displayCoin();
+		this.displayScore();
 		this.displayCounter();
+		this.ui.createDashedLine(this.AREAS.dashLine);
 	}
 
 	displayCounter() {
@@ -139,6 +132,12 @@ export class GameUIManager {
 	}
 
 	displayCoin() {
-		this.ui.updateLabelText('coin', `Coin: 0`); // 從 Player 取得當前金幣數量
+		this.ui.updateLabelText('coin', `Coin: 0`);
+	}
+
+	mousePressed(event) {
+		if (this.shop) {
+			this.shop.mousePressed(event);
+		}
 	}
 }

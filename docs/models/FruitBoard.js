@@ -1,3 +1,4 @@
+import { BombFruit, RainbowFruit } from '../shop/index.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { Fruit } from './index.js';
 
@@ -17,6 +18,8 @@ export class FruitBoard {
 		this.wallWidth = 10;
 		this.player = player;
 		this.score = this.player.score;
+		this.toolManager = null;
+		this.uiControllor = this.player.uiControllor;
 	}
 
 	setup() {
@@ -39,6 +42,8 @@ export class FruitBoard {
 			this.scaleVal
 		);
 		this.nextFruit.doNotFall();
+
+		this.toolManager = this.player.toolManager;
 	}
 
 	update() {
@@ -77,17 +82,12 @@ export class FruitBoard {
 		return this.fruits;
 	}
 
-	checkFruitOverLine(y) {
-		for (const fruit of this.fruits) {
-			if (fruit.getState() !== Fruit.STATE.FALLING || fruit.getSafePeriod() > 0) continue;
+	setCurrentFruit(fruit) {
+		if (!fruit?.sprite) return;
 
-			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
-			if (fruitTop <= y) {
-				console.log('the fruit is over the dash line');
-				return true;
-			}
-		}
-		return false;
+		this.currentFruit?.remove?.();
+
+		this.currentFruit = fruit;
 	}
 
 	handleCurrentFruit() {
@@ -97,7 +97,7 @@ export class FruitBoard {
 		let currentMouseX = mouseX / this.scaleVal;
 		let currentMouseY = mouseY / this.scaleVal;
 
-		if (this.currentFruit) {
+		if (this.currentFruit && this.currentFruit.sprite) {
 			// allow current fruit move with mouse
 			this.currentFruit.moveWithMouse(leftBound, rightBound, this.gameArea.y - DISTFROMGAME);
 			this.currentFruit.letFall();
@@ -138,22 +138,60 @@ export class FruitBoard {
 	}
 
 	handleMerging() {
-		// Two-level loop traverses all fruits, detects two fruits that meet the merge condition
 		for (let i = 0; i < this.fruits.length; i++) {
 			for (let j = i + 1; j < this.fruits.length; j++) {
 				const a = this.fruits[i];
 				const b = this.fruits[j];
-				// Suppose a.level denotes the type/grade of fruit
-				if (a.level === b.level && checkCollision(a.sprite, b.sprite) && !a.removed && !b.removed) {
-					const mergedFruit = Fruit.merge(a, b);
-					if (mergedFruit) {
-						mergedFruit.updateScale(this.scaleVal);
-						this.fruits.push(mergedFruit);
-						this.score.addScore(mergedFruit.level);
-						// this.score.addCoins(mergedFruit.level);
-					}
+
+				// Check if the fruits are colliding
+				if (!checkCollision(a.sprite, b.sprite)) continue;
+
+				// Skip merging if either fruit is frozen
+				if (a.isFrozen || b.isFrozen) continue;
+
+				// bomb fruit explpsion
+				if (a instanceof BombFruit || b instanceof BombFruit) {
+					if (a instanceof BombFruit) a.explode(this);
+					if (b instanceof BombFruit) b.explode(this);
+					continue;
+				}
+
+				// rainbow fruit merging
+				if (a instanceof RainbowFruit || b instanceof RainbowFruit) {
+					let normalFruit = a instanceof RainbowFruit ? b : a;
+					let mergedFruit = RainbowFruit.universalMerge(a, b);
+					if (mergedFruit) this.processMergedFruit(mergedFruit, normalFruit.level);
+					continue;
+				}
+
+				// normal fruit merging
+				if (a.level === b.level) {
+					let mergedFruit = Fruit.merge(a, b);
+					if (mergedFruit) this.processMergedFruit(mergedFruit);
 				}
 			}
 		}
+	}
+
+	processMergedFruit(mergedFruit, originalFruitLevel) {
+		this.fruits.push(mergedFruit);
+
+		let scoreMultiplier = this.toolManager.tools.doubleScore.doubleScoreActive ? 2 : 1;
+		let scoreLevel = originalFruitLevel !== undefined ? originalFruitLevel : mergedFruit.level;
+
+		this.score.addScore(scoreLevel * scoreMultiplier);
+	}
+
+	checkFruitOverLine(y) {
+		for (const fruit of this.fruits) {
+			if (fruit.getState() !== Fruit.STATE.FALLING || fruit.getSafePeriod() > 0) continue;
+
+			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
+			if (fruitTop <= y) {
+				this.uiControllor.drawGameOver(this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -1,9 +1,9 @@
 import { Fruit } from '../models/Fruit.js';
-import { checkCollision } from '../utils/CheckCollision.js';
 
 export class RainbowFruit extends Fruit {
-	constructor(x, y, size) {
-		super(-1, x, y, size); // set up -1 as special fruit type
+	constructor(x, y, scaleVal) {
+		const fixedSize = 40;
+		super(-1, x, y, fixedSize, scaleVal); // set up -1 as special fruit type
 		this.isRainbow = true; // extra mark RainbowFruit
 
 		// Customize the drawing method to create a rainbow gradient effect.
@@ -22,12 +22,7 @@ export class RainbowFruit extends Fruit {
 			for (let i = 0; i < rainbowColors.length; i++) {
 				fill(rainbowColors[i]);
 				noStroke();
-				ellipse(
-					0,
-					0,
-					this.sprite.d - i * layerStep,
-					this.sprite.d - i * layerStep
-				);
+				ellipse(0, 0, this.sprite.d - i * layerStep, this.sprite.d - i * layerStep);
 			}
 			this.drawFaceRainbow();
 			pop();
@@ -38,29 +33,12 @@ export class RainbowFruit extends Fruit {
 		push();
 		fill(0);
 		noStroke();
-		ellipse(
-			-this.sprite.d * 0.15,
-			-this.sprite.d * 0.1,
-			this.sprite.d * 0.1,
-			this.sprite.d * 0.1
-		);
-		ellipse(
-			this.sprite.d * 0.15,
-			-this.sprite.d * 0.1,
-			this.sprite.d * 0.1,
-			this.sprite.d * 0.1
-		);
+		ellipse(-this.sprite.d * 0.15, -this.sprite.d * 0.1, this.sprite.d * 0.1, this.sprite.d * 0.1);
+		ellipse(this.sprite.d * 0.15, -this.sprite.d * 0.1, this.sprite.d * 0.1, this.sprite.d * 0.1);
 		noFill();
 		stroke(0);
 		strokeWeight(2);
-		arc(
-			0,
-			this.sprite.d * 0.05,
-			this.sprite.d * 0.5,
-			this.sprite.d * 0.4,
-			0,
-			PI
-		);
+		arc(0, this.sprite.d * 0.05, this.sprite.d * 0.5, this.sprite.d * 0.4, 0, PI);
 		pop();
 	}
 
@@ -73,9 +51,9 @@ export class RainbowFruit extends Fruit {
 		if (a.isRainbow || b.isRainbow) {
 			console.log(`🌈 Universal Merge triggered between ${a.i} and ${b.i}`);
 			let normalFruit = a.isRainbow ? b : a; // 找到非 RainbowFruit 的水果
-			let newType = normalFruit.i + 1;
-			if (normalFruit.i === 9) {
-				newType = 9;
+			let newType = normalFruit.level + 1;
+			if (normalFruit.level === 7) {
+				newType = 7;
 			}
 			//let newType = normalFruit.i + 1;  // 直接 +1 作为新水果等级
 			let newX = (a.sprite.x + b.sprite.x) / 2;
@@ -87,25 +65,5 @@ export class RainbowFruit extends Fruit {
 			return new Fruit(newType, newX, newY, newSize);
 		}
 		return null;
-	}
-
-	/**
-	 * **purchase RainbowFruit**
-	 * - set it as currently fruit ，waiting for player let it down.
-	 */
-	/*
-  static buyRainbowFruit(game) {
-    let x = width / 2;  
-    let y = 25;        
-    let size = 40;     
-    let rainbow = new RainbowFruit(x, y, size);
-    game.currentFruit = rainbow;
-  }
-  */
-	static buyRainbowFruit() {
-		let x = 600;
-		let y = 25;
-		let size = 40;
-		return new RainbowFruit(x, y, size);
 	}
 }

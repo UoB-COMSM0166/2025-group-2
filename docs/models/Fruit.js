@@ -65,7 +65,6 @@ export class Fruit {
 	}
 
 	startFalling() {
-		console.log('fruit change to falling state.');
 		this.state = Fruit.STATE.FALLING;
 	}
 

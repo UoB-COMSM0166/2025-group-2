@@ -36,9 +36,9 @@ export class GameManager {
 		this.player.forEach(player => player.update());
 
 		// If counter is 0, end game
-		if (this.counter.getTimeLeft() <= 0) {
+		if (this.counter.getTimeLeft() <= 0 || this.isGameOver) {
 			// console.log('End of game because counter');
-			// noLoop();
+			noLoop();
 		}
 	}
 
@@ -46,27 +46,24 @@ export class GameManager {
 		return mode === 'single' ? [new Player(1, this)] : [new Player(1, this), new Player(2, this)];
 	}
 
-	mousePressed() {
-		let logicX = mouseX / this.scaleVal;
-		let logicY = mouseY / this.scaleVal;
-		console.log('mouse clicked and check if it clicks shopitem');
-		let clickedTool = this.checkShopItemClick(this.shopItems, logicX, logicY);
-		if (clickedTool) {
-			console.log(`tool clicked: ${clickedTool}`);
-			this.handleToolClick(clickedTool);
-		}
-	}
-
 	updateScale(newScale) {
 		this.scaleVal = newScale;
-		// this.boards.updateScale(newScale);
+		for (const player of this.player) {
+			player.boards.updateScale(newScale);
+		}
 	}
 
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
-		// if (this.boards.checkFruitOverLine(this.AREAS.dashLine.y1)) {
-		// 	this.isGameOver = true;
-		// }
+		const dashLineY = this.uiManager.AREAS.dashLine.y1;
+
+		for (const player of this.player) {
+			if (player.boards.checkFruitOverLine(dashLineY)) {
+				this.isGameOver = true;
+				console.log('Game Over: A fruit crossed the dash line!');
+				return;
+			}
+		}
 	}
 }
