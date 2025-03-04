@@ -64,6 +64,11 @@ export class Fruit {
 		};
 	}
 
+	// Method to change color of fruit itself
+	setColor(r, g, b) {
+		this.color = color(r, g, b);
+	}
+
 	startFalling() {
 		this.state = Fruit.STATE.FALLING;
 	}
@@ -88,11 +93,6 @@ export class Fruit {
 		if (this.state === Fruit.STATE.FALLING) {
 			if (this.safePeriod > 0) this.safePeriod--;
 		}
-	}
-	
-		// Method to change color of fruit itself
-	setColor(r, g, b) {
-		this.color = color(r, g, b);
 	}
 
 	drawFace() {

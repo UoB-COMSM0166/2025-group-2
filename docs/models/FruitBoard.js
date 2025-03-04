@@ -1,3 +1,4 @@
+import { IncidentManager } from '../core/IncidentManager.js';
 import { BombFruit, RainbowFruit } from '../shop/index.js';
 import { checkCollision } from '../utils/CheckCollision.js';
 import { Fruit } from './index.js';
@@ -23,6 +24,22 @@ export class FruitBoard {
 		this.uiControllor = this.player.uiControllor;
 		this.mode = this.player.mode;
 		this.id = this.player.id;
+		this.incidentManager = new IncidentManager(this);
+
+		let windButton = createButton('Wind Incident');
+		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
+
+		let fogButton = createButton('Fog Incident');
+		fogButton.mousePressed(() => this.incidentManager.activateIncident('fog'));
+
+		let freezeButton = createButton('Freeze Incident');
+		freezeButton.mousePressed(() => this.incidentManager.activateIncident('freeze'));
+
+		let fireButton = createButton('Fire Incident');
+		fireButton.mousePressed(() => this.incidentManager.activateIncident('fire'));
+
+		let rainButton = createButton('Rain Incident');
+		rainButton.mousePressed(() => this.incidentManager.activateIncident('rain'));
 	}
 
 	setup() {
@@ -194,6 +211,18 @@ export class FruitBoard {
 	processMergedFruit(mergedFruit, originalFruitLevel) {
 		this.fruits.push(mergedFruit);
 
+		/**
+    if (this.toolManager.tools.doubleScore.doubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
+			this.score.addScore(mergedFruit.i * 2);
+		}
+		else if(a.fireAffected || b.fireAffected){
+			this.score.minusScore(mergedFruit.i);
+		}
+		else {
+			this.score.addScore(mergedFruit.i);
+		}
+ *
+ */
 		let scoreMultiplier = this.toolManager.tools.doubleScore.doubleScoreActive ? 2 : 1;
 		let scoreLevel = originalFruitLevel !== undefined ? originalFruitLevel : mergedFruit.level;
 
