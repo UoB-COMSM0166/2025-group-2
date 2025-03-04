@@ -1,5 +1,11 @@
-import { FreezeIncident, TestIncident, RainIncident， WindIncident } from '../incidents/index.js';
-import { TestIncident, WindIncident, FreezeIncident, FogIncident, FireIncident, RainIncident } from '../incidents/index.js';
+import {
+	FireIncident,
+	FogIncident,
+	FreezeIncident,
+	RainIncident,
+	TestIncident,
+	WindIncident,
+} from '../incidents/index.js';
 
 export class IncidentManager {
 	constructor(game) {
@@ -7,10 +13,10 @@ export class IncidentManager {
 		this.incidents = {
 			wind: new WindIncident(game),
 			gravity: new TestIncident(game),
-			fog : new FogIncident(game),
+			fog: new FogIncident(game),
 			freeze: new FreezeIncident(game),
 			fire: new FireIncident(game),
-			rain: new RainIncident(game),  // 添加RainIncident
+			rain: new RainIncident(game), // 添加RainIncident
 		};
 		this.activeIncidents = [];
 	}
