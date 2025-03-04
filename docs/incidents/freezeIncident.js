@@ -2,9 +2,10 @@ import { Incident } from './Incident.js';
 
 export class FreezeIncident extends Incident {
 	constructor(game) {
-		super(game, 10); // the duration(seconds) for this incedent left
+		super(game, '', 10); // the duration(seconds) for this incident left
 		this.game = game;
 		this.frozenFruits = [];
+		this.paused = false;
 	}
 
 	enable() {
@@ -21,10 +22,39 @@ export class FreezeIncident extends Incident {
 			fruit.isFrozen = false;
 		});
 		this.frozenFruits = [];
+		this.shieldActive = false;
+	}
+
+	pause() {
+		if (this.active && !this.paused) {
+			this.paused = true;
+			//unfreezing fruits when paused
+			this.frozenFruits.forEach(fruit => {
+				fruit.isFrozen = false;
+			});
+		}
+	}
+
+	resume() {
+		if (this.active && this.paused) {
+			this.paused = false;
+			//refreezing fruits when resumed
+			this.frozenFruits.forEach(fruit => {
+				fruit.isFroze = true;
+			});
+		}
 	}
 
 	update() {
-		if (!this.active) return;
+		if (this.active) {
+			fill(0);
+			textSize(20);
+			text('Freeze effect Time Left: ' + this.timeLeft, 10, 90);
+		}
+		//only update if incident is active and not paused
+		if (!this.active || this.paused) {
+			return;
+		}
 	}
 
 	selectRandomFruits(count) {

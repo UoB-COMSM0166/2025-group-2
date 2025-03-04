@@ -27,7 +27,7 @@ export class DivineShieldTool {
 		if (this.shieldActive) {
 			fill(0);
 			textSize(20);
-			text('Devine Shield Time Left: ' + this.shieldTimeLeft, 240, 30);
+			text('Divine Shield Time Left: ' + this.shieldTimeLeft, 240, 30);
 		}
 	}
 
