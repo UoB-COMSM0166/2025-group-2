@@ -1,0 +1,53 @@
+#4th Mar 2025
+
+- list of modifications to be made to the game
+- discussion of the quantitative feedbacks received today (week 8 homework)
+
+
+Summary:
+- to polish the game as preparation for final version
+- modifications to be made will be
+		- listed with priority level
+		- assigned to someone
+		- high priority to be done over the next 2 weeks
+
+
+
+List of Modifications to be made below
+
+High Priority:
+1. add coin logic
+2. modify game to allow multipler mode players to buy tools from shop using their own specific keyboard keys and have it appear in the correct playing container
+		and also modify game to allow multiplayer mode players to play using different keys specific to each player instead of using a mouse
+3. add logic to make Incidents occur randomly during game for both singleplayer and multiplayer
+4. add win/lose logic for multiplayer mode (also note that singleplayer mode does not have a timer -- player can keep playing until fruit hits top of container)
+		- first player to achieve the biggest size wins
+		- OR  who has the highest score after time limit wins
+		- OR  player who hits the top of the container first loses
+5. add more size of fruit (currently only 7 sizes of fruit, a little too easy to achieve)
+6. add 2 buttons (Play Again  and  Exit) after game ends and add 1 button (Exit) to the page during gameplay
+		- Play Again: play again in current mode
+		- Exit: go back to main menu
+7. add warning message before each Incidents occur (previous code owner for each Incidents to work on their own Incidents)
+8. add a notification message at the top of the game page that shows messages when player buys something from store
+	- example: Player 1 has bought Rainbow Tool (Rainbow Tool is able to merge with ALL fruits)
+	- example: Player 2 does not have enough coins to buy Bomb Tool (Bomb Tool creates an explosion to remove fruits)
+
+
+Medium Priority:
+1. add tutorial for players to learn how to play the game when they start the game
+		- singleplayer mode: an interactive step by step guide on what pressing each button will do when they start the game
+		- multiplayer mode: an interactive step by step guide on how to use the shop
+		- also add in the keys for each player to navigate the game (refer to /ReportMaterial/ProgressTracker/4Mar2025-multiplayer-drawing)
+2. add Game Over animation
+3. finalise the game name
+4. modify and update the Fog Incident to make it more realistic (look at the resources that Doris sent)
+
+
+Low Priority (to do if we still have time, or potentially develop as version 2 after project submission):
+1. add in highest score achieved for singleplayer mode for each game session (clears after user exits the game entirely)
+2. add merge visual effect and merge combo visual effect
+3. modify the random Incident logic in multiplayer mode so that Incidents do NOT occur unless players buy the Incidents to disrupt opponents from shop
+4. add sound effect for merge and merge combo
+5. add visual animations for each tool/Incident
+7. change face of the "fruits" to make it smile at us instead (make it friendly)
