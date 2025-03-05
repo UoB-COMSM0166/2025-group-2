@@ -27,14 +27,8 @@ export class Player {
 	 */
 	setup() {
 		this.displayScore();
-		const gameArea =
-			this.gameManager.mode === 'single'
-				? this.area.game1
-				: this.id === 1
-				? this.area.game1
-				: this.area.game2;
 
-		this.boards = new Board(this, gameArea, this.area.shop, this.area.display, this.scaleVal);
+		this.boards = new Board(this, this.area, this.scaleVal);
 		this.toolManager = new ToolManager(this, this.area);
 		this.boards.setup();
 	}

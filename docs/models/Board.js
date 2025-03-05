@@ -7,10 +7,10 @@ const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
 
 export class Board {
-	constructor(player, gameArea, shopArea, displayArea, scaleVal) {
-		this.gameArea = gameArea; // { x, y, w, h }
-		this.shopArea = shopArea; // { x, y, w, h }
-		this.displayArea = displayArea; // { x, y, w, h }
+	constructor(player, area, scaleVal) {
+		this.shopArea = area.shop; // { x, y, w, h }
+		this.displayArea = area.display; // { x, y, w, h }
+
 		this.gravity = 15;
 		this.fruits = [];
 		this.currentFruit = null;
@@ -24,8 +24,12 @@ export class Board {
 		this.uiControllor = this.player.uiControllor;
 		this.mode = this.player.mode;
 		this.id = this.player.id;
+		this.isSingleMode = this.player.mode === 'single';
+		this.gameArea = this.mode === 'single' ? area.game1 : this.id === 1 ? area.game1 : area.game2;
+		this.endLine =
+			this.mode === 'single' ? area.dashLine1 : this.id === 1 ? area.dashLine1 : area.dashLine2;
 
-		this.incidentManager = new IncidentManager(this, this.gameArea);
+		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
 	}
 
 	setup() {
@@ -42,12 +46,12 @@ export class Board {
 		let newType = int(random(4));
 
 		const nextFruitX =
-			this.mode === 'single' || this.id === 2
+			this.isSingleMode || this.id === 2
 				? this.shopArea.x + this.shopArea.w / 2
 				: this.displayArea.x + this.displayArea.w / 2;
 
 		const nextFruitY =
-			this.mode === 'single' || this.id === 2
+			this.isSingleMode || this.id === 2
 				? this.shopArea.y - DISTFROMSHOP
 				: this.displayArea.y - DISTFROMSHOP;
 
@@ -156,12 +160,12 @@ export class Board {
 				let newType = int(random(5));
 
 				const nextFruitX =
-					this.mode === 'single' || this.id === 2
+					this.isSingleMode || this.id === 2
 						? this.shopArea.x + this.shopArea.w / 2 // Default to shop for single mode & Player 2
 						: this.displayArea.x + this.displayArea.w / 2; // Player 1 places nextFruit above display
 
 				const nextFruitY =
-					this.mode === 'single' || this.id === 2
+					this.isSingleMode || this.id === 2
 						? this.shopArea.y - DISTFROMSHOP // Default for single mode & Player 2
 						: this.displayArea.y - DISTFROMSHOP; // Player 1 places it above display
 				this.nextFruit = new Fruit(

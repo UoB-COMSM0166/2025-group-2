@@ -1,10 +1,12 @@
 import { Incident } from './Incident.js';
 
 export class FogIncident extends Incident {
-	constructor(game) {
+	constructor(game, area, endLine) {
 		super(game, 10);
 		this.paused = false;
 		this.fogLayer = null;
+		this.area = area;
+		this.endLine = endLine;
 	}
 
 	enable() {
@@ -47,8 +49,14 @@ export class FogIncident extends Incident {
 			if (this.fogLayer) {
 				this.fogLayer.clear();
 				this.fogLayer.fill(66, 84, 84);
-				this.fogLayer.rect(0, 200, this.fogLayer.width, this.fogLayer.height);
-				image(this.fogLayer, 0, 0); //Make sure the fog is over other things
+
+				let fogX = this.area.x;
+				let fogY = this.endLine.y1;
+				let fogW = this.area.w;
+				let fogH = this.area.h - (this.endLine.y1 - this.area.y);
+
+				this.fogLayer.rect(fogX, fogY, fogW, fogH);
+				image(this.fogLayer, 0, 0);
 			}
 		}
 	}

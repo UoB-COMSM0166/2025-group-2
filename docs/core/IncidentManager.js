@@ -7,13 +7,14 @@ import {
 } from '../incidents/index.js';
 
 export class IncidentManager {
-	constructor(game, gameArea) {
+	constructor(game, gameArea, endLine) {
 		this.game = game;
 		this.gameArea = gameArea;
+		this.endLine = endLine;
 
 		this.incidents = {
 			Wind: new WindIncident(game),
-			Fog: new FogIncident(game),
+			Fog: new FogIncident(game, gameArea, endLine),
 			Freeze: new FreezeIncident(game),
 			Fire: new FireIncident(game),
 			Rain: new RainIncident(game, gameArea),
