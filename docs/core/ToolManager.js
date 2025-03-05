@@ -1,24 +1,28 @@
 import {
-	ShuffleTool,
+	BombFruit,
 	DivineShieldTool,
 	DoubleScoreTool,
 	RainbowFruit,
-	BombFruit,
+	ShuffleTool,
 } from '../shop/index.js';
 export class ToolManager {
-	constructor(game, incidentManager) {
-		this.game = game;
-		this.incidentManager = incidentManager;
+	constructor(player, area) {
+		this.player = player;
+		this.area = area;
+		this.board = this.player.boards;
+		this.scaleVal = this.player.scaleVal;
 
 		this.tools = {
-			shuffle: new ShuffleTool(game),
-			divineShield: new DivineShieldTool(game, this.incidentManager),
-			doubleScore: new DoubleScoreTool(game),
+			shuffle: new ShuffleTool(this.board, this.area),
+			divineShield: new DivineShieldTool(this.board.incidentManager),
+			doubleScore: new DoubleScoreTool(),
 		};
 
 		this.specialFruits = {
-			rainbowFruit: () => this.createSpecialFruit(RainbowFruit),
-			bombFruit: () => this.createSpecialFruit(BombFruit),
+			rainbowTool: () =>
+				new RainbowFruit(this.board.gameArea.x + this.board.gameArea.w / 2, 50, this.scaleVal),
+			bombTool: () =>
+				new BombFruit(this.board.gameArea.x + this.board.gameArea.w / 2, 50, this.scaleVal),
 		};
 	}
 
@@ -30,40 +34,38 @@ export class ToolManager {
 		}
 	}
 
+	activate(toolName) {
+		if (toolName === 'random') {
+			this.randomTool();
+			return;
+		}
+
+		if (this.tools[toolName]) {
+			this.activateTool(toolName);
+			return;
+		}
+
+		if (this.specialFruits[toolName]) {
+			this.activateSpecialFruit(toolName);
+			return;
+		}
+	}
+
 	activateTool(toolName) {
 		if (this.tools[toolName]) {
 			this.tools[toolName].activate();
-			console.log(`${toolName} active`);
-		} else {
-			console.error(`Tool "${toolName}" not found!`);
 		}
-	}
-
-	createSpecialFruit(FruitClass) {
-		const x = width / 2;
-		const y = 50;
-		const randomLevel = Math.floor(random(0, 3));
-		const size = 30 + 20 * randomLevel;
-
-		return new FruitClass(randomLevel, x, y, size);
 	}
 
 	activateSpecialFruit(fruitName) {
-		if (this.specialFruits[fruitName]) {
-			const fruit = this.specialFruits[fruitName]();
-			this.game.setCurrentFruit(fruit); // set to current fruit
-			// but maybe should ne the next one
-			console.log(`${fruitName} activated with size  ${fruit.sprite.d}`);
-		} else {
-			console.error(`Special Fruit "${fruitName}" not found!`);
-		}
+		const fruit = this.specialFruits[fruitName]?.();
+		if (!fruit?.sprite) return;
+
+		this.board.setCurrentFruit(fruit);
 	}
 
 	randomTool() {
-		const allKeys = [
-			...Object.keys(this.tools),
-			...Object.keys(this.specialFruits),
-		];
+		const allKeys = [...Object.keys(this.tools), ...Object.keys(this.specialFruits)];
 		if (allKeys.length === 0) {
 			return;
 		}

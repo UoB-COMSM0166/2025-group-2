@@ -1,25 +1,35 @@
-import { Game } from './core/GameManager.js';
+import { Game } from './core/Game.js';
 
-//declaring as global object to allow bomb fruit method to access
-window.game = new Game();
+let game,
+	canvas,
+	scaleVal = 1;
 
-function setup() {
-  game.setup();
-  window.game = game;
-}
+// Use window.setup because in index.html file use type module to allow import and export file.
+window.setup = function () {
+	canvas = createCanvas(1500, 1000);
+	windowResized();
+	game = new Game(scaleVal);
+	game.setup();
+	document.getElementById('loading').style.display = 'none';
+};
 
-function draw() {
-  game.update();
-}
+window.draw = function () {
+	background('#f5ebe0');
+	game.draw();
+};
 
-function keyPressed() {
-  if (key === 'r' || key === 'R') {
-    game.incidentManager.activateIncident('rain');
-  }
-}
+window.windowResized = function () {
+	let scaleX = windowWidth / width;
+	let scaleY = windowHeight / height;
+	scaleVal = min(scaleX, scaleY);
+	canvas.elt.style.transform = `scale(${scaleVal})`;
 
-
-window.setup = setup;
-window.draw = draw;
-window.keyPressed = keyPressed;
-
+	let scaledWidth = width * scaleVal;
+	let leftOffset = (windowWidth - scaledWidth) / 2;
+	canvas.elt.style.position = 'absolute';
+	canvas.elt.style.left = leftOffset + 'px';
+	canvas.elt.style.top = '0px';
+	if (game) {
+		game.updateScale(scaleVal);
+	}
+};

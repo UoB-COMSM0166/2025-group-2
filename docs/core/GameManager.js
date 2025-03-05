@@ -1,214 +1,68 @@
-import { Fruit } from '../models/Fruit.js';
-import { Score } from '../models/Score.js';
 import { Timer } from '../models/Timer.js';
-import { Wall } from '../models/Wall.js';
-import { BombFruit, RainbowFruit } from '../shop/index.js';
-import { checkCollision } from '../utils/CheckCollision.js';
-import { IncidentManager } from './IncidentManager.js';
-import { ToolManager } from './ToolManager.js';
+import { Player } from '../models/index.js';
+import { GameUIManager } from './GameUIManager.js';
 
-export class Game {
-	constructor() {
-		this.fruits = [];
+export class GameManager {
+	constructor(game, mode, scaleVal) {
+		this.mode = mode;
+		this.game = game;
+		this.scaleVal = scaleVal;
+		this.uiManager = new GameUIManager(this);
+		this.setup();
+
+		this.player = this.createPlayers(mode);
+		this.isGameOver = false;
+
 		this.timer = 0;
 		this.counter = new Timer(120);
-		this.currentFruit = null;
-		this.gravity = 15;
-		this.walls = [];
-		this.score = new Score();
-
-		this.incidentManager = new IncidentManager(this);
-		this.toolManager = new ToolManager(this, this.incidentManager);
 	}
 
 	setup() {
-		new Canvas(500, 600);
-		background('#f5ebe0');
-		world.gravity.y = this.gravity;
+		const canvasWidth = width;
+		const canvasHeight = height;
 
-		this.walls = Wall.createDefaultWalls();
-		//Start counter
-		this.counter.start();
-
-		this.currentFruit = new Fruit(0, 300, 25, 30);
-		let shuffleButton = createButton('Shake Tool');
-		shuffleButton.mousePressed(() => this.toolManager.activateTool('shuffle'));
-
-		let divineButton = createButton('Divine Shield');
-		divineButton.mousePressed(() => this.toolManager.activateTool('divineShield'));
-
-		let randomToolButton = createButton('Random Tool');
-		randomToolButton.mousePressed(() => this.toolManager.randomTool());
-
-		let doubleScoreToolButton = createButton('double Score');
-		doubleScoreToolButton.mousePressed(() => this.toolManager.activateTool('doubleScore'));
-
-		let windButton = createButton('Wind Incident');
-		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
-
-		let fogButton = createButton('Fog Incident');
-		fogButton.mousePressed(() => this.incidentManager.activateIncident('fog'));
-
-		let freezeButton = createButton('Freeze Incident');
-		freezeButton.mousePressed(() => this.incidentManager.activateIncident('freeze'));
-
-		let rainbowButton = createButton('rainbow');
-		rainbowButton.mousePressed(() => this.toolManager.activateSpecialFruit('rainbowFruit'));
-
-		let bombButton = createButton('bomb');
-		bombButton.mousePressed(() => this.toolManager.activateSpecialFruit('bombFruit'));
-
-		let fireButton = createButton('Fire Incident');
-		fireButton.mousePressed(() => this.incidentManager.activateIncident('fire'));
+		this.uiManager.setupUI(canvasWidth, canvasHeight);
 	}
 
 	update() {
-		background('#f5ebe0');
-		this.handleCurrentFruit();
-		this.handleMerging();
-		this.fruits = this.fruits.filter(fruit => !fruit.removed);
+		if (!this.isGameOver) {
+			this.checkIsGameOver();
+		}
 
-		this.toolManager.update();
-		this.incidentManager.update();
+		this.uiManager.ui.drawLabels();
+		this.uiManager.draw();
 
-		this.displayScore();
-		this.displayCounter();
-
-		//check for collisions with bomb fruits
-		this.fruits.forEach(fruit => {
-			//check if the fruit is in fog
-			if (
-				this.incidentManager.incidents.fog.active &&
-				fruit.sprite.y > 200 &&
-				!this.incidentManager.incidents.fog.paused &&
-				!this.incidentManager.incidents.fog.disabled
-			) {
-				fruit.isInFog = true;
-				fruit.setColor(66, 84, 84);
-			} else {
-				// Si quieres restaurar el color original de la fruta cuando no está bajo la niebla
-				fruit.isInFog = false; // Marcar como dentro de la niebla
-			}
-			if (fruit instanceof BombFruit) {
-				fruit.checkCollision(this);
-			}
-		});
+		this.player.forEach(player => player.update());
 
 		// If counter is 0, end game
-		if (this.counter.getTimeLeft() <= 0) {
-			console.log('End of game because counter');
+		if (this.counter.getTimeLeft() <= 0 || this.isGameOver) {
+			// console.log('End of game because counter');
 			noLoop();
 		}
 	}
 
-	setCurrentFruit(fruit) {
-		if (this.currentFruit) {
-			this.currentFruit.remove();
-		}
-		this.currentFruit = fruit;
-		console.log(`Current fruit set to ${fruit.constructor.name}`);
+	createPlayers(mode) {
+		return mode === 'single' ? [new Player(1, this)] : [new Player(1, this), new Player(2, this)];
 	}
 
-	handleCurrentFruit() {
-		if (this.currentFruit) {
-			this.currentFruit.moveWithMouse();
-		} else {
-			this.timer++;
-			if (this.timer > 50) {
-				const newType = int(random(7));
-				this.currentFruit = new Fruit(newType, mouseX, 25, 30 + 20 * newType);
-				this.timer = 0;
+	updateScale(newScale) {
+		this.scaleVal = newScale;
+		for (const player of this.player) {
+			player.boards.updateScale(newScale);
+		}
+	}
+
+	checkIsGameOver() {
+		if (this.isGameOver) return;
+
+		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
+
+		for (const player of this.player) {
+			if (player.boards.checkFruitOverLine(dashLineY)) {
+				this.isGameOver = true;
+				console.log('Game Over: A fruit crossed the dash line!');
+				return;
 			}
 		}
-
-		if (mouseIsPressed && this.currentFruit && !this.isClickingUI(mouseX, mouseY)) {
-			this.fruits.push(this.currentFruit);
-			this.currentFruit = null;
-		}
-	}
-
-	handleMerging() {
-		for (let i = 0; i < this.fruits.length; i++) {
-			for (let j = i + 1; j < this.fruits.length; j++) {
-				const a = this.fruits[i];
-				const b = this.fruits[j];
-				if (a instanceof BombFruit || b instanceof BombFruit) {
-					if (checkCollision(a.sprite, b.sprite)) {
-						const mergedFruit = BombFruit.merge(a, b);
-					}
-				}
-				if (a.isFrozen || b.isFrozen) {
-					continue; //skip merging if fruit is frozen
-				}
-				if (
-					(a.i === -1 || b.i === -1) &&
-					checkCollision(a.sprite, b.sprite) &&
-					!a.removed &&
-					!b.removed
-				) {
-					let mergedFruit = RainbowFruit.universalMerge(a, b);
-					if (mergedFruit) {
-						this.fruits.push(mergedFruit);
-
-						if (this.toolManager.tools.doubleScore.doubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
-							this.score.addScore(mergedFruit.i * 2);
-						}
-						else if(a.fireAffected || b.fireAffected){
-							this.score.minusScore(mergedFruit.i);
-						}
-						else {
-							this.score.addScore(mergedFruit.i);
-						}
-					}
-				}
-				if (a.i === b.i && checkCollision(a.sprite, b.sprite) && !a.removed && !b.removed) {
-					const mergedFruit = Fruit.merge(a, b);
-					if (mergedFruit) {
-						this.fruits.push(mergedFruit);
-
-						if (this.toolManager.tools.doubleScore.isDoubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
-							console.log(
-								'this.toolManager.tools.doubleScore.isActive() :>> ',
-								this.toolManager.tools.doubleScore.isDoubleScoreActive
-							);
-							this.score.addScore(mergedFruit.i * 2);
-						}
-						else if(a.fireAffected || b.fireAffected){
-							this.score.minusScore(mergedFruit.i);
-						}
-						else {
-							this.score.addScore(mergedFruit.i);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	displayCounter() {
-		fill(0);
-		textSize(16);
-		text(`Timer: ${this.counter.getTimeLeft()}s`, 300, 60);
-	}
-
-	displayScore() {
-		fill(0);
-		textSize(16);
-		text(`Score: ${this.score.getScore()}`, 10, 30);
-	}
-
-	isClickingUI(mx, my) {
-		let uiButtons = selectAll('button');
-		for (let btn of uiButtons) {
-			let bx = btn.position().x;
-			let by = btn.position().y;
-			let bw = btn.width;
-			let bh = btn.height;
-
-			if (mx > bx && mx < bx + bw && my > by && my < by + bh) {
-				return true;
-			}
-		}
-		return false;
 	}
 }

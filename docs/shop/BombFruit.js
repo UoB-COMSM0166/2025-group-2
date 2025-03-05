@@ -1,9 +1,9 @@
 import { Fruit } from '../models/Fruit.js';
 
 export class BombFruit extends Fruit {
-	constructor(i, x, y, size) {
+	constructor(x, y, scaleVal) {
 		const fixedSize = 60;
-		super(i, x, y, fixedSize);
+		super(-1, x, y, fixedSize, scaleVal);
 		this.explosionRadius = 150;
 
 		this.sprite.draw = () => {

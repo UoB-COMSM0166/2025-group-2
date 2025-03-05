@@ -1,6 +1,5 @@
 export class DoubleScoreTool {
-	constructor(game) {
-		this.game = game;
+	constructor() {
 		this.doubleScoreTimeLeft = 20;
 		this.doubleScoreTimer = null;
 		this.doubleScoreActive = false;
@@ -8,7 +7,7 @@ export class DoubleScoreTool {
 
 	activate() {
 		//for not calling multiple times
-		if(this.doubleScoreActive) return;
+		if (this.doubleScoreActive) return;
 
 		this.doubleScoreActive = true;
 

@@ -1,6 +1,5 @@
 export class DivineShieldTool {
-	constructor(game, incidentManager) {
-		this.game = game;
+	constructor(incidentManager) {
 		this.incidentManager = incidentManager;
 		this.shieldTimeLeft = 0;
 		this.shieldTimer = null;
@@ -27,7 +26,7 @@ export class DivineShieldTool {
 		if (this.shieldActive) {
 			fill(0);
 			textSize(20);
-			text('Divine Shield Time Left: ' + this.shieldTimeLeft, 240, 30);
+			text('Divine Shield Time Left: ' + this.shieldTimeLeft, 240, 60);
 		}
 	}
 

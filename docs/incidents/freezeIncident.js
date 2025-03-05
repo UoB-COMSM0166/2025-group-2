@@ -46,11 +46,8 @@ export class FreezeIncident extends Incident {
 	}
 
 	update() {
-		if (this.active) {
-			fill(0);
-			textSize(20);
-			text('Freeze effect Time Left: ' + this.timeLeft, 10, 90);
-		}
+		super.update();
+
 		//only update if incident is active and not paused
 		if (!this.active || this.paused) {
 			return;

@@ -34,11 +34,8 @@ export class WindIncident extends Incident {
 	}
 
 	update() {
-		if (this.active) {
-			fill(0);
-			textSize(20);
-			text('Wind effect Time Left: ' + this.timeLeft, 10, 50);
-		}
+		super.update();
+
 		if (!this.active || this.paused) return;
 		if (this.game.currentFruit) {
 			this.windSpeed = (noise(this.noisePos) - 0.5) * 60;

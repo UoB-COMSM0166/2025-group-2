@@ -4,25 +4,32 @@ export class Fruit {
 		'#f8961e',
 		'#7fc96b',
 		'#43aa8b',
-		'#2d92d1 ',
+		'#2d92d1',
 		'#f6aeae',
 		'#277da1',
-		'#3b498e',
-		'#ffd043',
-		'#66418a',
 	];
+
+	static STATE = {
+		WAITING: 0, // in the nextfruit position
+		FALLING: 1, // current falling fruit
+		LANDED: 2, // fruit already landed
+	};
+
 	static maxFruitLevel = this.fruitColors.length - 1;
-	constructor(i, x, y, size) {
-		this.i = i;
+
+	constructor(level, x, y, size, scaleVal) {
+		this.state = Fruit.STATE.WAITING;
+		this.safePeriod = 80;
+		this.level = level;
 		this.removed = false;
+		this.initialY = y;
 		this.sprite = new Sprite(x, y, size, 'd');
-		this.t = random(1000);
 		this.randomId = int(random(100000));
 		this.isFalling = true;
 		this.fireAffected = false;
 		this.isFrozen = false;
+		this.scaleVal = scaleVal;
 
-		//modified to account for frozen state caused by Freeze Incident
 		this.sprite.draw = () => {
 			push();
 			switch (true) {
@@ -36,7 +43,7 @@ export class Fruit {
 					break;
 				default:
 					stroke(10);
-					fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]); // 正常顏色
+					fill(Fruit.fruitColors[this.level % Fruit.fruitColors.length]);
 			}
 
 			ellipse(0, 0, this.sprite.d, this.sprite.d);
@@ -58,6 +65,32 @@ export class Fruit {
 	// Method to change color of fruit itself
 	setColor(r, g, b) {
 		this.color = color(r, g, b);
+	}
+
+	startFalling() {
+		this.state = Fruit.STATE.FALLING;
+	}
+
+	getState() {
+		return this.state;
+	}
+
+	getSafePeriod() {
+		return this.safePeriod;
+	}
+
+	getXPosition() {
+		return this.sprite.x;
+	}
+
+	getYPosition() {
+		return this.sprite.y;
+	}
+
+	updateState() {
+		if (this.state === Fruit.STATE.FALLING) {
+			if (this.safePeriod > 0) this.safePeriod--;
+		}
 	}
 
 	drawFace() {
@@ -85,8 +118,10 @@ export class Fruit {
 
 		// Pupil Follows Mouse Movement
 		function getPupilOffset(eyeX, eyeY) {
-			let dx = mouseX - (this.sprite.x + eyeX);
-			let dy = mouseY - (this.sprite.y + eyeY);
+			let scaledMouseX = mouseX / this.scaleVal;
+			let scaledMouseY = mouseY / this.scaleVal;
+			let dx = scaledMouseX - (this.sprite.x + eyeX);
+			let dy = scaledMouseY - (this.sprite.y + eyeY);
 			let angle = atan2(dy, dx);
 			let maxOffset = eyeSize * 0.4;
 
@@ -134,9 +169,18 @@ export class Fruit {
 		pop();
 	}
 
-	moveWithMouse() {
-		this.sprite.y = 45;
-		this.sprite.x = constrain(mouseX, 10 + this.sprite.d / 2, 490 - this.sprite.d / 2);
+	updateScale(newScale) {
+		this.scaleVal = newScale;
+	}
+
+	moveWithMouse(leftBound, rightBound, y) {
+		let scaledMouseX = mouseX / this.scaleVal;
+		this.sprite.y = y;
+		this.sprite.x = constrain(
+			scaledMouseX,
+			leftBound + this.sprite.d / 2,
+			rightBound - this.sprite.d / 2
+		);
 		this.sprite.vel.y = 0;
 	}
 
@@ -146,23 +190,32 @@ export class Fruit {
 	}
 
 	static merge(a, b) {
-		if (a.i === b.i && a.i < Fruit.maxFruitLevel) {
-			const newType = a.i + 1;
+		if (a.level === b.level && a.level < Fruit.maxFruitLevel) {
+			const newType = a.level + 1;
 			const newX = (a.sprite.x + b.sprite.x) / 2;
 			const newY = (a.sprite.y + b.sprite.y) / 2;
 			const newSize = 30 + 20 * newType;
 
+			let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal);
+			mergedFruit.fireAffected = a.fireAffected || b.fireAffected;
+
 			a.remove();
 			b.remove();
-			return new Fruit(newType, newX, newY, newSize);
+			return mergedFruit;
 		}
 
 		return null;
 	}
 
-	applyWind(windSpeed) {
-		if (!this.isFalling) return;
+	doNotFall() {
+		this.sprite.collider = 'static';
+	}
 
+	letFall() {
+		this.sprite.collider = 'd';
+	}
+
+	applyWind(windSpeed) {
 		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // bigger fruit has larger stifness
 		let windForce = windSpeed * stiffness * 0.05; // apply wind effect
 		this.sprite.vel.x += windForce;
