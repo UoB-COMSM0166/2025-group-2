@@ -14,8 +14,8 @@ export class ToolManager {
 
 		this.tools = {
 			shuffle: new ShuffleTool(this.board, this.area),
-			divineShield: new DivineShieldTool(this.board, this.incidentManager),
-			doubleScore: new DoubleScoreTool(this.board),
+			divineShield: new DivineShieldTool(this.board.incidentManager),
+			doubleScore: new DoubleScoreTool(),
 		};
 
 		this.specialFruits = {

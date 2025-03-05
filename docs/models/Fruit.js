@@ -24,13 +24,12 @@ export class Fruit {
 		this.removed = false;
 		this.initialY = y;
 		this.sprite = new Sprite(x, y, size, 'd');
-		this.t = random(1000);
 		this.randomId = int(random(100000));
 		this.isFalling = true;
 		this.fireAffected = false;
 		this.isFrozen = false;
+		this.scaleVal = scaleVal;
 
-		//modified to account for frozen state caused by Freeze Incident
 		this.sprite.draw = () => {
 			push();
 			switch (true) {
@@ -44,9 +43,8 @@ export class Fruit {
 					break;
 				default:
 					stroke(10);
-					fill(Fruit.fruitColors[this.i % Fruit.fruitColors.length]); // 正常顏色
+					fill(Fruit.fruitColors[this.level % Fruit.fruitColors.length]);
 			}
-
 
 			ellipse(0, 0, this.sprite.d, this.sprite.d);
 
@@ -198,9 +196,12 @@ export class Fruit {
 			const newY = (a.sprite.y + b.sprite.y) / 2;
 			const newSize = 30 + 20 * newType;
 
+			let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal);
+			mergedFruit.fireAffected = a.fireAffected || b.fireAffected;
+
 			a.remove();
 			b.remove();
-			return new Fruit(newType, newX, newY, newSize, this.scaleVal);
+			return mergedFruit;
 		}
 
 		return null;
@@ -215,8 +216,6 @@ export class Fruit {
 	}
 
 	applyWind(windSpeed) {
-		if (this.state !== STATE.FALLING) return;
-
 		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // bigger fruit has larger stifness
 		let windForce = windSpeed * stiffness * 0.05; // apply wind effect
 		this.sprite.vel.x += windForce;
