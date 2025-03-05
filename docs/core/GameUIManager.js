@@ -17,13 +17,10 @@ export class GameUIManager {
 		this.isDoubleMode = this.gameManager.mode === 'double';
 		this.player = this.gameManager.player;
 
-		console.log('gameManager :>> ', this.gameManager);
-
 		window.addEventListener('click', event => this.mousePressed(event));
 	}
 
 	setupUI(canvasWidth, canvasHeight) {
-		console.log('object :>> ', this.gameManager);
 		this.setupAreas(canvasWidth, canvasHeight);
 
 		this.setupWalls();

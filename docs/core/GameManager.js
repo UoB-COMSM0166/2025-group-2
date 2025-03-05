@@ -4,7 +4,6 @@ import { GameUIManager } from './GameUIManager.js';
 
 export class GameManager {
 	constructor(game, mode, scaleVal) {
-		// this.boards = null;
 		this.mode = mode;
 		this.game = game;
 		this.scaleVal = scaleVal;
