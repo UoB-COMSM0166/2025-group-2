@@ -6,7 +6,7 @@ import { Fruit } from './index.js';
 const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
 
-export class FruitBoard {
+export class Board {
 	constructor(player, gameArea, shopArea, displayArea, scaleVal) {
 		this.gameArea = gameArea; // { x, y, w, h }
 		this.shopArea = shopArea; // { x, y, w, h }
@@ -24,22 +24,8 @@ export class FruitBoard {
 		this.uiControllor = this.player.uiControllor;
 		this.mode = this.player.mode;
 		this.id = this.player.id;
-		this.incidentManager = new IncidentManager(this);
 
-		let windButton = createButton('Wind Incident');
-		windButton.mousePressed(() => this.incidentManager.activateIncident('wind'));
-
-		let fogButton = createButton('Fog Incident');
-		fogButton.mousePressed(() => this.incidentManager.activateIncident('fog'));
-
-		let freezeButton = createButton('Freeze Incident');
-		freezeButton.mousePressed(() => this.incidentManager.activateIncident('freeze'));
-
-		let fireButton = createButton('Fire Incident');
-		fireButton.mousePressed(() => this.incidentManager.activateIncident('fire'));
-
-		let rainButton = createButton('Rain Incident');
-		rainButton.mousePressed(() => this.incidentManager.activateIncident('rain'));
+		this.incidentManager = new IncidentManager(this, this.gameArea);
 	}
 
 	setup() {
@@ -57,30 +43,64 @@ export class FruitBoard {
 
 		const nextFruitX =
 			this.mode === 'single' || this.id === 2
-				? this.shopArea.x + this.shopArea.w / 2 // Default to shop for single mode & Player 2
-				: this.displayArea.x + this.displayArea.w / 2; // Player 1 places nextFruit above display
+				? this.shopArea.x + this.shopArea.w / 2
+				: this.displayArea.x + this.displayArea.w / 2;
 
 		const nextFruitY =
 			this.mode === 'single' || this.id === 2
-				? this.shopArea.y - DISTFROMSHOP // Default for single mode & Player 2
-				: this.displayArea.y - DISTFROMSHOP; // Player 1 places it above display
+				? this.shopArea.y - DISTFROMSHOP
+				: this.displayArea.y - DISTFROMSHOP;
 
 		this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
 		this.nextFruit.doNotFall();
 
 		this.toolManager = this.player.toolManager;
+
+		// incident button have to remove after Jimmy do the random effect
+		// start here
+		let buttons = [
+			{ label: 'Wind Incident', type: 'Wind' },
+			{ label: 'Fog Incident', type: 'Fog' },
+			{ label: 'Freeze Incident', type: 'Freeze' },
+			{ label: 'Fire Incident', type: 'Fire' },
+			{ label: 'Rain Incident', type: 'Rain' },
+		];
+
+		let startY = 100;
+		let spacing = 50;
+
+		buttons.forEach((btn, index) => {
+			let button = createButton(btn.label);
+			button.position(50, startY + index * spacing);
+			button.mousePressed(() => this.incidentManager.activateIncident(btn.type));
+		});
+
+		// end here
 	}
 
 	update() {
-		// Update current fruit and handle falls
 		this.handleCurrentFruit();
-		// Detect collisions and mergers between fruits
 		this.handleMerging();
-		// Filter out fruits that have been marked removed
+
 		this.fruits = this.fruits.filter(fruit => !fruit.removed);
+		this.fruits.forEach(fruit => {
+			//check if the fruit is in fog
+			if (this.incidentManager.incidents.Fog.active && fruit.sprite.y > 200) {
+				fruit.isInFog = true;
+				fruit.setColor(66, 84, 84);
+			} else {
+				// Si quieres restaurar el color original de la fruta cuando no está bajo la niebla
+				fruit.isInFog = false; // Marcar como dentro de la niebla
+			}
+			if (fruit instanceof BombFruit) {
+				fruit.checkCollision(this);
+			}
+		});
+
 		for (let fruit of this.fruits) {
 			fruit.updateState();
 		}
+		this.incidentManager.update();
 	}
 
 	updateScale(newScale) {
@@ -122,7 +142,7 @@ export class FruitBoard {
 		let currentMouseX = mouseX / this.scaleVal;
 		let currentMouseY = mouseY / this.scaleVal;
 
-		if (this.currentFruit && this.currentFruit.sprite) {
+		if (this.currentFruit && this.currentFruit?.sprite) {
 			// allow current fruit move with mouse
 			this.currentFruit.moveWithMouse(leftBound, rightBound, this.gameArea.y - DISTFROMGAME);
 			this.currentFruit.letFall();
@@ -193,9 +213,8 @@ export class FruitBoard {
 
 				// rainbow fruit merging
 				if (a instanceof RainbowFruit || b instanceof RainbowFruit) {
-					let normalFruit = a instanceof RainbowFruit ? b : a;
 					let mergedFruit = RainbowFruit.universalMerge(a, b);
-					if (mergedFruit) this.processMergedFruit(mergedFruit, normalFruit.level);
+					if (mergedFruit) this.processMergedFruit(mergedFruit);
 					continue;
 				}
 
@@ -208,25 +227,24 @@ export class FruitBoard {
 		}
 	}
 
-	processMergedFruit(mergedFruit, originalFruitLevel) {
+	processMergedFruit(mergedFruit) {
 		this.fruits.push(mergedFruit);
 
-		/**
-    if (this.toolManager.tools.doubleScore.doubleScoreActive && a.fireAffected === false && b.fireAffected === false) {
-			this.score.addScore(mergedFruit.i * 2);
-		}
-		else if(a.fireAffected || b.fireAffected){
-			this.score.minusScore(mergedFruit.i);
-		}
-		else {
-			this.score.addScore(mergedFruit.i);
-		}
- *
- */
-		let scoreMultiplier = this.toolManager.tools.doubleScore.doubleScoreActive ? 2 : 1;
-		let scoreLevel = originalFruitLevel !== undefined ? originalFruitLevel : mergedFruit.level;
+		let scoreLevel = mergedFruit.level;
 
-		this.score.addScore(scoreLevel * scoreMultiplier);
+		if (mergedFruit.fireAffected) {
+			this.score.minusScore(scoreLevel);
+			return;
+		}
+
+		let scoreMultiplier = this.toolManager.tools.doubleScore.doubleScoreActive ? 2 : 1;
+
+		// 如果 `mergedFruit` 被火焰影響，則扣分
+		if (mergedFruit.fireAffected) {
+			this.score.minusScore(scoreLevel);
+		} else {
+			this.score.addScore(scoreLevel * scoreMultiplier);
+		}
 	}
 
 	checkFruitOverLine(y) {

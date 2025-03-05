@@ -1,5 +1,6 @@
 import { ToolManager } from '../core/ToolManager.js';
 import { FruitBoard, Score } from '../models/index.js';
+import { Board, Score } from '../models/index.js';
 
 export class Player {
 	constructor(id, gameManager) {
@@ -27,8 +28,7 @@ export class Player {
 				? this.area.game1
 				: this.area.game2;
 
-		this.boards = new FruitBoard(this, gameArea, this.area.shop, this.area.display, this.scaleVal);
-		// this.boards = new FruitBoard(this, this.area.game, this.area.shop, this.scaleVal);
+		this.boards = new Board(this, gameArea, this.area.shop, this.area.display, this.scaleVal);
 		this.toolManager = new ToolManager(this, this.area);
 		this.boards.setup();
 	}
