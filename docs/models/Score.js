@@ -8,10 +8,14 @@ export class Score {
 	}
 
 	getScore() {
-		return this.score;
+		return this.score || 0;
 	}
 
 	reset() {
 		this.score = 0;
+	}
+
+	minusScore(score){
+		this.score -= score;
 	}
 }

@@ -1,22 +1,22 @@
 export class Incident {
-	constructor(game, duration = 10) {
+	constructor(game, name, duration = 10) {
 		this.game = game;
+		this.name = name;
 		this.active = false;
 		this.duration = duration;
 		this.timeLeft = duration;
 		this.timer = null;
+		this.manager = null;
 	}
 
 	enable() {
 		if (this.active) return;
 		this.active = true;
-		this.timeLeft = this.duration;
-
 		this.timer = setInterval(() => {
 			if (this.timeLeft > 0) {
 				this.timeLeft--;
 			} else {
-				this.disable();
+				this.manager.deactivateIncident(this.name);
 			}
 		}, 1000);
 	}
@@ -25,11 +25,11 @@ export class Incident {
 		if (!this.active) return;
 		this.active = false;
 		clearInterval(this.timer);
+		this.timeLeft = this.duration;
 	}
 
 	pause() {
 		if (!this.active) return;
-		clearInterval(this.timer);
 	}
 
 	resume() {
@@ -44,5 +44,11 @@ export class Incident {
 		}, 1000);
 	}
 
-	update() {}
+	update() {
+		if (this.active) {
+			fill(0);
+			textSize(20);
+			text(`${this.name} Effect Time Left: ${this.timeLeft}`, 240, 90);
+		}
+	}
 }

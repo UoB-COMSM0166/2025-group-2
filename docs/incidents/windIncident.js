@@ -2,31 +2,20 @@ import { Incident } from './Incident.js';
 
 export class WindIncident extends Incident {
 	constructor(game) {
-		super(game, 30);
+		super(game,"",20);
 		this.windSpeed = 0;
 		this.noisePos = 0;
 		this.windInc = 0.01;
 		this.randomwindtimer = null;
-		this.autoDisableTimer = null;
 		this.paused = false;
 	}
 
 	enable() {
 		super.enable();
-
-		this.autoDisableTimer = setTimeout(() => {
-			this.disable();
-		}, 30000);
 	}
 
 	disable() {
 		super.disable();
-
-		if (this.autoDisableTimer) {
-			clearTimeout(this.autoDisableTimer);
-			this.autoDisableTimer = null;
-		}
-
 		this.applyWindToFruits(true);
 	}
 
@@ -34,12 +23,6 @@ export class WindIncident extends Incident {
 		if (!this.active || this.paused) return;
 		super.pause();
 		this.paused = true;
-
-		if (this.autoDisableTimer) {
-			clearTimeout(this.autoDisableTimer);
-			this.autoDisableTimer = null;
-		}
-
 		this.applyWindToFruits(true);
 	}
 
@@ -47,20 +30,12 @@ export class WindIncident extends Incident {
 		if (!this.active || this.timeLeft <= 0) return;
 		super.resume();
 		this.paused = false;
-
-		this.autoDisableTimer = setTimeout(() => {
-			this.disable();
-		}, this.timeLeft * 1000);
-
 		this.applyWindToFruits();
 	}
 
 	update() {
-		if (this.active) {
-			fill(0);
-			textSize(20);
-			text('Wind effect Time Left: ' + this.timeLeft, 10, 30);
-		}
+		super.update();
+
 		if (!this.active || this.paused) return;
 		if (this.game.currentFruit) {
 			this.windSpeed = (noise(this.noisePos) - 0.5) * 60;
