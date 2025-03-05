@@ -1,4 +1,3 @@
-export { Board } from './Board.js';
 export { Coin } from './Coin.js';
 export { Fruit } from './Fruit.js';
 export { FruitBoard } from './FruitBoard.js';
