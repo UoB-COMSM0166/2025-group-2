@@ -15,6 +15,7 @@ export class TestIncident extends Incident {
 	}
 
 	update() {
+		super.update();
 		if (!this.active) return;
 	}
 }

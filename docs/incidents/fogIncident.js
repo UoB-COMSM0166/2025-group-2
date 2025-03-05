@@ -35,11 +35,8 @@ export class FogIncident extends Incident {
 	}
 
 	update() {
-		if (this.active) {
-			fill(0);
-			textSize(20);
-			text('Fog effect Time Left: ' + this.timeLeft, 10, 70);
-		}
+		super.update();
+
 		if (!this.active || this.paused) return;
 
 		this.applyFogToBoard(true);

@@ -44,5 +44,11 @@ export class Incident {
 		}, 1000);
 	}
 
-	update() {}
+	update() {
+		if (this.active) {
+			fill(0);
+			textSize(20);
+			text(`${this.name} Effect Time Left: ${this.timeLeft}`, 240, 90);
+		}
+	}
 }

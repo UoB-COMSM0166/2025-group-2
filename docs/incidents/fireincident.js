@@ -82,6 +82,7 @@ export class FireIncident extends Incident {
 			textSize(20);
 			text('Fire effect Time Left: ' + this.timeLeft, 10, 50);
 		}
+		super.update();
 		if (!this.active || this.paused) return;
 	}
 }
