@@ -9,7 +9,6 @@ export class RainIncident extends Incident {
 		this.area = gameArea;
 		this.hasDropped = false;
 		this.fruitCount = 6; // 掉落水果的数量
-		this.fruitSize = 40; // 所有水果大小相同
 	}
 
 	enable() {
@@ -49,7 +48,7 @@ export class RainIncident extends Incident {
 			const fruitType = floor(random(4));
 
 			// 创建水果
-			const newFruit = new Fruit(fruitType, x, this.area.y, this.fruitSize, this.scaleVal);
+			const newFruit = new Fruit(fruitType, x, this.area.y, 30 + 20 * fruitType, this.scaleVal);
 
 			// 确保水果处于下落状态
 			newFruit.isFalling = true;
