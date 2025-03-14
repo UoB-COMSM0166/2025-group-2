@@ -40,7 +40,7 @@ export class GameUIManager {
 		const shopHeight = canvasHeight * 0.5;
 		// const displayWidth = canvasWidth * 0.15;
 		const displayWidth = canvasWidth * (this.isDoubleMode ? 0.1 : 0.15);
-		const displayHeight = canvasHeight * 0.5;
+		const displayHeight = canvasHeight * 0.85;
 		// const gap = canvasWidth * 0.05;
 		const gap = canvasWidth * (this.isDoubleMode ? 0.03 : 0.05);
 		const totalWidth =
