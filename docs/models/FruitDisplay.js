@@ -10,7 +10,7 @@ export class FruitDisplay {
 		const fruitsLevel = [];
 		let prevY = null;
 		let prevSize = null;
-		const totalFruits = 7;
+		const totalFruits = 10;
 		const gap = 18;
 
 		for (let i = 0; i < totalFruits; i++) {

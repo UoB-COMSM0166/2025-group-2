@@ -7,6 +7,9 @@ export class Fruit {
 		'#2d92d1',
 		'#f6aeae',
 		'#277da1',
+		'#3b498e',
+		'#ffd043',
+		'#66418a',
 	];
 
 	static STATE = {
