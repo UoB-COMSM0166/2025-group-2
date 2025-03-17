@@ -1,3 +1,4 @@
+import { NotificationManager } from '../core/NotificationManager.js';
 import { FruitDisplay, Score, Timer } from '../models/index.js';
 import { Shop } from '../shop/index.js';
 import { UIControllor } from './UIControllor.js';
@@ -14,6 +15,7 @@ export class GameUIManager {
 
 		this.fruitDisplay = new FruitDisplay(gameManager.scaleVal);
 		this.shop = new Shop(this.ui, gameManager);
+		this.notificationManager = new NotificationManager(); // Added notification manager
 		this.isDoubleMode = this.gameManager.mode === 'double';
 		this.player = this.gameManager.player;
 
@@ -158,6 +160,8 @@ export class GameUIManager {
 		if (this.isDoubleMode) {
 			this.ui.createDashedLine(this.AREAS.dashLine2);
 		}
+		// Draw notification message
+		this.notificationManager.update();
 	}
 
 	displayCounter() {
