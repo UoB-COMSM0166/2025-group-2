@@ -50,12 +50,12 @@ export class RainbowFruit extends Fruit {
 	static universalMerge(a, b) {
 		if (a.isRainbow || b.isRainbow) {
 			console.log(`🌈 Universal Merge triggered between ${a.i} and ${b.i}`);
-			let normalFruit = a.isRainbow ? b : a; // 找到非 RainbowFruit 的水果
+			let normalFruit = a.isRainbow ? b : a; // Find non-rainbowfruit
 			let newType = normalFruit.level + 1;
 			if (normalFruit.level === 7) {
 				newType = 7;
 			}
-			//let newType = normalFruit.i + 1;  // 直接 +1 作为新水果等级
+			//let newType = normalFruit.i + 1;
 			let newX = (a.sprite.x + b.sprite.x) / 2;
 			let newY = (a.sprite.y + b.sprite.y) / 2;
 			let newSize = 30 + 20 * newType;

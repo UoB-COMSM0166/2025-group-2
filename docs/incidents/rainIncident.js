@@ -3,12 +3,12 @@ import { Incident } from './Incident.js';
 
 export class RainIncident extends Incident {
 	constructor(game, gameArea) {
-		super(game, 'Rain', 0); // 传入游戏实例，事件名称，持续时间（秒）
+		super(game, 'Rain', 0); // Pass in game instance, event name, duration (seconds)
 		this.game = game;
 		this.scaleVal = this.game.scaleVal;
 		this.area = gameArea;
 		this.hasDropped = false;
-		this.fruitCount = 6; // 掉落水果的数量
+		this.fruitCount = 6; // The amount of fruit dropped
 	}
 
 	enable() {
@@ -31,29 +31,29 @@ export class RainIncident extends Incident {
 	}
 
 	dropFruitRow() {
-		// 计算容器边界
-		const leftWall = this.area.x; // 左墙内侧位置
-		const rightWall = this.area.x + this.area.w; // 右墙内侧位置
+		// Compute container boundary
+		const leftWall = this.area.x; // Left wall inside position
+		const rightWall = this.area.x + this.area.w; // Right wall inside position
 		const containerWidth = rightWall - leftWall;
 
-		// 计算水果之间的间距
+		// Calculate the spacing between fruits
 		const spacing = containerWidth / (this.fruitCount + 1);
 
-		// 创建水果并添加到游戏中
+		// Create fruits and add them to the game
 		for (let i = 0; i < this.fruitCount; i++) {
-			// 计算水果的x坐标（均匀分布）
+			// Calculate the X-coordinate of the fruit (uniform distribution)
 			const x = leftWall + spacing * (i + 1);
 
-			// 随机水果类型（0到6之间）
+			// Random fruit type (between 0 and 6)
 			const fruitType = floor(random(4));
 
-			// 创建水果
+			// Create fruit
 			const newFruit = new Fruit(fruitType, x, this.area.y, 30 + 20 * fruitType, this.scaleVal);
 
-			// 确保水果处于下落状态
+			// Make sure the fruit is in a falling state
 			newFruit.isFalling = true;
 
-			// 添加到游戏中
+			// Added to the game
 			this.game.fruits.push(newFruit);
 		}
 	}
