@@ -41,5 +41,6 @@ export class Game {
 
 	updateScale(newScale) {
 		this.scaleVal = newScale;
+		this.gameManager.updateScale(this.scaleVal);
 	}
 }

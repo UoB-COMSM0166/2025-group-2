@@ -28,7 +28,7 @@ export class GameManager {
 		if (!this.isGameOver) {
 			this.checkIsGameOver();
 		}
-
+		this.updateScale(this.scaleVal);
 		this.uiManager.ui.drawLabels();
 		this.uiManager.draw();
 
