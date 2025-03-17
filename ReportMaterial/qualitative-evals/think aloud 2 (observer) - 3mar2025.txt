@@ -1,0 +1,8 @@
+Think Aloud Evaluation 2 - 3Mar2025
+
+- there are 2 modes to the game; interesting twist from original game
+- it is good to see all the ball sizes during gameplay
+- game ends when the fruit goes over red line in playing field; clearer than before so it is an improvement
+- maybe add something more, like game end animation? so it is more obvious instead of just stopping and not allowing player to play
+- double player mode also requires mouse to play? will be almost impossible for 2 players to play though
+- maybe switch to using keyboard keys instead of using mouse to play the game
