@@ -33,6 +33,10 @@ export class Fruit {
 		this.isFrozen = false;
 		this.scaleVal = scaleVal;
 
+		// Default to zero velocity - important for keyboard controls
+		this.sprite.vel.x = 0;
+		this.sprite.vel.y = 0;
+
 		this.sprite.draw = () => {
 			push();
 			switch (true) {
@@ -119,16 +123,22 @@ export class Fruit {
 		ellipse(leftEyeX, eyeY, eyeSize * 2, eyeSize * 2);
 		ellipse(rightEyeX, eyeY, eyeSize * 2, eyeSize * 2);
 
-		// Pupil Follows Mouse Movement
+		// Pupil Follows Mouse Movement in single mode or stays centered in double mode
 		function getPupilOffset(eyeX, eyeY) {
-			let scaledMouseX = mouseX / this.scaleVal;
-			let scaledMouseY = mouseY / this.scaleVal;
-			let dx = scaledMouseX - (this.sprite.x + eyeX);
-			let dy = scaledMouseY - (this.sprite.y + eyeY);
-			let angle = atan2(dy, dx);
-			let maxOffset = eyeSize * 0.4;
+			// If we're in a game context that uses mouse tracking
+			if (mouseX !== undefined && mouseY !== undefined) {
+				let scaledMouseX = mouseX / this.scaleVal;
+				let scaledMouseY = mouseY / this.scaleVal;
+				let dx = scaledMouseX - (this.sprite.x + eyeX);
+				let dy = scaledMouseY - (this.sprite.y + eyeY);
+				let angle = atan2(dy, dx);
+				let maxOffset = eyeSize * 0.4;
 
-			return createVector(cos(angle) * maxOffset, sin(angle) * maxOffset);
+				return createVector(cos(angle) * maxOffset, sin(angle) * maxOffset);
+			} else {
+				// Default eye position (looking forward)
+				return createVector(0, 0);
+			}
 		}
 
 		// Left Eye Pupil
@@ -187,6 +197,14 @@ export class Fruit {
 		this.sprite.vel.y = 0;
 	}
 
+	// Move the fruit to a specific position (for keyboard control)
+	moveTo(x, y) {
+		this.sprite.x = x;
+		this.sprite.y = y;
+		this.sprite.vel.x = 0;
+		this.sprite.vel.y = 0;
+	}
+
 	remove() {
 		this.removed = true;
 		this.sprite.remove();
@@ -212,6 +230,8 @@ export class Fruit {
 
 	doNotFall() {
 		this.sprite.collider = 'static';
+		this.sprite.vel.x = 0;
+		this.sprite.vel.y = 0;
 	}
 
 	letFall() {
