@@ -1,0 +1,7 @@
+Think Aloud Evaluation 1 - 3Mar2025
+
+- good twist with the random incidents
+- seems like there are bugs when more than 1 incidents occur at the same time
+- will be good to get rid of thee bugs for multiple random incidences
+- bomb and fruit tool makes game easier 
+- might want to limit the number of times players can buy the tools like bomb and rainbow, maybe using currency or money?
