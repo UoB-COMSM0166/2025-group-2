@@ -5,7 +5,7 @@ import { Fruit } from './index.js';
 
 const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
-const KEYBOARD_MOVE_SPEED = 10;
+const KEYBOARD_MOVE_SPEED = 5;
 
 export class Board {
 	constructor(player, area, scaleVal) {
