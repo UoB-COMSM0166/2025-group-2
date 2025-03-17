@@ -31,6 +31,10 @@ export class Board {
 			this.mode === 'single' ? area.dashLine1 : this.id === 1 ? area.dashLine1 : area.dashLine2;
 
 		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
+
+		// Record game start time to prevent accidental clicks
+		this.gameStartTime = millis();
+		this.GAME_START_PROTECTION = 500;
 	}
 
 	setup() {
@@ -166,6 +170,12 @@ export class Board {
 
 	// Handle mouse click for single mode (drop fruit)
 	handleMouseClick() {
+		// Check if it is within the game protection period
+		if (millis() - this.gameStartTime < this.GAME_START_PROTECTION) {
+			console.log('Game just started, ignore click');
+			return;
+		}
+
 		if (!this.currentFruit) return;
 
 		let leftBound = this.gameArea.x + this.wallWidth;

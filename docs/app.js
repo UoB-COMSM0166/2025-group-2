@@ -14,6 +14,10 @@ const keysPressed = {
 	ArrowRight: false,
 };
 
+// Prevent immediate fruit drops triggered by clicking when mode is switched
+let modeChangeTime = 0;
+const MODE_CHANGE_DELAY = 500; // millisecond
+
 // Use window.setup because in index.html file use type module to allow import and export file.
 window.setup = function () {
 	canvas = createCanvas(1500, 1000);
@@ -102,9 +106,21 @@ window.keyReleased = function () {
 
 // Handle mouse click for single mode
 window.mouseClicked = function () {
+	if (millis() - modeChangeTime < MODE_CHANGE_DELAY) {
+		console.log('Ignore clicks after mode switching');
+		return false;
+	}
+
 	if (game && game.gameManager && game.gameManager.mode === 'single') {
 		// Tell player to drop fruit on click
 		game.gameManager.handleMouseClick();
 	}
 	return false;
+};
+
+// Callback function when game mode changes
+window.onModeChange = function () {
+	// Record when mode changes
+	modeChangeTime = millis();
+	console.log('The game mode has changed.，设置点击保护');
 };
