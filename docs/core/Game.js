@@ -14,6 +14,11 @@ export class Game {
 		this.currentScene = 'game';
 		this.gameManager = new GameManager(this, mode, this.scaleVal);
 		this.menuPage.hideButtons();
+
+		// Call the mode change callback to notify app.js that the game mode has changed
+		if (window.onModeChange) {
+			window.onModeChange();
+		}
 	}
 
 	setup() {
@@ -41,5 +46,8 @@ export class Game {
 
 	updateScale(newScale) {
 		this.scaleVal = newScale;
+		if (this.gameManager) {
+			this.gameManager.updateScale(this.scaleVal);
+		}
 	}
 }

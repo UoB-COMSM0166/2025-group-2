@@ -5,6 +5,7 @@ import { Fruit } from './index.js';
 
 const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
+const KEYBOARD_MOVE_SPEED = 5;
 
 export class Board {
 	constructor(player, area, scaleVal) {
@@ -30,6 +31,10 @@ export class Board {
 			this.mode === 'single' ? area.dashLine1 : this.id === 1 ? area.dashLine1 : area.dashLine2;
 
 		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
+
+		// Record game start time to prevent accidental clicks
+		this.gameStartTime = millis();
+		this.GAME_START_PROTECTION = 500;
 	}
 
 	setup() {
@@ -80,10 +85,20 @@ export class Board {
 		});
 
 		// end here
+
+		// Debug log to verify fruit positioning
+		console.log(
+			`Player ${this.id} initial fruit position: x=${this.currentFruit.sprite.x}, y=${this.currentFruit.sprite.y}`
+		);
 	}
 
 	update() {
-		this.handleCurrentFruit();
+		if (this.isSingleMode) {
+			this.handleCurrentFruitMouse();
+		} else {
+			this.handleCurrentFruitKeyboard();
+		}
+
 		this.handleMerging();
 
 		this.fruits = this.fruits.filter(fruit => !fruit.removed);
@@ -139,60 +154,194 @@ export class Board {
 		this.currentFruit = fruit;
 	}
 
-	handleCurrentFruit() {
-		let leftBound = this.gameArea.x + this.wallWidth;
-		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
-		let topBound = this.gameArea.y + this.gameArea.h;
-		let currentMouseX = mouseX / this.scaleVal;
-		let currentMouseY = mouseY / this.scaleVal;
-
+	// Handle mouse controls (for single mode) - just track position, not dropping
+	handleCurrentFruitMouse() {
 		if (this.currentFruit && this.currentFruit?.sprite) {
-			// allow current fruit move with mouse
+			let leftBound = this.gameArea.x + this.wallWidth;
+			let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+
+			// Allow current fruit to move with mouse
 			this.currentFruit.moveWithMouse(leftBound, rightBound, this.gameArea.y - DISTFROMGAME);
 			this.currentFruit.letFall();
 		} else {
-			// Timer increments when there is no current fruit
-			this.timer++;
-			if (this.timer > 10) {
-				// Change the next fruit to the current fruit
-				this.currentFruit = this.nextFruit;
-				// Generate new fruit at the top of the shop area
-				let newType = int(random(5));
-
-				const nextFruitX =
-					this.isSingleMode || this.id === 2
-						? this.shopArea.x + this.shopArea.w / 2 // Default to shop for single mode & Player 2
-						: this.displayArea.x + this.displayArea.w / 2; // Player 1 places nextFruit above display
-
-				const nextFruitY =
-					this.isSingleMode || this.id === 2
-						? this.shopArea.y - DISTFROMSHOP // Default for single mode & Player 2
-						: this.displayArea.y - DISTFROMSHOP; // Player 1 places it above display
-				this.nextFruit = new Fruit(
-					newType,
-					nextFruitX,
-					nextFruitY,
-					30 + 20 * newType,
-					this.scaleVal
-				);
-				this.nextFruit.doNotFall();
-				this.timer = 0;
-			}
+			this.handleNextFruit();
 		}
-		// When the mouse is pressed, put the current fruit into the fruits array and clear currentFruit
-		if (
-			mouseIsPressed &&
-			this.currentFruit &&
-			this.currentFruit.getXPosition() < rightBound &&
-			this.currentFruit.getXPosition() > leftBound &&
-			currentMouseX < rightBound &&
-			currentMouseX > leftBound &&
-			currentMouseY < topBound
-		) {
-			this.currentFruit.sprite.vel.y = this.gravity;
-			this.currentFruit.startFalling();
-			this.fruits.push(this.currentFruit);
-			this.currentFruit = null;
+	}
+
+	// Handle mouse click for single mode (drop fruit)
+	handleMouseClick() {
+		// Check if it is within the game protection period
+		if (millis() - this.gameStartTime < this.GAME_START_PROTECTION) {
+			console.log('Game just started, ignore click');
+			return;
+		}
+
+		if (!this.currentFruit) return;
+
+		let leftBound = this.gameArea.x + this.wallWidth;
+		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+		let currentMouseX = mouseX / this.scaleVal;
+
+		// Check if mouse is in valid drop area
+		if (currentMouseX >= leftBound && currentMouseX <= rightBound) {
+			this.dropCurrentFruit();
+			console.log('Fruit dropped via mouse click');
+		}
+	}
+
+	// Handle keyboard controls (for double mode)
+	handleCurrentFruitKeyboard() {
+		if (this.currentFruit && this.currentFruit?.sprite) {
+			// Keep the fruit at the correct height above the dash line
+			this.currentFruit.sprite.y = this.gameArea.y - DISTFROMGAME;
+			this.currentFruit.letFall();
+
+			// Force velocity to zero to prevent unwanted movement
+			this.currentFruit.sprite.vel.y = 0;
+		} else {
+			this.handleNextFruit();
+		}
+	}
+
+	// Handle keyboard input for the current fruit
+	handleKeyboardInput(action) {
+		if (!this.currentFruit || !this.currentFruit?.sprite) return;
+
+		let leftBound = this.gameArea.x + this.wallWidth;
+		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+
+		console.log(`Player ${this.id} received action: ${action}`);
+
+		switch (action) {
+			case 'player1-left':
+				if (this.id === 1) {
+					this.moveCurrentFruitLeft(leftBound);
+					console.log(`Player 1 fruit moved left: ${this.currentFruit.sprite.x}`);
+				}
+				break;
+			case 'player1-right':
+				if (this.id === 1) {
+					this.moveCurrentFruitRight(rightBound);
+					console.log(`Player 1 fruit moved right: ${this.currentFruit.sprite.x}`);
+				}
+				break;
+			case 'player1-drop':
+				if (this.id === 1) {
+					this.dropCurrentFruit();
+					console.log('Player 1 fruit dropped');
+				}
+				break;
+			case 'player2-left':
+				if (this.id === 2) {
+					this.moveCurrentFruitLeft(leftBound);
+					console.log(`Player 2 fruit moved left: ${this.currentFruit.sprite.x}`);
+				}
+				break;
+			case 'player2-right':
+				if (this.id === 2) {
+					this.moveCurrentFruitRight(rightBound);
+					console.log(`Player 2 fruit moved right: ${this.currentFruit.sprite.x}`);
+				}
+				break;
+			case 'player2-drop':
+				if (this.id === 2) {
+					this.dropCurrentFruit();
+					console.log('Player 2 fruit dropped');
+				}
+				break;
+		}
+	}
+
+	// Move the current fruit left
+	moveCurrentFruitLeft(leftBound) {
+		if (!this.currentFruit) return;
+
+		const newX = this.currentFruit.sprite.x - KEYBOARD_MOVE_SPEED;
+		// Make sure the fruit stays within bounds
+		this.currentFruit.sprite.x = constrain(
+			newX,
+			leftBound + this.currentFruit.sprite.d / 2,
+			this.currentFruit.sprite.x
+		);
+
+		// Reset vertical velocity to prevent gravity from affecting it until dropped
+		this.currentFruit.sprite.vel.y = 0;
+	}
+
+	// Move the current fruit right
+	moveCurrentFruitRight(rightBound) {
+		if (!this.currentFruit) return;
+
+		const newX = this.currentFruit.sprite.x + KEYBOARD_MOVE_SPEED;
+		// Make sure the fruit stays within bounds
+		this.currentFruit.sprite.x = constrain(
+			newX,
+			this.currentFruit.sprite.x,
+			rightBound - this.currentFruit.sprite.d / 2
+		);
+
+		// Reset vertical velocity to prevent gravity from affecting it until dropped
+		this.currentFruit.sprite.vel.y = 0;
+	}
+
+	// Drop the current fruit
+	dropCurrentFruit() {
+		if (!this.currentFruit) return;
+
+		this.currentFruit.sprite.vel.y = this.gravity;
+		this.currentFruit.startFalling();
+		this.fruits.push(this.currentFruit);
+		this.currentFruit = null;
+	}
+
+	// Handle switching to the next fruit
+	handleNextFruit() {
+		// Timer increments when there is no current fruit
+		this.timer++;
+		if (this.timer > 10) {
+			// Change the next fruit to the current fruit
+			this.currentFruit = this.nextFruit;
+
+			if (this.currentFruit) {
+				if (this.isSingleMode) {
+					// In single player mode, immediately place the fruit at the current mouse position
+					let leftBound = this.gameArea.x + this.wallWidth;
+					let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+					let scaledMouseX = mouseX / this.scaleVal;
+
+					// Limited to within game boundaries
+					let newX = constrain(
+						scaledMouseX,
+						leftBound + this.currentFruit.sprite.d / 2,
+						rightBound - this.currentFruit.sprite.d / 2
+					);
+
+					// Set Position Match Mouse Now
+					this.currentFruit.sprite.x = newX;
+					this.currentFruit.sprite.y = this.gameArea.y - DISTFROMGAME;
+				} else {
+					// In two-player mode, place in the center of the game area
+					this.currentFruit.sprite.x = this.gameArea.x + this.gameArea.w / 2;
+					this.currentFruit.sprite.y = this.gameArea.y - DISTFROMGAME;
+				}
+			}
+
+			// Generate new fruit at the top of the shop area
+			let newType = int(random(5));
+
+			const nextFruitX =
+				this.isSingleMode || this.id === 2
+					? this.shopArea.x + this.shopArea.w / 2 // Default to shop for single mode & Player 2
+					: this.displayArea.x + this.displayArea.w / 2; // Player 1 places nextFruit above display
+
+			const nextFruitY =
+				this.isSingleMode || this.id === 2
+					? this.shopArea.y - DISTFROMSHOP // Default for single mode & Player 2
+					: this.displayArea.y - DISTFROMSHOP; // Player 1 places it above display
+
+			this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
+			this.nextFruit.doNotFall();
+			this.timer = 0;
 		}
 	}
 
