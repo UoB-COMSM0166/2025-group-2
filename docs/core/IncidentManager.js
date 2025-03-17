@@ -23,7 +23,37 @@ export class IncidentManager {
 		this.isWarning = false;
 		this.warningStartTime = 0;
 		this.pendingIncident = null;
+
+		this.incidentInterval = null;
 	}
+
+	startIncident(){
+		setTimeout(()=>{
+			this.incidentInterval = setInterval(()=>{
+				this.randomIncident();
+			},this.getRandomInterval());
+		},10000);
+	}
+
+
+	getRandomInterval(){
+		return Math.floor(Math.random()*(20000-11000)+11000);
+	}
+
+	randomIncident(){
+		const incidentNames = Object.keys(this.incidents);
+		if(incidentNames.length === 0){
+			return;
+		}
+
+		const randomIndex = Math.floor(Math.random()* incidentNames.length);
+		const incident = incidentNames[randomIndex];
+
+		this.activateIncident(incident);
+		console.log(`active: ${incident}`);
+	}
+
+
 
 	update() {
 		if (this.isWarning) {

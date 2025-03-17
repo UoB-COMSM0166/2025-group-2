@@ -3,8 +3,8 @@ import { Incident } from './Incident.js';
 
 export class FireIncident extends Incident {
 	constructor(game) {
-		super(game, '', 30); // the duration(seconds) for this incedent left
-		this.chance = 0.5;
+		super(game, '', 10); // the duration(seconds) for this incedent left
+		this.chance = 0.35;
 	}
 
 	enable() {
@@ -23,7 +23,7 @@ export class FireIncident extends Incident {
 					ellipse(0, 0, fruit.sprite.d, fruit.sprite.d);
 					fruit.drawFace();
 
-					fill(255, 165, 0, 150);
+					fill(255, 165, 0, 180);
 					noStroke();
 					for (let i = 0; i < 5; i++) {
 						let flameX = random(-fruit.sprite.d / 3, fruit.sprite.d / 3);
