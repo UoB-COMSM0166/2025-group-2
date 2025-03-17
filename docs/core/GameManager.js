@@ -65,4 +65,33 @@ export class GameManager {
 			}
 		}
 	}
+
+	// Handle keyboard input for double mode
+	handleKeyPress(action) {
+		if (this.mode !== 'double') return;
+
+		// Determine which player's action needs to be handled
+		if (action.startsWith('player1')) {
+			const player1 = this.player[0];
+			if (player1 && player1.boards) {
+				player1.boards.handleKeyboardInput(action);
+			}
+		} else if (action.startsWith('player2')) {
+			const player2 = this.player[1];
+			if (player2 && player2.boards) {
+				player2.boards.handleKeyboardInput(action);
+			}
+		}
+	}
+
+	// Handle mouse click for single mode
+	handleMouseClick() {
+		if (this.mode !== 'single') return;
+
+		// In single mode, there's only one player
+		const player = this.player[0];
+		if (player && player.boards) {
+			player.boards.handleMouseClick();
+		}
+	}
 }
