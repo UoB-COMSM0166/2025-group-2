@@ -105,6 +105,6 @@ export class Shop {
 		const item = this.items.find(item => item.id === type);
 		if (!item) return;
 
-		player.buyTool(type, item.price);
+		player.buyTool(type, item);
 	}
 }

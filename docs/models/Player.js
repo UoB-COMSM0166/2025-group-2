@@ -12,7 +12,7 @@ export class Player {
 		this.gameManager = gameManager;
 		this.mode = this.gameManager.mode;
 		this.score = new Score();
-		this.coin = new Coin(this.mode === 'single' ? 0 : 0); // 我先預設100，Jin 做的時候請重置為0
+		this.coin = new Coin(0);
 		this.scaleVal = gameManager.scaleVal;
 		this.uiManager = gameManager.uiManager;
 		this.uiControllor = this.uiManager.ui;
@@ -111,7 +111,7 @@ export class Player {
 
 	/**
 	 * Display player's coins Display Player's coins
-	 * Jin 這裡請參考displayscore跟updateScore 改寫
+	 *
 	 *
 	 */
 	displayCoin() {
@@ -156,62 +156,26 @@ export class Player {
 
 	/**
 	 * Player buys a tool
-	 * Jin
+	 *
 	 * @param {string} toolType -  Tool type
 	 * @param {number} price -  Tool price
 	 */
-	buyTool(toolType, price) {
-		if (this.mode === 'single') {
-			if (this.coin.canAfford(price)) {
-				if (this.coin.spendCoin(price)) {
-					console.log(
-						`Player ${this.id} bought ${toolType}, remaining coins: ${this.coin.getCoin()}`
-					);
-					this.updateCoin();
-					this.toolManager.activate(toolType);
-					this.gameManager.uiManager.notificationManager.addNotification(
-						`Player ${this.id} has bought ${Player.getToolLabel(
-							toolType
-						)} (${Player.getToolDescription(toolType)})`
-					);
-					return true;
-				}
-			} else {
-				console.log('Not enough coins!');
+	buyTool(toolType, item) {
+		// Always use the coin system, regardless of mode.
+		if (this.coin.canAfford(item.price)) {
+			if (this.coin.spendCoin(item.price)) {
+				this.updateCoin();
+				this.toolManager.activate(toolType);
 				this.gameManager.uiManager.notificationManager.addNotification(
-					`Player ${this.id} does not have enough coins to buy ${Player.getToolLabel(
-						toolType
-					)} (${Player.getToolDescription(toolType)})`
+					`Player ${this.id} has bought ${item.label} ${item.effect} (${item.icon})`
 				);
-				return false;
+				return true;
 			}
 		} else {
-			this.toolManager.activate(toolType);
-			return true;
+			this.gameManager.uiManager.notificationManager.addNotification(
+				`Player ${this.id} does not have enough coins to buy ${item.label} (${item.icon})`
+			);
+			return false;
 		}
-	}
-
-	static getToolLabel(toolType) {
-		const labels = {
-			shuffle: 'Shuffle Tool',
-			divineShield: 'Divine Shield',
-			doubleScore: 'Double Score',
-			bombTool: 'Bomb Tool',
-			rainbowTool: 'Rainbow Tool',
-			random: 'Random Tool',
-		};
-		return labels[toolType] || toolType;
-	}
-
-	static getToolDescription(toolType) {
-		const descriptions = {
-			shuffle: 'shuffles the board',
-			divineShield: 'protects fruits from destruction',
-			doubleScore: 'doubles your points for a short time',
-			bombTool: 'creates an explosion to remove fruits',
-			rainbowTool: 'is able to merge with ALL fruits',
-			random: 'triggers a random effect',
-		};
-		return descriptions[toolType] || '';
 	}
 }

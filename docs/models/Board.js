@@ -406,9 +406,9 @@ export class Board {
 
 			// Add coin bonus
 			// Different gold rewards are offered depending on the level of the fruit
-			if (this.player.mode === 'single' && scoreLevel >= 2) {
+			if (scoreLevel >= 2) {
 				// Reward gold starting with Level 2 fruit
-				console.log('Awarding coins for merged fruit, scoreLevel:', scoreLevel);
+
 				let coinReward;
 
 				// Custom gold reward rules - can be adjusted for game balance
