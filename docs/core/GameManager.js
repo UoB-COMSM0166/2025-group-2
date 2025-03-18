@@ -133,7 +133,7 @@ export class GameManager {
 
 		// If counter is 0, end game
 		if (this.counter.getTimeLeft() <= 0 || this.isGameOver) {
-			// console.log('End of game because counter');
+			console.log('End of game because counter or GameisOver is TRUE');
 			noLoop();
 		}
 	}
@@ -149,16 +149,72 @@ export class GameManager {
 		}
 	}
 
+	determineWinnerByScore() {
+		let highestScore = 0;
+		let winner = null;
+
+		for (const player of this.player) {
+			if (player.score.getScore() > highestScore) {
+				highestScore = player.score;
+				winner = player;
+			}
+		}
+
+		console.log(`Player ${winner.id} wins by highest score!`);
+	}
+
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
 		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
+		const player1 = this.player[0];
+		const player2 = this.player[1];
 
-		for (const player of this.player) {
-			if (player.boards.checkFruitOverLine(dashLineY)) {
+		console.log(`The max level of player 1 is : ${player1.boards.getMaxFruitLevel()}`);
+		console.log(`The max level of player 2 is : ${player2.boards.getMaxFruitLevel()}`);
+
+		if (this.mode == 'double') {
+			//first checking fruit over line
+			if (player1.boards.checkFruitOverLine(dashLineY)) {
+				console.log('Game Over: A fruit of player 1 crossed the dash line!');
 				this.isGameOver = true;
-				console.log('Game Over: A fruit crossed the dash line!');
 				return;
+			}
+
+			if (player2.boards.checkFruitOverLine(dashLineY)) {
+				console.log('Game Over: A fruit of player 2 crossed the dash line!');
+				this.isGameOver = true;
+				return;
+			}
+
+			//second check if fruit is biggest
+			if (player1.boards.checkFruitIsMaximun()) {
+				console.log('Game Over: A fruit of player 1 is the biggest one!');
+				this.isGameOver = true;
+				return;
+			}
+
+			if (player1.boards.checkFruitIsMaximun()) {
+				console.log('Game Over: A fruit of player 2 is the biggest one!');
+				this.isGameOver = true;
+				return;
+			}
+
+			//third check which player has more score at the end
+			if (this.counter.getTimeLeft() <= 0) {
+				this.determineWinnerByScore();
+				this.isGameOver = true;
+				return;
+			}
+		}
+
+		if (this.mode == 'single') {
+			for (const player of this.player) {
+				if (player.boards.checkFruitOverLine(dashLineY)) {
+					this.isGameOver = true;
+					console.log('Game Over: A fruit crossed the dash line!');
+					return;
+				}
 			}
 		}
 	}
