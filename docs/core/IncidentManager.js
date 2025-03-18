@@ -27,33 +27,30 @@ export class IncidentManager {
 		this.incidentInterval = null;
 	}
 
-	startIncident(){
-		setTimeout(()=>{
-			this.incidentInterval = setInterval(()=>{
+	startIncident() {
+		setTimeout(() => {
+			this.incidentInterval = setInterval(() => {
 				this.randomIncident();
-			},this.getRandomInterval());
-		},10000);
+			}, this.getRandomInterval());
+		}, 10000);
 	}
 
-
-	getRandomInterval(){
-		return Math.floor(Math.random()*(20000-11000)+11000);
+	getRandomInterval() {
+		return Math.floor(Math.random() * (20000 - 11000) + 11000);
 	}
 
-	randomIncident(){
+	randomIncident() {
 		const incidentNames = Object.keys(this.incidents);
-		if(incidentNames.length === 0){
+		if (incidentNames.length === 0) {
 			return;
 		}
 
-		const randomIndex = Math.floor(Math.random()* incidentNames.length);
+		const randomIndex = Math.floor(Math.random() * incidentNames.length);
 		const incident = incidentNames[randomIndex];
 
 		this.activateIncident(incident);
 		console.log(`active: ${incident}`);
 	}
-
-
 
 	update() {
 		if (this.isWarning) {
@@ -113,5 +110,20 @@ export class IncidentManager {
 			this.gameArea.y + this.gameArea.h / 2
 		);
 		pop();
+	}
+
+	stopAllIncidents() {
+		if (this.incidentInterval) {
+			clearInterval(this.incidentInterval);
+		}
+
+		// Deactivate any active incidents
+		this.activeIncidents.forEach(incident => {
+			if (incident && incident.name) {
+				this.deactivateIncident(incident.name);
+			}
+		});
+
+		this.activeIncidents = [];
 	}
 }

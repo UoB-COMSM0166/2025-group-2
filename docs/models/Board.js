@@ -31,19 +31,17 @@ export class Board {
 			this.mode === 'single' ? area.dashLine1 : this.id === 1 ? area.dashLine1 : area.dashLine2;
 
 		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
-		this.incidentBegin();
+		// this.incidentBegin();
 
 		// Record game start time to prevent accidental clicks
 		this.gameStartTime = millis();
 		this.GAME_START_PROTECTION = 500;
 	}
 
-
 	incidentBegin() {
-		console.log("incident start");
+		console.log('incident start');
 		this.incidentManager.startIncident();
 	}
-
 
 	setup() {
 		world.gravity.y = this.gravity;
