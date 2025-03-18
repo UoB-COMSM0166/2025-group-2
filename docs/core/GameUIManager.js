@@ -139,12 +139,21 @@ export class GameUIManager {
 		);
 	}
 
-	draw() {
+	// Modified method with tutorial parameter:
+	draw(isTutorial = false) {
 		this.ui.drawLabels();
 		this.fruitDisplay.draw();
 		this.displayCoin();
 		this.displayScore();
-		this.displayCounter();
+
+		// Only update the counter if we're not in tutorial mode
+		if (!isTutorial) {
+			this.displayCounter();
+		} else {
+			// In tutorial mode, always show 120s
+			this.ui.updateLabelText('timer', `Time: 120s`);
+		}
+
 		this.ui.createDashedLine(this.AREAS.dashLine1);
 		if (this.isDoubleMode) {
 			this.ui.createDashedLine(this.AREAS.dashLine2);
