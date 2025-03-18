@@ -167,7 +167,7 @@ export class Player {
 				this.updateCoin();
 				this.toolManager.activate(toolType);
 				this.gameManager.uiManager.notificationManager.addNotification(
-					`Player ${this.id} has bought ${item.label} ${item.effect} (${item.icon})`
+					`Player ${this.id} has bought ${item.label} Tool (${item.icon})`
 				);
 				return true;
 			}
