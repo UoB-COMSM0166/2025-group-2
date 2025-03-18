@@ -1,4 +1,5 @@
 import { ToolManager } from '../core/ToolManager.js';
+import { Coin } from '../models/Coin.js';
 import { Board, Score } from '../models/index.js';
 
 /**
@@ -11,7 +12,7 @@ export class Player {
 		this.gameManager = gameManager;
 		this.mode = this.gameManager.mode;
 		this.score = new Score();
-		this.coins = 100; // 我先預設100，Jin 做的時候請重置為0
+		this.coin = new Coin(0);
 		this.scaleVal = gameManager.scaleVal;
 		this.uiManager = gameManager.uiManager;
 		this.uiControllor = this.uiManager.ui;
@@ -27,7 +28,7 @@ export class Player {
 	 */
 	setup() {
 		this.displayScore();
-
+		this.displayCoin();
 		this.boards = new Board(this, this.area, this.scaleVal);
 		this.toolManager = new ToolManager(this, this.area);
 		this.boards.setup();
@@ -109,15 +110,37 @@ export class Player {
 	}
 
 	/**
-	 * 顯示玩家的金幣數量 (Display player's coins)
-	 * Jin 這裡請參考displayscore跟updateScore 改寫
+	 * Display player's coins Display Player's coins
+	 *
 	 *
 	 */
 	displayCoin() {
-		this.uiControllor.updateLabelText('coin', `Coin: 0`);
+		// Add a small offset to the Coin tag to avoid overlapping with Score
+		const offsetX = 200; // Shift 200 pixels to the right
+		const coinPositionX =
+			this.id === 1
+				? this.area.game1.x + this.area.game1.w / 2 + offsetX
+				: this.area.game2.x + this.area.game2.w / 2 + offsetX;
+
+		// The Y coordinate can be left unchanged at -60, or another offsetY adjustment can be made
+		const coinPositionY = this.area.game1.y - 60;
+
+		this.uiControllor.createLabel(
+			`coin_${this.id}`,
+			coinPositionX,
+			coinPositionY,
+			`P${this.id} Coin: ${this.coin.getCoin()}`,
+			'#6B4F3F',
+			20
+		);
 	}
 
-	updateCoin() {}
+	updateCoin() {
+		this.uiControllor.updateLabelText(
+			`coin_${this.id}`,
+			`P${this.id} Coin: ${this.coin.getCoin()}`
+		);
+	}
 
 	/**
 	 * Show game over screen
@@ -132,19 +155,27 @@ export class Player {
 	}
 
 	/**
-	 * 玩家購買道具 (Player buys a tool)
-	 * Jin
-	 * @param {string} toolType - 道具類型 (Tool type)
-	 * @param {number} price - 道具價格 (Tool price)
+	 * Player buys a tool
+	 *
+	 * @param {string} toolType -  Tool type
+	 * @param {number} price -  Tool price
 	 */
-	buyTool(toolType, price) {
-		if (this.coins >= price) {
-			this.coins -= price;
-			console.log(`Player ${this.id} bought ${toolType}, remaining coins: ${this.coins}`);
-
-			this.toolManager.activate(toolType);
+	buyTool(toolType, item) {
+		// Always use the coin system, regardless of mode.
+		if (this.coin.canAfford(item.price)) {
+			if (this.coin.spendCoin(item.price)) {
+				this.updateCoin();
+				this.toolManager.activate(toolType);
+				this.gameManager.uiManager.notificationManager.addNotification(
+					`Player ${this.id} has bought ${item.label} Tool (${item.icon})`
+				);
+				return true;
+			}
 		} else {
-			console.log('Not enough coins!');
+			this.gameManager.uiManager.notificationManager.addNotification(
+				`Player ${this.id} does not have enough coins to buy ${item.label} (${item.icon})`
+			);
+			return false;
 		}
 	}
 }

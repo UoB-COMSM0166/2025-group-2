@@ -403,6 +403,41 @@ export class Board {
 			this.score.minusScore(scoreLevel);
 		} else {
 			this.score.addScore(scoreLevel * scoreMultiplier);
+
+			// Add coin bonus
+			// Different gold rewards are offered depending on the level of the fruit
+			if (scoreLevel >= 2) {
+				// Reward gold starting with Level 2 fruit
+
+				let coinReward;
+
+				// Custom gold reward rules - can be adjusted for game balance
+
+				switch (scoreLevel) {
+					case 2:
+						coinReward = 1;
+						break;
+					case 3:
+						coinReward = 2;
+						break;
+					case 4:
+						coinReward = 4;
+						break;
+					case 5:
+						coinReward = 6;
+						break;
+					case 6:
+						coinReward = 9;
+						break;
+					case 7:
+						coinReward = 12;
+						break;
+					default:
+						coinReward = scoreLevel * 2;
+				}
+				this.player.coin.addCoin(coinReward);
+				this.player.updateCoin();
+			}
 		}
 	}
 
