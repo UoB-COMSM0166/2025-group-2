@@ -1,4 +1,3 @@
-// TutorialManager.js
 // This manages the tutorial flow before actual gameplay begins
 export class TutorialManager {
 	constructor(game, gameManager) {
@@ -10,6 +9,18 @@ export class TutorialManager {
 		this.hasDrawnFirstStep = false; // Flag to ensure first step is shown
 		this.initialClickProtection = true; // Protect against initial auto-click
 		this.clickProtectionTimer = 20; // Wait some frames before allowing clicks
+		this.scaleVal = gameManager.scaleVal; // Get current scale value
+		this.canvasElt = document.querySelector('canvas'); // Get canvas element reference
+
+		// Listen for window resize events to update button scaling
+		window.addEventListener('resize', () => {
+			if (this.isActive && this.skipButton) {
+				this.updateSkipButtonPosition();
+			}
+		});
+
+		// Create skip button
+		this.createSkipButton();
 
 		// Pause the game's counter
 		if (this.gameManager.counter) {
@@ -71,6 +82,99 @@ export class TutorialManager {
 		this.freezeAllFruits();
 	}
 
+	// Create the skip button for tutorial
+	createSkipButton() {
+		// Create the skip button as a p5.js button
+		this.skipButton = createButton('Skip Tutorial');
+
+		// Style the button to match game aesthetics
+		this.skipButton.style('background-color', '#E5C3A6');
+		this.skipButton.style('color', '#6B4F3F');
+		this.skipButton.style('border', 'none');
+		this.skipButton.style('border-radius', '5px');
+		this.skipButton.style('font-size', '16px');
+		this.skipButton.style('padding', '8px 12px');
+		this.skipButton.style('cursor', 'pointer');
+		this.skipButton.style('font-family', 'Arial, sans-serif');
+		this.skipButton.style('box-shadow', '0px 2px 4px rgba(0,0,0,0.2)');
+		this.skipButton.style('transform-origin', 'top left');
+
+		// Set initial position using the same logic as the game's UI scaling
+		this.updateSkipButtonPosition();
+
+		// Add hover effect
+		this.skipButton.mouseOver(() => {
+			this.skipButton.style('background-color', '#F4D8C6');
+			this.skipButton.style('color', '#A3785F');
+		});
+
+		this.skipButton.mouseOut(() => {
+			this.skipButton.style('background-color', '#E5C3A6');
+			this.skipButton.style('color', '#6B4F3F');
+		});
+
+		this.skipButton.elt.addEventListener('click', e => {
+			console.log('Skip button clicked');
+			// Stop event propagation to prevent conflicts with other click handlers
+			e.preventDefault();
+			e.stopPropagation();
+			this.skipTutorial();
+			return false;
+		});
+	}
+
+	// Update skip button position based on current scale
+	updateSkipButtonPosition() {
+		if (!this.skipButton) return;
+
+		// Get the current scale values from the game's global scaleVal
+		const scaleVal = this.gameManager.scaleVal || window.scaleVal || 1;
+
+		// Get the canvas element for positioning reference
+		const canvas = document.querySelector('canvas');
+		if (!canvas) return;
+
+		// Get the canvas position and scale
+		const canvasRect = canvas.getBoundingClientRect();
+
+		// Calculate button position in the game coordinate system
+		const margin = 10;
+		const buttonWidth = 120;
+
+		// Use the same coordinate system as the canvas
+		const logicalX = width - buttonWidth - margin;
+		const logicalY = margin;
+
+		// Apply the same transform logic used for the canvas
+		this.skipButton.style('position', 'absolute');
+		this.skipButton.style('transform-origin', 'top left');
+		this.skipButton.style('transform', `scale(${scaleVal})`);
+
+		// Get offsets from the canvas
+		const leftOffset = canvasRect.left;
+		const topOffset = canvasRect.top;
+
+		// Apply position
+		this.skipButton.position(leftOffset + logicalX * scaleVal, topOffset + logicalY * scaleVal);
+
+		// Ensure the button stays visible
+		this.skipButton.style('z-index', '1000');
+		this.skipButton.style('pointer-events', 'auto');
+	}
+
+	// Skip the tutorial and go directly to gameplay
+	skipTutorial() {
+		console.log('Tutorial skipped by user');
+
+		// Hide the skip button
+		if (this.skipButton) {
+			this.skipButton.remove();
+		}
+
+		// End the tutorial
+		this.endTutorial();
+	}
+
 	// Make sure all fruits are frozen and don't move
 	freezeAllFruits() {
 		if (this.gameManager && this.gameManager.player) {
@@ -107,7 +211,7 @@ export class TutorialManager {
 
 	getObjectivesText() {
 		if (this.mode === 'single') {
-			return "Welcome to Suika Game! \nYour goal is to merge fruits of the same size to create larger fruits and earn points. \nDon't let fruits stack up past the red line!";
+			return "Welcome to the Fruit Merge Game! \nYour goal is to merge fruits of the same size to create larger fruits and earn points. \nDon't let fruits stack up past the red line!";
 		} else {
 			return 'Welcome to Two-Player Mode! \nPlayers must merge fruits in their own area. You lose if you stack fruits past the red line! \nWin Conditions: \n1. First player to achieve biggest fruit size wins! \nOR  \n2. Player with highest score after time limit wins!';
 		}
@@ -171,16 +275,31 @@ export class TutorialManager {
 	}
 
 	endTutorial() {
+		console.log('Ending tutorial...');
 		this.isActive = false;
+
+		// Remove the skip button if it exists
+		if (this.skipButton) {
+			this.skipButton.remove();
+		}
+
 		this.restoreOriginalClickHandler();
 
-		// Tell the game to start after tutorial
+		// Tell the game to start after tutorial - with proper error handling
 		try {
 			if (this.game && typeof this.game.startActualGame === 'function') {
+				console.log('Starting actual game...');
 				this.game.startActualGame();
+			} else {
+				console.error('game.startActualGame is not available');
+				// Fallback
+				if (this.game) {
+					this.game.currentScene = 'game';
+					this.game.isTutorialMode = false;
+				}
 			}
 		} catch (e) {
-			console.log('Error starting actual game:', e);
+			console.error('Error starting actual game:', e);
 			// Fallback to starting the game directly
 			if (this.game) {
 				this.game.currentScene = 'game';
@@ -297,6 +416,11 @@ export class TutorialManager {
 			if (this.clickProtectionTimer <= 0) {
 				this.initialClickProtection = false;
 			}
+		}
+
+		// Update skip button position when scaling may have changed
+		if (this.skipButton) {
+			this.updateSkipButtonPosition();
 		}
 
 		// Ensure all fruits stay frozen during tutorial
