@@ -44,7 +44,38 @@ export class Player {
 	 * Gerold I think you might need the reset function to clear everything
 	 * feel free to change the name or whICH file you want to put just an advice
 	 */
-	reset() {}
+	reset() {
+		// Reset player score and coins
+		this.score.reset();
+		this.coins = 100; // Reset to starting coins
+
+		// Reset board state
+		if (this.boards) {
+			// Clear existing fruits
+			this.boards.fruits = [];
+			if (this.boards.currentFruit) {
+				this.boards.currentFruit.remove();
+				this.boards.currentFruit = null;
+			}
+			if (this.boards.nextFruit) {
+				this.boards.nextFruit.remove();
+				this.boards.nextFruit = null;
+			}
+
+			// Reset timer
+			this.boards.timer = 0;
+		}
+
+		// Reset tool manager state
+		if (this.toolManager) {
+			// Reset all tools
+			Object.values(this.toolManager.tools).forEach(tool => {
+				if (tool.deactivate) {
+					tool.deactivate();
+				}
+			});
+		}
+	}
 
 	updateScale(newScale) {
 		this.scaleVal = newScale;
