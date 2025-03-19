@@ -19,6 +19,7 @@ export class Player {
 		this.area = this.uiManager.AREAS;
 		this.boards = null;
 		this.toolManager = null;
+		this.isDoubleMode = this.mode === 'double';
 
 		this.setup();
 	}
@@ -48,7 +49,7 @@ export class Player {
 	reset() {
 		// Reset player score and coins
 		this.score.reset();
-		this.coins = 100; // Reset to starting coins
+		this.coins = 0; // Reset to starting coins
 
 		// Reset board state
 		if (this.boards) {
@@ -87,78 +88,88 @@ export class Player {
 	}
 
 	displayScore() {
-		const scorePositionX =
-			this.id === 1
-				? this.area.game1.x + this.area.game1.w / 2
-				: this.area.game2.x + this.area.game2.w / 2; // Player 2's score on the right
+		if (this.isDoubleMode) {
+			const scorePositionX =
+				this.id === 1
+					? this.area.game1.x + this.area.game1.w / 2
+					: this.area.game2.x + this.area.game2.w / 2; // Player 2's score on the right
 
-		this.uiControllor.createLabel(
-			`score_${this.id}`,
-			scorePositionX,
-			this.area.game1.y - 60,
-			`P${this.id} Score: ${this.score.getScore()}`,
-			'#6B4F3F',
-			20
-		);
+			this.uiControllor.createLabel(
+				`score_${this.id}`,
+				scorePositionX,
+				this.area.game1.y - 150,
+				`P${this.id} Score: ${this.score.getScore()}`,
+				'#6B4F3F',
+				20
+			);
+		} else {
+			this.uiControllor.createLabel(
+				`score`,
+				this.area.shop.x + this.area.shop.w / 2,
+				this.area.shop.y - 60,
+				`Score: ${this.score.getScore()}`,
+				'#6B4F3F',
+				20
+			);
+		}
 	}
 
 	updateScore() {
-		this.uiControllor.updateLabelText(
-			`score_${this.id}`,
-			`P${this.id} Score: ${this.score.getScore()}`
-		);
+		if (this.isDoubleMode) {
+			this.uiControllor.updateLabelText(
+				`score_${this.id}`,
+				`P${this.id} Score: ${this.score.getScore()}`
+			);
+		} else {
+			this.uiControllor.updateLabelText(`score`, `Score: ${this.score.getScore()}`);
+		}
 	}
 
-	/**
-	 * Display player's coins Display Player's coins
-	 *
-	 *
-	 */
 	displayCoin() {
-		// Add a small offset to the Coin tag to avoid overlapping with Score
-		const offsetX = 200; // Shift 200 pixels to the right
-		const coinPositionX =
-			this.id === 1
-				? this.area.game1.x + this.area.game1.w / 2 + offsetX
-				: this.area.game2.x + this.area.game2.w / 2 + offsetX;
+		if (this.isDoubleMode) {
+			const coinPositionX =
+				this.id === 1
+					? this.area.game1.x + this.area.game1.w / 2
+					: this.area.game2.x + this.area.game2.w / 2;
 
-		// The Y coordinate can be left unchanged at -60, or another offsetY adjustment can be made
-		const coinPositionY = this.area.game1.y - 60;
+			const coinPositionY = this.area.game1.y - 120;
 
-		this.uiControllor.createLabel(
-			`coin_${this.id}`,
-			coinPositionX,
-			coinPositionY,
-			`P${this.id} Coin: ${this.coin.getCoin()}`,
-			'#6B4F3F',
-			20
-		);
+			this.uiControllor.createLabel(
+				`coin_${this.id}`,
+				coinPositionX,
+				coinPositionY,
+				`P${this.id} Coin: ${this.coin.getCoin()}`,
+				'#6B4F3F',
+				20
+			);
+		} else {
+			this.uiControllor.createLabel(
+				`coin`,
+				this.area.shop.x + this.area.shop.w / 2,
+				this.area.shop.y - 30,
+				`Coin: ${this.coin.getCoin()}`,
+				'#6B4F3F',
+				20
+			);
+		}
 	}
 
 	updateCoin() {
-		this.uiControllor.updateLabelText(
-			`coin_${this.id}`,
-			`P${this.id} Coin: ${this.coin.getCoin()}`
-		);
-	}
-
-	/**
-	 * Show game over screen
-	 * Gerold here is the code for showing RED GAME OVER
-	 *
-	 */
-	showGameOver() {
-		this.uiControllor.drawGameOver(
-			this.boards.AREAS.game.x + this.boards.AREAS.game.w / 2,
-			this.boards.AREAS.game.y - 60
-		);
+		if (this.isDoubleMode) {
+			this.uiControllor.updateLabelText(
+				`coin_${this.id}`,
+				`P${this.id} Coin: ${this.coin.getCoin()}`
+			);
+		} else {
+			this.uiControllor.updateLabelText(`coin`, `Coin: ${this.coin.getCoin()}`);
+		}
 	}
 
 	/**
 	 * Player buys a tool
 	 *
 	 * @param {string} toolType -  Tool type
-	 * @param {number} price -  Tool price
+	 * @param {Object} item -  Tool details
 	 */
 	buyTool(toolType, item) {
 		// Always use the coin system, regardless of mode.
