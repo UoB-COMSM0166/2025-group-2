@@ -453,4 +453,37 @@ export class Board {
 		}
 		return false;
 	}
+
+	getMaxFruitLevel() {
+		let maxLevel = 0;
+		// We check all the fruits and check the highest level
+		this.fruits.forEach(fruit => {
+			if (fruit.level > maxLevel) {
+				maxLevel = fruit.level;
+			}
+		});
+
+		// You can also verify currentFruit y nextFruit if neccessary
+		if (this.currentFruit && this.currentFruit.level > maxLevel) {
+			maxLevel = this.currentFruit.level;
+		}
+		if (this.nextFruit && this.nextFruit.level > maxLevel) {
+			maxLevel = this.nextFruit.level;
+		}
+		return maxLevel;
+	}
+
+	checkFruitIsMaximun() {
+		//define max level
+		let max = Fruit.maxFruitLevel + 1;
+
+		let maxLevel = this.getMaxFruitLevel();
+		console.log(`The max level of THE GAME IS is : ${max}`);
+
+		if (maxLevel != max) {
+			return false;
+		}
+
+		return true;
+	}
 }
