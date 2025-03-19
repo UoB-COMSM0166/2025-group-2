@@ -34,16 +34,13 @@ export class GameUIManager {
 		this.counter.start();
 	}
 
-	// **設定遊戲區域**
 	setupAreas(canvasWidth, canvasHeight) {
 		const gameWidth = canvasWidth * (this.isDoubleMode ? 0.3 : 0.4);
 		const gameHeight = canvasHeight * 0.6;
 		const shopWidth = canvasWidth * (this.isDoubleMode ? 0.15 : 0.2);
 		const shopHeight = canvasHeight * 0.5;
-		// const displayWidth = canvasWidth * 0.15;
 		const displayWidth = canvasWidth * (this.isDoubleMode ? 0.1 : 0.15);
 		const displayHeight = canvasHeight * 0.85;
-		// const gap = canvasWidth * 0.05;
 		const gap = canvasWidth * (this.isDoubleMode ? 0.03 : 0.05);
 		const totalWidth =
 			displayWidth + gameWidth + (this.isDoubleMode ? gameWidth : 0) + shopWidth + gap * 3;
@@ -96,7 +93,6 @@ export class GameUIManager {
 		};
 	}
 
-	// **設置遊戲牆**
 	setupWalls() {
 		const thickness = 10;
 
@@ -110,50 +106,37 @@ export class GameUIManager {
 		}
 	}
 
-	// **設置 UI Labels**
 	setupLabels() {
 		const textColour = '#6B4F3F';
-		this.ui.createLabel(
-			'timer',
-			this.AREAS.game1.x + this.AREAS.game1.w / 2,
-			this.AREAS.game1.y - 150,
-			`Time: ${this.counter.getTimeLeft()}s`,
-			textColour,
-			50
-		);
-
-		this.ui.createLabel(
-			'score',
-			this.AREAS.shop.x + this.AREAS.shop.w / 2,
-			this.AREAS.shop.y - 60,
-			`Score: ${this.score.getScore()}`,
-			textColour,
-			20
-		);
-
-		this.ui.createLabel(
-			'coin',
-			this.AREAS.shop.x + this.AREAS.shop.w / 2,
-			this.AREAS.shop.y - 30,
-			'Coin: 0',
-			textColour,
-			20
-		);
+		if (this.isDoubleMode) {
+			this.ui.createLabel(
+				'timer',
+				this.AREAS.shop.x + this.AREAS.shop.w / 2,
+				this.AREAS.shop.y - 300,
+				`Time: ${this.counter.getTimeLeft()}s`,
+				textColour,
+				50
+			);
+		} else {
+			this.ui.createLabel(
+				'timer',
+				this.AREAS.game1.x + this.AREAS.game1.w / 2,
+				this.AREAS.game1.y - 150,
+				`Time: ${this.counter.getTimeLeft()}s`,
+				textColour,
+				50
+			);
+		}
 	}
 
 	// Modified method with tutorial parameter:
 	draw(isTutorial = false) {
 		this.ui.drawLabels();
 		this.fruitDisplay.draw();
-		this.displayCoin();
-		this.displayScore();
 
 		// Only update the counter if we're not in tutorial mode
 		if (!isTutorial) {
 			this.displayCounter();
-		} else {
-			// In tutorial mode, always show 120s
-			this.ui.updateLabelText('timer', `Time: 120s`);
 		}
 
 		this.ui.createDashedLine(this.AREAS.dashLine1);
@@ -166,14 +149,6 @@ export class GameUIManager {
 
 	displayCounter() {
 		this.ui.updateLabelText('timer', `Time: ${this.counter.getTimeLeft()}s`);
-	}
-
-	displayScore() {
-		this.ui.updateLabelText('score', `Score: ${this.score.getScore()}`);
-	}
-
-	displayCoin() {
-		this.ui.updateLabelText('coin', `Coin: 0`);
 	}
 
 	mousePressed(event) {
