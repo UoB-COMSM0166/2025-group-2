@@ -414,23 +414,20 @@ export class Board {
 				// Custom gold reward rules - can be adjusted for game balance
 
 				switch (scoreLevel) {
-					case 2:
+					case 3:
 						coinReward = 1;
 						break;
-					case 3:
-						coinReward = 2;
-						break;
 					case 4:
-						coinReward = 4;
+						coinReward = 1;
 						break;
 					case 5:
-						coinReward = 6;
+						coinReward = 2;
 						break;
 					case 6:
-						coinReward = 9;
+						coinReward = 2;
 						break;
 					case 7:
-						coinReward = 12;
+						coinReward = 3;
 						break;
 					default:
 						coinReward = scoreLevel * 2;
