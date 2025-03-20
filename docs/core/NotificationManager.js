@@ -31,6 +31,9 @@ export class NotificationManager {
 				// Delete overdue notice
 				this.notifications.splice(i, 1);
 			}
+			while (this.notifications.length > 5) {
+				this.notifications.shift();
+			}
 		}
 	}
 }
