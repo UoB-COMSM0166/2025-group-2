@@ -1,4 +1,22 @@
+/**
+ * A reusable UI button component using p5.js DOM.
+ * Automatically scales and aligns with canvas position and supports styling and hover effects.
+ */
+
 export class Button {
+	/**
+	 * @param {string} label - The text displayed on the button.
+	 * @param {Function} onClick - Callback function executed when the button is clicked.
+	 * @param {Object} [options={}] - Optional settings for styling and position.
+	 * @param {number} [options.x] - X position of the button (default: canvas center).
+	 * @param {number} [options.y] - Y position of the button (default: canvas center).
+	 * @param {Function} [options.getScaleVal] - A function returning the current scale value.
+	 * @param {string} [options.bgColor='#E5C3A6'] - Background color of the button.
+	 * @param {string} [options.textColor='#6B4F3F'] - Text color of the button.
+	 * @param {string} [options.hoverBg='#F4D8C6'] - Background color on hover.
+	 * @param {string} [options.hoverText='#A3785F'] - Text color on hover.
+	 */
+
 	constructor(label, onClick, options = {}) {
 		this.label = label;
 		this.onClick = onClick;
@@ -16,6 +34,7 @@ export class Button {
 		window.addEventListener('resize', () => this.updatePosition());
 	}
 
+	/** Apply initial styles to the button element */
 	applyDefaultStyle() {
 		const s = this.options;
 		this.button.style('background-color', s.bgColor || '#E5C3A6');
@@ -33,6 +52,7 @@ export class Button {
 		this.button.style('pointer-events', 'auto');
 	}
 
+	/** Setup hover and click events for the button */
 	setupEvents() {
 		this.button.mouseOver(() => {
 			this.button.style('background-color', this.options.hoverBg || '#F4D8C6');
@@ -51,6 +71,7 @@ export class Button {
 		});
 	}
 
+	/** Update button's screen position according to canvas and scale */
 	updatePosition() {
 		const canvas = document.querySelector('canvas');
 		if (!canvas) return;
@@ -65,12 +86,27 @@ export class Button {
 		this.button.position(canvasRect.left + this.x * scale, canvasRect.top + this.y * scale);
 	}
 
+	/**
+	 * Manually set a new position for the button
+	 * @param {number} x
+	 * @param {number} y
+	 */
 	setPosition(x, y) {
 		this.x = x;
 		this.y = y;
 		this.updatePosition();
 	}
 
+	/**
+	 * Dynamically change the button's style
+	 * You can add more custom styles here (e.g., fontSize, border, borderRadius)
+	 *
+	 * @param {Object} styles
+	 * @param {string} [styles.bgColor]
+	 * @param {string} [styles.textColor]
+	 * @param {string} [styles.hoverBg]
+	 * @param {string} [styles.hoverText]
+	 */
 	setStyle(styles = {}) {
 		if (styles.bgColor) {
 			this.options.bgColor = styles.bgColor;
@@ -84,14 +120,17 @@ export class Button {
 		if (styles.hoverText) this.options.hoverText = styles.hoverText;
 	}
 
+	/** Show the button */
 	show() {
 		this.button.show();
 	}
 
+	/** Hide the button */
 	hide() {
 		this.button.hide();
 	}
 
+	/** Remove the button from DOM */
 	remove() {
 		this.button.remove();
 	}
