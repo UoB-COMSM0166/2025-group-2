@@ -1,4 +1,5 @@
 export { Board } from './Board.js';
+export { Button } from './Button.js';
 export { Coin } from './Coin.js';
 export { Fruit } from './Fruit.js';
 export { FruitDisplay } from './FruitDisplay.js';
