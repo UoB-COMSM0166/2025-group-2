@@ -32,8 +32,6 @@ export class Game {
 			this.isTutorialMode = false;
 		}
 
-		this.menuPage.hideButtons();
-
 		// Initialize GameManager
 		this.gameManager = new GameManager(this, mode, this.scaleVal);
 
