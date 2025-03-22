@@ -478,7 +478,6 @@ export class Board {
 		let max = Fruit.maxFruitLevel + 1;
 		//let max = 5;
 		let maxLevel = this.getMaxFruitLevel();
-		console.log(`The max level of THE GAME IS is : ${max}`);
 
 		if (maxLevel != max) {
 			return false;
