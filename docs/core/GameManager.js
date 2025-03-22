@@ -149,60 +149,55 @@ export class GameManager {
 		}
 	}
 
-	determineWinnerByScore() {
-		let highestScore = 0;
-		let winner = null;
-
-		for (const player of this.player) {
-			if (player.score.getScore() > highestScore) {
-				highestScore = player.score;
-				winner = player;
-			}
-		}
-
-		console.log(`Player ${winner.id} wins by highest score!`);
-	}
-
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
+		let highestScore = 0;
+		let winner = null;
 		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
-		const player1 = this.player[0];
-		const player2 = this.player[1];
-
-		console.log(`The max level of player 1 is : ${player1.boards.getMaxFruitLevel()}`);
-		console.log(`The max level of player 2 is : ${player2.boards.getMaxFruitLevel()}`);
 
 		if (this.mode == 'double') {
+			const player1 = this.player[0];
+			const player2 = this.player[1];
+
+			//You can check the value of the max level in player X using ${player2.boards.getMaxFruitLevel()}
 			//first checking fruit over line
 			if (player1.boards.checkFruitOverLine(dashLineY)) {
-				console.log('Game Over: A fruit of player 1 crossed the dash line!');
 				this.isGameOver = true;
 				return;
 			}
 
 			if (player2.boards.checkFruitOverLine(dashLineY)) {
-				console.log('Game Over: A fruit of player 2 crossed the dash line!');
 				this.isGameOver = true;
 				return;
 			}
 
 			//second check if fruit is biggest
 			if (player1.boards.checkFruitIsMaximun()) {
-				console.log('Game Over: A fruit of player 1 is the biggest one!');
 				this.isGameOver = true;
 				return;
 			}
 
-			if (player1.boards.checkFruitIsMaximun()) {
-				console.log('Game Over: A fruit of player 2 is the biggest one!');
+			if (player2.boards.checkFruitIsMaximun()) {
 				this.isGameOver = true;
 				return;
 			}
 
 			//third check which player has more score at the end
 			if (this.counter.getTimeLeft() <= 0) {
-				this.determineWinnerByScore();
+				if (player1.score.getScore() == player2.score.getScore()) {
+					// in this case the output would be console.log('TIE!');
+					return;
+				}
+				if (player1.score.getScore() > player2.score.getScore()) {
+					highestScore = player1.score.getScore();
+					winner = player1;
+				}
+				if (player1.score.getScore() < player2.score.getScore()) {
+					highestScore = player2.score.getScore();
+					winner = player2;
+				}
+				// In case no tie, console.log(`Player ${winner.id} wins by highest score! , the score is ${winner.score.getScore()}`);
 				this.isGameOver = true;
 				return;
 			}
@@ -212,7 +207,6 @@ export class GameManager {
 			for (const player of this.player) {
 				if (player.boards.checkFruitOverLine(dashLineY)) {
 					this.isGameOver = true;
-					console.log('Game Over: A fruit crossed the dash line!');
 					return;
 				}
 			}
