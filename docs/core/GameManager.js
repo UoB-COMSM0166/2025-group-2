@@ -163,26 +163,22 @@ export class GameManager {
 			//You can check the value of the max level in player X using ${player2.boards.getMaxFruitLevel()}
 			//first checking fruit over line
 			if (player1.boards.checkFruitOverLine(dashLineY)) {
-				//console.log('Game Over: A fruit of player 1 crossed the dash line!');
 				this.isGameOver = true;
 				return;
 			}
 
 			if (player2.boards.checkFruitOverLine(dashLineY)) {
-				//console.log('Game Over: A fruit of player 2 crossed the dash line!');
 				this.isGameOver = true;
 				return;
 			}
 
 			//second check if fruit is biggest
 			if (player1.boards.checkFruitIsMaximun()) {
-				//console.log('Game Over: A fruit of player 1 is the biggest one!');
 				this.isGameOver = true;
 				return;
 			}
 
 			if (player2.boards.checkFruitIsMaximun()) {
-				//console.log('Game Over: A fruit of player 2 is the biggest one!');
 				this.isGameOver = true;
 				return;
 			}
