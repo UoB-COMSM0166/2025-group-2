@@ -11,6 +11,7 @@ export class Board {
 	constructor(player, area, scaleVal) {
 		this.shopArea = area.shop; // { x, y, w, h }
 		this.displayArea = area.display; // { x, y, w, h }
+		this.leftBoardArea = area.game1; // { x, y, w, h }
 
 		this.gravity = 15;
 		this.fruits = [];
@@ -56,17 +57,15 @@ export class Board {
 			this.scaleVal
 		);
 		let newType = int(random(4));
+		let nextFruitX, nextFruitY;
 
-		const nextFruitX =
-			this.isSingleMode || this.id === 2
-				? this.shopArea.x + this.shopArea.w / 2
-				: this.displayArea.x + this.displayArea.w / 2;
-
-		const nextFruitY =
-			this.isSingleMode || this.id === 2
-				? this.shopArea.y - DISTFROMSHOP
-				: this.displayArea.y - DISTFROMSHOP;
-
+		if (this.isSingleMode || this.id === 2) {
+			nextFruitX = this.shopArea.x + this.shopArea.w / 2;
+			nextFruitY = this.shopArea.y - DISTFROMSHOP;
+		} else {
+			nextFruitX = this.gameArea.x - 30;
+			nextFruitY = this.gameArea.y - DISTFROMGAME;
+		}
 		this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
 		this.nextFruit.doNotFall();
 
@@ -336,16 +335,14 @@ export class Board {
 			// Generate new fruit at the top of the shop area
 			let newType = int(random(5));
 
-			const nextFruitX =
-				this.isSingleMode || this.id === 2
-					? this.shopArea.x + this.shopArea.w / 2 // Default to shop for single mode & Player 2
-					: this.displayArea.x + this.displayArea.w / 2; // Player 1 places nextFruit above display
-
-			const nextFruitY =
-				this.isSingleMode || this.id === 2
-					? this.shopArea.y - DISTFROMSHOP // Default for single mode & Player 2
-					: this.displayArea.y - DISTFROMSHOP; // Player 1 places it above display
-
+			let nextFruitX, nextFruitY;
+			if (this.isSingleMode || this.id === 2) {
+				nextFruitX = this.shopArea.x + this.shopArea.w / 2;
+				nextFruitY = this.shopArea.y - DISTFROMSHOP;
+			} else {
+				nextFruitX = this.gameArea.x - 30;
+				nextFruitY = this.gameArea.y - DISTFROMGAME;
+			}
 			this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
 			this.nextFruit.doNotFall();
 			this.timer = 0;
