@@ -264,16 +264,6 @@ export class MenuPage {
 		}
 	}
 
-	hideButtons() {
-		// Retain the original method to maintain compatibility
-		// This method is no longer needed in the new implementation because the buttons are drawn instead of DOM elements
-	}
-
-	showButtons() {
-		// Retain the original method to maintain compatibility
-		// This method is no longer needed in the new implementation because the buttons are drawn instead of DOM elements
-	}
-
 	toggleTutorial() {
 		this.tutorialEnabled = !this.tutorialEnabled;
 		this.buttons[2].text = this.tutorialEnabled ? 'Tutorial: ON' : 'Tutorial: OFF';
