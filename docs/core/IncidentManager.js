@@ -25,9 +25,11 @@ export class IncidentManager {
 		this.pendingIncident = null;
 
 		this.incidentInterval = null;
+		this.shieldOn = false; //check if the sheild is on
 	}
 
 	startIncident() {
+		//start random incident
 		setTimeout(() => {
 			this.incidentInterval = setInterval(() => {
 				this.randomIncident();
@@ -36,7 +38,7 @@ export class IncidentManager {
 	}
 
 	getRandomInterval() {
-		return Math.floor(Math.random() * (20000 - 11000) + 11000);
+		return Math.floor(Math.random() * (18000 - 11000) + 11000);
 	}
 
 	randomIncident() {
@@ -71,6 +73,9 @@ export class IncidentManager {
 	}
 
 	activateIncident(incidentName) {
+		if(this.shieldOn){
+			return;
+		}
 		const incident = this.incidents[incidentName];
 		if (incident && !this.activeIncidents.includes(incident)) {
 			this.isWarning = true;
@@ -79,7 +84,8 @@ export class IncidentManager {
 			incident.manager = this;
 			incident.name = incidentName;
 
-			this.activeIncidents.push(incident);
+				this.activeIncidents.push(incident);
+
 		}
 	}
 
@@ -92,10 +98,12 @@ export class IncidentManager {
 	}
 
 	pauseActiveIncidents() {
+		this.shieldOn = true;
 		this.activeIncidents.forEach(incident => incident.pause());
 	}
 
 	resumePausedIncidents() {
+		this.shieldOn = false;
 		this.activeIncidents.forEach(incident => incident.resume());
 	}
 
