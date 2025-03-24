@@ -27,7 +27,7 @@ export class UIControllor {
 
 	createDashedLine(dashLine, colour = '#ff0000', thickness = 8) {
 		push();
-		stroke(colour);
+		stroke(colour + '80');
 		strokeWeight(thickness);
 		drawingContext.setLineDash([dashLine.dashLength, dashLine.gapLength]);
 		line(dashLine.x1, dashLine.y1, dashLine.x2, dashLine.y2);
@@ -96,4 +96,19 @@ export class UIControllor {
 	}
 
 	createCircle(text) {}
+
+	drawNextFruitBox(area) {
+		push();
+		noFill();
+		stroke('#aaa');
+		strokeWeight(2);
+		rect(area.x, area.y, area.w, area.h, 10);
+
+		noStroke();
+		fill('#6B4F3F');
+		textSize(18);
+		textAlign(LEFT, BOTTOM);
+		text('Next', area.x, area.y - 8);
+		pop();
+	}
 }

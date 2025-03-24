@@ -9,6 +9,7 @@ export class RainIncident extends Incident {
 		this.area = gameArea;
 		this.hasDropped = false;
 		this.fruitCount = 6; // The amount of fruit dropped
+		this.dashLineY = this.game.endLine.y1;
 	}
 
 	enable() {
@@ -43,12 +44,15 @@ export class RainIncident extends Incident {
 		for (let i = 0; i < this.fruitCount; i++) {
 			// Calculate the X-coordinate of the fruit (uniform distribution)
 			const x = leftWall + spacing * (i + 1);
+			const y = this.game.isSindleMode
+				? this.area.y
+				: this.area.y + (this.dashLineY - this.area.y) / 2; // Top wall inside position
 
 			// Random fruit type (between 0 and 6)
 			const fruitType = floor(random(4));
 
 			// Create fruit
-			const newFruit = new Fruit(fruitType, x, this.area.y, 30 + 20 * fruitType, this.scaleVal);
+			const newFruit = new Fruit(fruitType, x, y, 30 + 20 * fruitType, this.scaleVal);
 
 			// Make sure the fruit is in a falling state
 			newFruit.isFalling = true;

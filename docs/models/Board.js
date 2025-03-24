@@ -37,6 +37,14 @@ export class Board {
 		// Record game start time to prevent accidental clicks
 		this.gameStartTime = millis();
 		this.GAME_START_PROTECTION = 500;
+
+		if (this.isSingleMode) {
+			this.nextFruitArea = this.shopArea;
+		} else if (this.id === 1) {
+			this.nextFruitArea = area.next1;
+		} else {
+			this.nextFruitArea = area.next2;
+		}
 	}
 
 	// Start random incident
@@ -47,25 +55,28 @@ export class Board {
 
 	setup() {
 		world.gravity.y = this.gravity;
+		const topY = this.gameArea.y;
+		const dashLineY = this.dashLineY || topY + 130;
 
 		// Create the first fruit, and put it in the top center of the game area.
 		this.currentFruit = new Fruit(
 			0,
 			this.gameArea.x + this.gameArea.w / 2,
-			this.gameArea.y - DISTFROMGAME,
+			(topY + dashLineY) / 2,
 			30,
 			this.scaleVal
 		);
 		let newType = int(random(4));
 		let nextFruitX, nextFruitY;
 
-		if (this.isSingleMode || this.id === 2) {
+		if (this.isSingleMode) {
 			nextFruitX = this.shopArea.x + this.shopArea.w / 2;
 			nextFruitY = this.shopArea.y - DISTFROMSHOP;
 		} else {
-			nextFruitX = this.gameArea.x - 30;
-			nextFruitY = this.gameArea.y - DISTFROMGAME;
+			nextFruitX = this.nextFruitArea.x + this.nextFruitArea.w / 2;
+			nextFruitY = this.nextFruitArea.y + this.nextFruitArea.h / 2;
 		}
+
 		this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
 		this.nextFruit.doNotFall();
 
@@ -197,9 +208,11 @@ export class Board {
 
 	// Handle keyboard controls (for double mode)
 	handleCurrentFruitKeyboard() {
+		const topY = this.gameArea.y;
+		const dashLineY = this.dashLineY || topY + 130;
 		if (this.currentFruit && this.currentFruit?.sprite) {
 			// Keep the fruit at the correct height above the dash line
-			this.currentFruit.sprite.y = this.gameArea.y - DISTFROMGAME;
+			this.currentFruit.sprite.y = (topY + dashLineY) / 2;
 			this.currentFruit.letFall();
 
 			// Force velocity to zero to prevent unwanted movement
@@ -334,15 +347,22 @@ export class Board {
 
 			// Generate new fruit at the top of the shop area
 			let newType = int(random(5));
-
 			let nextFruitX, nextFruitY;
-			if (this.isSingleMode || this.id === 2) {
+
+			if (this.isSingleMode) {
+				// Single-player mode → above the shop area
 				nextFruitX = this.shopArea.x + this.shopArea.w / 2;
 				nextFruitY = this.shopArea.y - DISTFROMSHOP;
+			} else if (this.id === 1) {
+				// Two-player mode P1 → use the next1 area
+				nextFruitX = this.nextFruitArea.x + this.nextFruitArea.w / 2;
+				nextFruitY = this.nextFruitArea.y + this.nextFruitArea.h / 2;
 			} else {
-				nextFruitX = this.gameArea.x - 30;
-				nextFruitY = this.gameArea.y - DISTFROMGAME;
+				// Two-player mode P2 → use the next2 area
+				nextFruitX = this.nextFruitArea.x + this.nextFruitArea.w / 2;
+				nextFruitY = this.nextFruitArea.y + this.nextFruitArea.h / 2;
 			}
+
 			this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
 			this.nextFruit.doNotFall();
 			this.timer = 0;
