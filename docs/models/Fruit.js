@@ -30,6 +30,7 @@ export class Fruit {
 		this.randomId = int(random(100000));
 		this.isFalling = true;
 		this.fireAffected = false;
+		this.firePaused = false;
 		this.isFrozen = false;
 		this.scaleVal = scaleVal;
 
