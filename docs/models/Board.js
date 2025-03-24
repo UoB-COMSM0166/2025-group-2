@@ -38,6 +38,7 @@ export class Board {
 		this.GAME_START_PROTECTION = 500;
 	}
 
+	// Start random incident
 	incidentBegin() {
 		console.log('incident start');
 		this.incidentManager.startIncident();

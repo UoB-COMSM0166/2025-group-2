@@ -9,7 +9,7 @@ export class DivineShieldTool {
 	activate() {
 		if (this.shieldActive) return;
 
-		this.shieldTimeLeft = 10;
+		this.shieldTimeLeft = 10; //divine shield lasting time
 		this.shieldActive = true;
 		this.incidentManager.pauseActiveIncidents();
 
@@ -23,6 +23,7 @@ export class DivineShieldTool {
 	}
 
 	update() {
+		//show the time left of divine shield
 		if (this.shieldActive) {
 			fill(0);
 			textSize(20);
