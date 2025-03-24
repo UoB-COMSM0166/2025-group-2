@@ -91,13 +91,15 @@ export class Player {
 		if (this.isDoubleMode) {
 			const scorePositionX =
 				this.id === 1
-					? this.area.game1.x + this.area.game1.w / 2
-					: this.area.game2.x + this.area.game2.w / 2; // Player 2's score on the right
+					? this.area.next1.x + this.area.next1.w + this.area.next1.w / 2 + 10
+					: this.area.next2.x + this.area.next2.w + this.area.next2.w / 2 + 10; // Player 2's score on the right
+
+			this.scoreLabelX = scorePositionX;
 
 			this.uiControllor.createLabel(
 				`score_${this.id}`,
 				scorePositionX,
-				this.area.game1.y - 150,
+				this.area.game1.y - 20,
 				`P${this.id} Score: ${this.score.getScore()}`,
 				'#6B4F3F',
 				20
@@ -127,18 +129,14 @@ export class Player {
 
 	displayCoin() {
 		if (this.isDoubleMode) {
-			const coinPositionX =
-				this.id === 1
-					? this.area.game1.x + this.area.game1.w / 2
-					: this.area.game2.x + this.area.game2.w / 2;
-
-			const coinPositionY = this.area.game1.y - 120;
+			const coinPositionX = this.scoreLabelX + 120;
+			const coinPositionY = this.area.game1.y - 20;
 
 			this.uiControllor.createLabel(
 				`coin_${this.id}`,
 				coinPositionX,
 				coinPositionY,
-				`P${this.id} Coin: ${this.coin.getCoin()}`,
+				`Coin: ${this.coin.getCoin()}`,
 				'#6B4F3F',
 				20
 			);
@@ -156,10 +154,7 @@ export class Player {
 
 	updateCoin() {
 		if (this.isDoubleMode) {
-			this.uiControllor.updateLabelText(
-				`coin_${this.id}`,
-				`P${this.id} Coin: ${this.coin.getCoin()}`
-			);
+			this.uiControllor.updateLabelText(`coin_${this.id}`, `Coin: ${this.coin.getCoin()}`);
 		} else {
 			this.uiControllor.updateLabelText(`coin`, `Coin: ${this.coin.getCoin()}`);
 		}

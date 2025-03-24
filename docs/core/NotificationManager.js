@@ -21,10 +21,10 @@ export class NotificationManager {
 			// If the notification has not expired, it is drawn.
 			if (currentTime - note.time < this.duration) {
 				push();
-				textAlign(CENTER, TOP);
+				textAlign(RIGHT, TOP);
 				textSize(16);
 				fill(0);
-				text(note.message, width / 2, y);
+				text(note.message, width - 20, y);
 				pop();
 				y += 30; // The next notification goes 30 pixels down
 			} else {
