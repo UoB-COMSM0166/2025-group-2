@@ -3,6 +3,7 @@ export { Button } from './Button.js';
 export { Coin } from './Coin.js';
 export { Fruit } from './Fruit.js';
 export { FruitDisplay } from './FruitDisplay.js';
+export { KeyGuide } from './KeyGuide.js';
 export { Player } from './Player.js';
 export { Score } from './Score.js';
 export { Timer } from './Timer.js';
