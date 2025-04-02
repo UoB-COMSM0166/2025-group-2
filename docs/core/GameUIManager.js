@@ -1,5 +1,5 @@
 import { NotificationManager } from '../core/NotificationManager.js';
-import { FruitDisplay, Score, Timer } from '../models/index.js';
+import { FruitDisplay, KeyGuide, Score, Timer } from '../models/index.js';
 import { Shop } from '../shop/index.js';
 import { UIControllor } from './UIControllor.js';
 
@@ -32,6 +32,11 @@ export class GameUIManager {
 
 		this.setupLabels();
 		this.counter.start();
+
+		if (this.isDoubleMode) {
+			this.keyGuide = new KeyGuide(this.gameManager.scaleVal * 1.5);
+			this.keyGuide.setupKeyGuide(this.AREAS.display);
+		}
 	}
 
 	setupAreas(canvasWidth, canvasHeight) {
@@ -217,6 +222,7 @@ export class GameUIManager {
 			this.ui.createDashedLine(this.AREAS.dashLine2);
 			this.ui.drawNextFruitBox(this.AREAS.next1);
 			this.ui.drawNextFruitBox(this.AREAS.next2);
+			this.keyGuide.draw();
 		}
 		// Draw notification message
 		this.notificationManager.update();
