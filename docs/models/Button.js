@@ -21,12 +21,20 @@ export class Button {
 		this.label = label;
 		this.onClick = onClick;
 		this.options = options;
+		this.htmlMode = options.htmlMode || false;
 
 		this.margin = options.margin || 10;
 		this.x = options.x ?? width / 2;
 		this.y = options.y ?? height / 2;
 
-		this.button = createButton(this.label);
+		this.button = createButton('');
+		if (this.htmlMode) {
+			this.button.html(this.label);
+		} else {
+			this.button.html('');
+			this.button.elt.innerText = this.label;
+		}
+
 		this.applyDefaultStyle();
 		this.setupEvents();
 		this.updatePosition();
@@ -50,6 +58,8 @@ export class Button {
 		this.button.style('transform-origin', 'top left');
 		this.button.style('z-index', '1000');
 		this.button.style('pointer-events', 'auto');
+		if (s.width) this.button.style('width', `${s.width}px`);
+		if (s.height) this.button.style('height', `${s.height}px`);
 	}
 
 	/** Setup hover and click events for the button */
@@ -118,6 +128,16 @@ export class Button {
 		}
 		if (styles.hoverBg) this.options.hoverBg = styles.hoverBg;
 		if (styles.hoverText) this.options.hoverText = styles.hoverText;
+		if (styles.width) {
+			this.button.style('width', `${styles.width}px`);
+		}
+		if (styles.height) {
+			this.button.style('height', `${styles.height}px`);
+		}
+		if (styles.width) {
+			const scale = this.options.getScaleVal?.() ?? 1;
+			this.button.style('width', `${styles.width * scale}px`);
+		}
 	}
 
 	/** Show the button */
