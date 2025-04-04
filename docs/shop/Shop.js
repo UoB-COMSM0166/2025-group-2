@@ -24,7 +24,7 @@ export class Shop {
 
 	setupShopUI(area) {
 		const padding = 10;
-		const buttonWidth = area.w - 3 * padding;
+		const buttonWidth = area.w - 2 * padding;
 
 		this.shopItems = this.items.map(item => {
 			const labelHTML = `
@@ -36,6 +36,7 @@ export class Shop {
 
 			const btn = new Button(labelHTML, () => this.handleToolClick(item.id), {
 				getScaleVal: () => this.gameManager.scaleVal,
+				id: item.id,
 				bgColor: bgColour,
 				textColor: textColour,
 				hoverBg: colourAfterClick,
@@ -54,7 +55,7 @@ export class Shop {
 
 		const firstBtn = shopButtons[0];
 		const buttonHeight = firstBtn.button.elt.offsetHeight;
-		const buttonGap = 10;
+		const buttonGap = 15;
 		const totalHeight = shopButtons.length * (buttonHeight + buttonGap) - buttonGap;
 
 		const startY = shopArea.y + (shopArea.h - totalHeight) / 2;

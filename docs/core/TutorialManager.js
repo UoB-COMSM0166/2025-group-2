@@ -250,16 +250,13 @@ export class TutorialManager {
 		// If we have a string ID to highlight (for shop items)
 		if (typeof element === 'string') {
 			const shopItems = this.gameManager.uiManager.shop.shopItems;
-			const item = shopItems.find(item => item.id === element);
-
-			if (item) {
-				// Cut out the highlighted element
+			const btn = shopItems.find(item => item.options.id === element);
+			if (btn) {
 				fill(0, 0, 0, 0); // Transparent fill
 				stroke(255, 255, 0);
 				strokeWeight(3);
-				rectMode(CENTER);
-				// Make the highlight area a bit larger than the item
-				rect(item.x, item.y, item.w + 20, item.h + 20, 10);
+				rectMode(CORNER);
+				rect(btn.x - 5, btn.y - 10, btn.button.width + 10, btn.button.height + 20 + 30, 10);
 			}
 		}
 		// If we have an area object to highlight
@@ -269,7 +266,7 @@ export class TutorialManager {
 			strokeWeight(3);
 			rectMode(CORNER);
 			// Make the highlight area a bit larger than the area
-			rect(element.x - 10, element.y - 10, element.w + 20, element.h + 20, 10);
+			rect(element.x - 5, element.y - 10, element.w + 10, element.h + 20, 10);
 		}
 		pop();
 	}

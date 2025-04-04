@@ -8,7 +8,6 @@ export class GameUIManager {
 		this.gameManager = gameManager;
 		this.ui = new UIControllor();
 		this.AREAS = null;
-		this.shopItems = null;
 		this.timer = 0;
 		this.counter = new Timer(120);
 		this.score = new Score();
