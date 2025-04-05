@@ -128,6 +128,7 @@ export class GameManager {
 		this.updateScale(this.scaleVal);
 		this.uiManager.ui.drawLabels();
 		this.uiManager.draw();
+		this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
 
 		this.player.forEach(player => player.update());
 

@@ -1,3 +1,5 @@
+import { Button } from '../models/index.js';
+
 const bgColour = '#E5C3A6';
 const colourAfterClick = '#F4D8C6';
 const textColour = '#6B4F3F';
@@ -21,84 +23,56 @@ export class Shop {
 	}
 
 	setupShopUI(area) {
-		const shopTextSize = 20;
+		const padding = 10;
+		const buttonWidth = area.w - 2 * padding;
 
-		// 產生每個道具的按鈕
 		this.shopItems = this.items.map(item => {
-			const label = `${item.icon} ${item.label} ${item.price} $`;
-			this.UIController.createLabel(item.id, 0, 0, label, textColour, shopTextSize, bgColour);
-			return this.UIController.labels[item.id];
+			const labelHTML = `
+			<div style="display: flex; justify-content: space-between;">
+				<span>${item.icon} ${item.label}</span>
+				<span>${item.price} $</span>
+			</div>
+		`;
+
+			const btn = new Button(labelHTML, () => this.handleToolClick(item.id), {
+				getScaleVal: () => this.gameManager.scaleVal,
+				id: item.id,
+				bgColor: bgColour,
+				textColor: textColour,
+				hoverBg: colourAfterClick,
+				hoverText: textAfterClick,
+				htmlMode: true,
+				width: buttonWidth,
+			});
+			return btn;
 		});
 
-		// 取得 UI 內的所有 shopItem
-		this.listShopItems(this.shopItems, area);
+		this.listShopItems(this.shopItems, area, padding);
 	}
 
-	listShopItems(shopItems, shopArea) {
-		if (shopItems.length === 0) return;
-		let maxWidth = Math.max(...shopItems.map(label => label.w));
-		let maxHeight = Math.max(...shopItems.map(label => label.h));
+	listShopItems(shopButtons, shopArea, padding) {
+		if (shopButtons.length === 0) return;
 
-		let gap = 10;
-		let cellWidth = maxWidth + gap;
-		let cellHeight = maxHeight + gap;
+		const firstBtn = shopButtons[0];
+		const buttonHeight = firstBtn.button.elt.offsetHeight;
+		const buttonGap = 15;
+		const totalHeight = shopButtons.length * (buttonHeight + buttonGap) - buttonGap;
 
-		// Calculate the max column numbers
-		let cols = floor(shopArea.w / cellWidth);
-		if (cols < 1) cols = 1;
-		let rows = ceil(shopItems.length / cols);
+		const startY = shopArea.y + (shopArea.h - totalHeight) / 2;
+		const x = shopArea.x + padding;
 
-		// Calculate margin center the shopItems
-		let totalGridWidth = cols * cellWidth;
-		let totalGridHeight = rows * cellHeight;
-		let offsetX = shopArea.x + (shopArea.w - totalGridWidth) / 2;
-		let offsetY = shopArea.y + (shopArea.h - totalGridHeight) / 2;
-
-		shopItems.forEach((label, i) => {
-			let row = floor(i / cols);
-			let col = i % cols;
-			let centerX = offsetX + col * cellWidth + cellWidth / 2;
-			let centerY = offsetY + row * cellHeight + cellHeight / 2;
-
-			label.x = centerX;
-			label.y = centerY;
+		shopButtons.forEach((btn, i) => {
+			const y = startY + i * (buttonHeight + buttonGap);
+			btn.setPosition(x, y);
 		});
 	}
 
-	mousePressed() {
-		let logicX = mouseX / this.scaleVal;
-		let logicY = mouseY / this.scaleVal;
-		let clickedTool = this.checkShopItemClick(this.shopItems, logicX, logicY);
-		if (clickedTool) {
-			this.handleToolClick(clickedTool);
-		}
-	}
-
-	checkShopItemClick(shopItems, clickedX, clickedY) {
-		for (let tool of shopItems) {
-			let halfW = tool.w / 2;
-			let halfH = tool.h / 2;
-			if (
-				clickedX > tool.x - halfW &&
-				clickedX < tool.x + halfW &&
-				clickedY > tool.y - halfH &&
-				clickedY < tool.y + halfH
-			) {
-				console.log(`Tool ${tool.id} clicked!`);
-				this.UIController.updateLabelColour(tool.id, textAfterClick);
-				setTimeout(() => {
-					this.UIController.updateLabelColour(tool.id, textColour); // return to original colour
-				}, 200);
-				return tool.id;
-			}
-		}
-		return null;
+	updateAllButtonPositions(shopArea) {
+		const padding = 10;
+		this.listShopItems(this.shopItems, shopArea, padding);
 	}
 
 	handleToolClick(type) {
-		this.UIController.updateLabelBgColour(type, colourAfterClick);
-		setTimeout(() => this.UIController.updateLabelBgColour(type, bgColour), 200);
-
 		const player = this.gameManager.player?.[0];
 		if (!player) return;
 

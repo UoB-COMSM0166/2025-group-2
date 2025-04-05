@@ -8,7 +8,6 @@ export class GameUIManager {
 		this.gameManager = gameManager;
 		this.ui = new UIControllor();
 		this.AREAS = null;
-		this.shopItems = null;
 		this.timer = 0;
 		this.counter = new Timer(120);
 		this.score = new Score();
@@ -18,8 +17,6 @@ export class GameUIManager {
 		this.notificationManager = new NotificationManager(); // Added notification manager
 		this.isDoubleMode = this.gameManager.mode === 'double';
 		this.player = this.gameManager.player;
-
-		window.addEventListener('click', event => this.mousePressed(event));
 	}
 
 	setupUI(canvasWidth, canvasHeight) {
@@ -231,11 +228,5 @@ export class GameUIManager {
 	displayCounter() {
 		const formattedTime = this.formatTime(this.counter.getTimeLeft());
 		this.ui.updateLabelText('timer', `Time: ${formattedTime}`);
-	}
-
-	mousePressed(event) {
-		if (this.shop) {
-			this.shop.mousePressed(event);
-		}
 	}
 }
