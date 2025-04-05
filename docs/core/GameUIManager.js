@@ -80,9 +80,9 @@ export class GameUIManager {
 			},
 			dashLine1: {
 				x1: leftMargin + displayWidth + gap + thickness / 2,
-				y1: canvasHeight - gameHeight - gap + 20,
+				y1: canvasHeight - gameHeight - gap + 130,
 				x2: leftMargin + displayWidth + gap + gameWidth - thickness / 2,
-				y2: canvasHeight - gameHeight - gap + 20,
+				y2: canvasHeight - gameHeight - gap + 130,
 				dashLength: 15,
 				gapLength: 10,
 				thickness: 10,
@@ -170,7 +170,7 @@ export class GameUIManager {
 			this.ui.createFourWalls(this.AREAS.game2, thickness);
 			this.ui.createDashedLine(this.AREAS.dashLine2);
 		} else {
-			this.ui.createNoneCappedWalls(this.AREAS.game1, thickness);
+			this.ui.createFourWalls(this.AREAS.game1, thickness);
 		}
 		this.ui.createFourWalls(this.AREAS.shop, thickness);
 		this.ui.createFourWalls(this.AREAS.display, thickness);

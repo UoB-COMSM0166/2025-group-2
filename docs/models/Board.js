@@ -173,12 +173,15 @@ export class Board {
 
 	// Handle mouse controls (for single mode) - just track position, not dropping
 	handleCurrentFruitMouse() {
+		const topY = this.gameArea.y;
+		const dashLineY = this.dashLineY || topY + 130;
+		const currentFruitPosition = (topY + dashLineY) / 2;
 		if (this.currentFruit && this.currentFruit?.sprite) {
 			let leftBound = this.gameArea.x + this.wallWidth;
 			let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
 
 			// Allow current fruit to move with mouse
-			this.currentFruit.moveWithMouse(leftBound, rightBound, this.gameArea.y - DISTFROMGAME);
+			this.currentFruit.moveWithMouse(leftBound, rightBound, currentFruitPosition);
 			this.currentFruit.letFall();
 		} else {
 			this.handleNextFruit();
@@ -322,6 +325,9 @@ export class Board {
 			this.currentFruit = this.nextFruit;
 
 			if (this.currentFruit) {
+				const topY = this.gameArea.y;
+				const dashLineY = this.dashLineY || topY + 130;
+				const currentFruitPosition = (topY + dashLineY) / 2;
 				if (this.isSingleMode) {
 					// In single player mode, immediately place the fruit at the current mouse position
 					let leftBound = this.gameArea.x + this.wallWidth;
@@ -337,11 +343,11 @@ export class Board {
 
 					// Set Position Match Mouse Now
 					this.currentFruit.sprite.x = newX;
-					this.currentFruit.sprite.y = this.gameArea.y - DISTFROMGAME;
+					this.currentFruit.sprite.y = currentFruitPosition;
 				} else {
 					// In two-player mode, place in the center of the game area
 					this.currentFruit.sprite.x = this.gameArea.x + this.gameArea.w / 2;
-					this.currentFruit.sprite.y = this.gameArea.y - DISTFROMGAME;
+					this.currentFruit.sprite.y = currentFruitPosition;
 				}
 			}
 
