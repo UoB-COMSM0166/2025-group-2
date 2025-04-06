@@ -212,20 +212,31 @@ export class Fruit {
 	}
 
 	static merge(a, b) {
-		if (a.level === b.level && a.level < Fruit.maxFruitLevel) {
-			const newType = a.level + 1;
-			const newX = (a.sprite.x + b.sprite.x) / 2;
-			const newY = (a.sprite.y + b.sprite.y) / 2;
-			const newSize = 30 + 20 * newType;
+		// Check the game mode (judging by the block where a and b are located)
+		// If fruits with index 8 (level 9) are merged in two-person mode, merge is not performed
+		const isSingleMode = a.board ? a.board.isSingleMode : true;
 
-			let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal);
-			mergedFruit.fireAffected = a.fireAffected || b.fireAffected;
+		if (a.level === b.level) {
+			// In Double mode, merging is not allowed if both fruits are level 9 (index 8).
+			if (!isSingleMode && a.level === 8) {
+				return null;
+			}
 
-			a.remove();
-			b.remove();
-			return mergedFruit;
+			// Normally, merge is performed if the fruit grades are the same and less than the maximum grade
+			if (a.level < Fruit.maxFruitLevel) {
+				const newType = a.level + 1;
+				const newX = (a.sprite.x + b.sprite.x) / 2;
+				const newY = (a.sprite.y + b.sprite.y) / 2;
+				const newSize = 30 + 20 * newType;
+
+				let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal);
+				mergedFruit.fireAffected = a.fireAffected || b.fireAffected;
+
+				a.remove();
+				b.remove();
+				return mergedFruit;
+			}
 		}
-
 		return null;
 	}
 

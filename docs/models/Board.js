@@ -31,6 +31,21 @@ export class Board {
 		this.endLine =
 			this.mode === 'single' ? area.dashLine1 : this.id === 1 ? area.dashLine1 : area.dashLine2;
 
+		// Set fruit level range according to game mode
+		if (this.isSingleMode) {
+			this.minFruitLevel = 2;
+			this.maxFruitLevel = 9;
+
+			this.nextFruitMinLevel = this.minFruitLevel;
+			this.nextFruitMaxLevel = this.nextFruitMinLevel + 2;
+		} else {
+			this.minFruitLevel = 0;
+			this.maxFruitLevel = 8;
+
+			this.nextFruitMinLevel = this.minFruitLevel;
+			this.nextFruitMaxLevel = this.nextFruitMinLevel + 3;
+		}
+
 		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
 		// this.incidentBegin();
 
@@ -47,6 +62,12 @@ export class Board {
 		}
 	}
 
+	getNextFruitLevel() {
+		// Randomly choose between nextFruitMinLevel to nextFruitMaxLevel
+		const levelRange = this.nextFruitMaxLevel - this.nextFruitMinLevel;
+		return this.nextFruitMinLevel + int(random(levelRange + 1));
+	}
+
 	// Start random incident
 	incidentBegin() {
 		console.log('incident start');
@@ -59,14 +80,16 @@ export class Board {
 		const dashLineY = this.dashLineY || topY + 130;
 
 		// Create the first fruit, and put it in the top center of the game area.
+		const initialLevel = this.minFruitLevel;
 		this.currentFruit = new Fruit(
-			0,
+			initialLevel,
 			this.gameArea.x + this.gameArea.w / 2,
 			(topY + dashLineY) / 2,
-			30,
+			30 + 20 * initialLevel,
 			this.scaleVal
 		);
-		let newType = int(random(4));
+		// Create the next fruit, also using grades within the allowed range
+		const nextLevel = this.getNextFruitLevel();
 		let nextFruitX, nextFruitY;
 
 		if (this.isSingleMode) {
@@ -77,7 +100,13 @@ export class Board {
 			nextFruitY = this.nextFruitArea.y + this.nextFruitArea.h / 2;
 		}
 
-		this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
+		this.nextFruit = new Fruit(
+			nextLevel,
+			nextFruitX,
+			nextFruitY,
+			30 + 20 * nextLevel,
+			this.scaleVal
+		);
 		this.nextFruit.doNotFall();
 
 		this.toolManager = this.player.toolManager;
@@ -352,7 +381,7 @@ export class Board {
 			}
 
 			// Generate new fruit at the top of the shop area
-			let newType = int(random(5));
+			let newType = this.getNextFruitLevel();
 			let nextFruitX, nextFruitY;
 
 			if (this.isSingleMode) {
@@ -403,6 +432,11 @@ export class Board {
 
 				// normal fruit merging
 				if (a.level === b.level) {
+					// In two-person mode, merging is not allowed if it is a 9th grade fruit (index 8)
+					if (!this.isSingleMode && a.level === 8) {
+						continue;
+					}
+
 					let mergedFruit = Fruit.merge(a, b);
 					if (mergedFruit) this.processMergedFruit(mergedFruit);
 				}
@@ -496,7 +530,7 @@ export class Board {
 
 	checkFruitIsMaximun() {
 		//define max level
-		let max = Fruit.maxFruitLevel + 1;
+		let max = this.isSingleMode ? 9 : 8; //Maximum level 10 (index 9) for single mode and 9 (index 8) for double mode
 		let maxLevel = this.getMaxFruitLevel();
 
 		if (maxLevel != max) {

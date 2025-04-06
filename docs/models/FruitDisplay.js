@@ -8,18 +8,34 @@ export class FruitDisplay {
 
 	setupFruitDisplay(area, isDoubleMode) {
 		const fruitsLevel = [];
-		const totalFruits = 10;
+		let startLevel, endLevel;
+
+		// Determine the fruit level range displayed according to the game mode
+		if (isDoubleMode) {
+			startLevel = 0;
+			endLevel = 8;
+		} else {
+			startLevel = 2;
+			endLevel = 9;
+		}
+
+		const totalFruits = endLevel - startLevel + 1;
 		const gap = 18;
 		let prevX = null;
 		let prevY = null;
 		let prevSize = null;
 
 		for (let i = 0; i < totalFruits; i++) {
-			let size = isDoubleMode ? 20 + 8 * i : 20 + 10 * i;
+			// Calculate the actual fruit grade
+			const actualLevel = startLevel + i;
+
+			// Adjust fruit size according to game mode
+			let size = isDoubleMode ? 20 + 8 * actualLevel : 20 + 10 * actualLevel;
 
 			let x, y;
 
 			if (isDoubleMode) {
+				// Double mode fruit horizontal arrangement
 				y = area.y + area.h / 2;
 
 				if (i === 0) {
@@ -27,7 +43,11 @@ export class FruitDisplay {
 				} else {
 					x = prevX + prevSize / 2 + size / 2 + gap;
 				}
+
+				prevX = x;
+				prevSize = size;
 			} else {
+				// Single mode fruit vertical arrangement
 				x = area.x + area.w / 2;
 
 				if (i === 0) {
@@ -35,23 +55,34 @@ export class FruitDisplay {
 				} else {
 					y = prevY + prevSize / 2 + size / 2 + gap;
 				}
-			}
 
-			let fruit = new Fruit(i, x, y, size, this.scaleVal);
-			fruit.doNotFall();
-			fruitsLevel.push(fruit);
-
-			if (isDoubleMode) {
-				prevX = x;
-				prevSize = size;
-			} else {
 				prevY = y;
 				prevSize = size;
 			}
+
+			// Create fruit and set the correct grade
+			let fruit = new Fruit(actualLevel, x, y, size, this.scaleVal);
+			fruit.doNotFall();
+			this.fruits.push(fruit);
 		}
+
+		console.log(`Created ${this.fruits.length} display fruits`);
 	}
 
 	draw() {
-		this.fruits.forEach(fruit => fruit.draw());
+		// Make sure this.fruits exists and is an array
+		if (this.fruits && Array.isArray(this.fruits) && this.fruits.length > 0) {
+			// Traverse the array and call the draw method for each fruit
+			for (let i = 0; i < this.fruits.length; i++) {
+				const fruit = this.fruits[i];
+				if (fruit && typeof fruit.draw === 'function') {
+					fruit.draw();
+				} else {
+					console.warn(`Fruit at index ${i} does not have a draw method`);
+				}
+			}
+		} else {
+			console.warn('No fruits to draw in FruitDisplay');
+		}
 	}
 }
