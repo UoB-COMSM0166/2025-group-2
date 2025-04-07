@@ -91,37 +91,54 @@ export class Player {
 		if (this.isDoubleMode) {
 			const scorePositionX =
 				this.id === 1
-					? this.area.next1.x + this.area.next1.w + this.area.next1.w / 2 + 10
-					: this.area.next2.x + this.area.next2.w + this.area.next2.w / 2 + 10; // Player 2's score on the right
+					? this.area.next1.x + this.area.next1.w + 20
+					: this.area.next2.x + this.area.next2.w + 20; // Player 2's score on the right
 
 			this.scoreLabelX = scorePositionX;
+
+			// Pre-calculate the width of the fractional text
+			textSize(35);
+			const scoreText = `P${this.id} Score: ${this.score.getScore()}`;
+			this.scoreTextWidth = textWidth(scoreText);
 
 			this.uiControllor.createLabel(
 				`score_${this.id}`,
 				scorePositionX,
 				this.area.game1.y - 20,
-				`P${this.id} Score: ${this.score.getScore()}`,
+				scoreText,
 				'#6B4F3F',
-				20
+				35,
+				null,
+				LEFT // Use left justification
 			);
 		} else {
 			this.uiControllor.createLabel(
 				`score`,
 				this.area.shop.x + this.area.shop.w / 2,
-				this.area.shop.y - 60,
+				this.area.shop.y - 70,
 				`Score: ${this.score.getScore()}`,
 				'#6B4F3F',
-				20
+				35
 			);
 		}
 	}
 
 	updateScore() {
 		if (this.isDoubleMode) {
-			this.uiControllor.updateLabelText(
-				`score_${this.id}`,
-				`P${this.id} Score: ${this.score.getScore()}`
-			);
+			// Update score text
+			const scoreText = `P${this.id} Score: ${this.score.getScore()}`;
+			this.uiControllor.updateLabelText(`score_${this.id}`, scoreText);
+
+			// Recalculate fractional text width
+			textSize(35);
+			this.scoreTextWidth = textWidth(scoreText);
+
+			// Update coin label position based on new fractional text width
+			const padding = 30;
+			const coinPositionX = this.scoreLabelX + this.scoreTextWidth + padding;
+
+			// Update Coin Tag Position with Newly Added Method
+			this.uiControllor.updateLabelPosition(`coin_${this.id}`, coinPositionX);
 		} else {
 			this.uiControllor.updateLabelText(`score`, `Score: ${this.score.getScore()}`);
 		}
@@ -129,7 +146,10 @@ export class Player {
 
 	displayCoin() {
 		if (this.isDoubleMode) {
-			const coinPositionX = this.scoreLabelX + 120;
+			// Make sure the coin label is on the right side of the score, with sufficient spacing
+			// Fixed distance between score and coin
+			const padding = 30;
+			const coinPositionX = this.scoreLabelX + this.scoreTextWidth + padding;
 			const coinPositionY = this.area.game1.y - 20;
 
 			this.uiControllor.createLabel(
@@ -138,7 +158,9 @@ export class Player {
 				coinPositionY,
 				`Coin: ${this.coin.getCoin()}`,
 				'#6B4F3F',
-				20
+				35,
+				null,
+				LEFT
 			);
 		} else {
 			this.uiControllor.createLabel(
@@ -147,7 +169,7 @@ export class Player {
 				this.area.shop.y - 30,
 				`Coin: ${this.coin.getCoin()}`,
 				'#6B4F3F',
-				20
+				35
 			);
 		}
 	}
