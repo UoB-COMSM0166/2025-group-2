@@ -43,11 +43,11 @@ export class UIControllor {
 		pop();
 	}
 
-	createLabel(id, x, y, text, colour = '#000000', size = 12, bgColour = null, type = null) {
+	createLabel(id, x, y, text, colour = '#000000', size = 12, bgColour = null, textAlign = CENTER) {
 		textSize(size);
 		let w = textWidth(text) + 15;
 		let h = textAscent() + textDescent() + 10;
-		this.labels[id] = { id, x, y, text, colour, size, bgColour, w, h, type };
+		this.labels[id] = { id, x, y, text, colour, size, bgColour, w, h, textAlign };
 	}
 
 	getLabels() {
@@ -60,6 +60,15 @@ export class UIControllor {
 			textSize(this.labels[id].size);
 			this.labels[id].w = textWidth(newText);
 			this.labels[id].h = textAscent() + textDescent();
+		}
+	}
+
+	updateLabelPosition(id, x, y) {
+		if (this.labels[id]) {
+			this.labels[id].x = x;
+			if (y !== undefined) {
+				this.labels[id].y = y;
+			}
 		}
 	}
 
@@ -89,7 +98,7 @@ export class UIControllor {
 			// draw text
 			fill(label.colour);
 			textSize(label.size);
-			textAlign(CENTER, CENTER);
+			textAlign(label.textAlign || CENTER, CENTER);
 			text(label.text, label.x, label.y);
 			pop();
 		});
