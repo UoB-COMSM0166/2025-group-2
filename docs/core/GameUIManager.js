@@ -45,14 +45,14 @@ export class GameUIManager {
 	}
 
 	createSingleAreas(canvasWidth, canvasHeight) {
-		const gameWidth = canvasWidth * 0.4;
+		const gameWidth = canvasWidth * 0.3;
 		const gameHeight = canvasHeight * 0.6;
 		const shopWidth = canvasWidth * 0.2;
 		const shopHeight = canvasHeight * 0.5;
 		const displayWidth = canvasWidth * 0.15;
-		const displayHeight = canvasHeight * 0.85;
+		const displayHeight = canvasHeight * 0.78;
 		const gap = canvasWidth * 0.05;
-		const totalWidth = displayWidth + gameWidth + shopWidth + gap * 3;
+		const totalWidth = displayWidth + gameWidth + shopWidth + gap * 2;
 		const leftMargin = (canvasWidth - totalWidth) / 2;
 		const thickness = 10;
 
@@ -92,7 +92,7 @@ export class GameUIManager {
 		const gameHeight = canvasHeight * 0.65;
 		const shopWidth = canvasWidth * 0.15;
 		const shopHeight = canvasHeight * 0.5;
-		const displayWidth = canvasWidth * 0.5;
+		const displayWidth = canvasWidth * 0.43;
 		const displayHeight = canvasHeight * 0.1;
 		const gapX = canvasWidth * 0.01;
 		const gapY = canvasWidth * 0.01;
