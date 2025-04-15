@@ -212,7 +212,6 @@ export class Fruit {
 	moveTo(x, y) {
 		this.sprite.x = x;
 		this.sprite.y = y;
-		this.sprite.vel.x = 0;
 		this.sprite.vel.y = 0;
 	}
 
@@ -254,7 +253,6 @@ export class Fruit {
 
 	doNotFall() {
 		this.sprite.collider = 'static';
-		this.sprite.vel.x = 0;
 		this.sprite.vel.y = 0;
 		this.isFalling = false;
 	}

@@ -183,10 +183,8 @@ export class Board {
 
 				if (fruit.sprite.x < minX) {
 					fruit.sprite.x = minX;
-					fruit.sprite.vel.x = 0;
 				} else if (fruit.sprite.x > maxX) {
 					fruit.sprite.x = maxX;
-					fruit.sprite.vel.x = 0;
 				}
 			}
 		}
@@ -199,10 +197,8 @@ export class Board {
 
 			if (this.fallingFruit.sprite.x < minX) {
 				this.fallingFruit.sprite.x = minX;
-				this.fallingFruit.sprite.vel.x = 0;
 			} else if (this.fallingFruit.sprite.x > maxX) {
 				this.fallingFruit.sprite.x = maxX;
-				//this.fallingFruit.sprite.vel.x = 0;
 			}
 		}
 	}
@@ -443,8 +439,6 @@ export class Board {
 				// Gradually reduce horizontal speed to stop fruit moving horizontally
 				if (Math.abs(this.currentFruit.sprite.vel.x) > 0.01) {
 					this.currentFruit.sprite.vel.x *= 0.9;
-				} else {
-					this.currentFruit.sprite.vel.x = 0;
 				}
 			} else {
 				// If there is a wind event, only fix vertical speed, allow horizontal speed to remain
@@ -499,13 +493,13 @@ export class Board {
 		switch (action) {
 			case 'player1-left':
 				if (this.id === 1) {
-					this.moveCurrentFruitLeft(leftBound, moveSpeed);
+					this.moveCurrentFruitLeft(leftBound);
 					console.log(`Player 1 fruit moved left: ${this.currentFruit.sprite.x}`);
 				}
 				break;
 			case 'player1-right':
 				if (this.id === 1) {
-					this.moveCurrentFruitRight(rightBound, moveSpeed);
+					this.moveCurrentFruitRight(rightBound);
 					console.log(`Player 1 fruit moved right: ${this.currentFruit.sprite.x}`);
 				}
 				break;
@@ -517,13 +511,13 @@ export class Board {
 				break;
 			case 'player2-left':
 				if (this.id === 2) {
-					this.moveCurrentFruitLeft(leftBound, moveSpeed);
+					this.moveCurrentFruitLeft(leftBound);
 					console.log(`Player 2 fruit moved left: ${this.currentFruit.sprite.x}`);
 				}
 				break;
 			case 'player2-right':
 				if (this.id === 2) {
-					this.moveCurrentFruitRight(rightBound, moveSpeed);
+					this.moveCurrentFruitRight(rightBound);
 					console.log(`Player 2 fruit moved right: ${this.currentFruit.sprite.x}`);
 				}
 				break;
@@ -537,7 +531,7 @@ export class Board {
 	}
 
 	// Move the current fruit left
-	moveCurrentFruitLeft(leftBound, speed = 0) {
+	moveCurrentFruitLeft(leftBound) {
 		if (!this.currentFruit) return;
 
 		const newX = this.currentFruit.sprite.x - KEYBOARD_MOVE_SPEED;
@@ -550,12 +544,10 @@ export class Board {
 
 		// Reset vertical velocity to prevent gravity from affecting it until dropped
 		this.currentFruit.sprite.vel.y = 0;
-
-		this.currentFruit.sprite.vel.x = -speed * 0.5;
 	}
 
 	// Move the current fruit right
-	moveCurrentFruitRight(rightBound, speed = 0) {
+	moveCurrentFruitRight(rightBound) {
 		if (!this.currentFruit) return;
 
 		const newX = this.currentFruit.sprite.x + KEYBOARD_MOVE_SPEED;
@@ -568,7 +560,6 @@ export class Board {
 
 		// Reset vertical velocity to prevent gravity from affecting it until dropped
 		this.currentFruit.sprite.vel.y = 0;
-		this.currentFruit.sprite.vel.x = speed * 0.5;
 	}
 
 	// Drop the current fruit
@@ -738,37 +729,37 @@ export class Board {
 			this.warningFruits = [];
 		}
 
-		// 检查新越线的水果
+		// Check for new fruit crossing the line
 		for (const fruit of this.fruits) {
-			// 跳过雨水果的判断，让它们有时间下落
+			// Skip the judgment of rain fruits and let them have time to fall
 			if (fruit.isRainFruit && Math.abs(fruit.sprite.vel.y) >= 0.2) {
 				continue;
 			}
 
-			// 检查水果顶部是否超过警戒线
+			// Check whether the top of the fruit exceeds the warning line
 			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
 
-			// 如果水果顶部超过警戒线
+			// If the top of the fruit exceeds the warning line
 			if (fruitTop <= y) {
-				// 先检查这个水果是否已经在警告列表中
+				// Check if the fruit is already on the warning list.
 				const isAlreadyWarning = this.warningFruits.some(wf => wf.fruit === fruit);
 
 				if (!isAlreadyWarning) {
-					// 判断水果运动状态
+					// Judge fruit movement state
 					const isMoving =
 						Math.abs(fruit.sprite.vel.y) >= 0.2 || Math.abs(fruit.sprite.vel.x) >= 0.2;
 
 					if (isMoving) {
-						// 水果正在移动，给它机会滑落，添加到警告列表中
+						// Fruit is moving, give it a chance to slip, add to warning list
 						this.warningFruits.push({
 							fruit: fruit,
 							warningTime: millis(),
-							// 给水果1.5秒的时间滑落
+							// Give the fruit 1.5 seconds to slip
 							grace: 1500,
 						});
 						continue;
 					} else {
-						// 水果稳定且越线，直接结束游戏
+						// Fruit stable and cross the line, end the game directly
 						this.endGame();
 						return true;
 					}
@@ -776,65 +767,65 @@ export class Board {
 			}
 		}
 
-		// 检查警告列表中的水果
+		// Check the fruits in the warning list
 		if (this.warningFruits.length > 0) {
 			const currentTime = millis();
 
-			// 过滤出需要保留的警告水果
+			// Filter out warning fruits to keep
 			const remainingWarnings = [];
 
 			for (const warning of this.warningFruits) {
-				// 如果水果已被移除，跳过
+				// Skip if fruit has been removed
 				if (!warning.fruit || warning.fruit.removed) {
 					continue;
 				}
 
-				// 判断水果是否滑落到安全位置
+				// Decide if the fruit has slipped to a safe position
 				const fruitTop = warning.fruit.sprite.y - warning.fruit.sprite.d / 2;
 
 				if (fruitTop > y) {
-					// 水果已经滑落到安全位置，从警告列表移除
+					// Fruit has slipped to safety and removed from warning list
 					continue;
 				}
 
-				// 计算水果是否还在移动
+				// Calculate whether the fruit is still moving
 				const isMoving =
 					Math.abs(warning.fruit.sprite.vel.y) >= 0.1 ||
 					Math.abs(warning.fruit.sprite.vel.x) >= 0.1;
 
-				// 判断宽限期是否到期
+				// Determine if grace period expires
 				const timeElapsed = currentTime - warning.warningTime;
 
 				if (timeElapsed >= warning.grace) {
-					// 宽限期到期，判断水果状态
+					// Grace period expires, judge fruit status
 					if (!isMoving) {
-						// 水果稳定且仍在警戒线上方，游戏结束
+						// Fruit stable and still above cordon, game over
 						this.endGame();
 						return true;
 					} else {
-						// 水果仍在移动，再给一次机会，刷新计时器
+						// The fruit is still moving. Give me another chance. Refresh the timer.
 						warning.warningTime = currentTime;
 						remainingWarnings.push(warning);
 					}
 				} else {
-					// 宽限期未到，继续等待
+					// Grace period not yet expired, continue to wait
 					remainingWarnings.push(warning);
 				}
 			}
 
-			// 更新警告列表
+			// Update warning list
 			this.warningFruits = remainingWarnings;
 		}
 
 		return false;
 	}
 
-	// 新添加的辅助方法：结束游戏
+	// New auxiliary method added: End game
 	endGame() {
 		this.uiControllor.drawGameOver(this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
 		console.log('水果越线，游戏结束');
 
-		// 确保游戏管理器知道游戏已结束
+		// Make sure the game manager knows the game is over
 		if (this.player && this.player.gameManager) {
 			this.player.gameManager.isGameOver = true;
 		}
