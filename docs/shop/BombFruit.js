@@ -88,10 +88,25 @@ export class BombFruit extends Fruit {
 		const explosionX = this.sprite.x;
 		const explosionY = this.sprite.y;
 
+		// Check if this bomb is waiting fruit
+		const isBombWaitingFruit = game.isWaitingForFruitToDrop && game.lastDroppedFruit === this;
+
+		// If the bomb is waiting fruit, reset waiting status
+		if (isBombWaitingFruit) {
+			game.isWaitingForFruitToDrop = false;
+			game.lastDroppedFruit = null;
+		}
+
 		//removing fruits within explosion radius
 		game.fruits = game.fruits.filter(fruit => {
 			const distance = dist(explosionX, explosionY, fruit.sprite.x, fruit.sprite.y);
 			if (distance <= this.explosionRadius) {
+				// If fried fruit is waiting fruit, reset waiting status
+				if (game.isWaitingForFruitToDrop && game.lastDroppedFruit === fruit) {
+					game.isWaitingForFruitToDrop = false;
+					game.lastDroppedFruit = null;
+					game.waitTimer = 0;
+				}
 				fruit.remove();
 				return false; //exclude from new array
 			}

@@ -50,7 +50,12 @@ export class RainbowFruit extends Fruit {
 	static universalMerge(a, b) {
 		if (a.isRainbow || b.isRainbow) {
 			console.log(`🌈 Universal Merge triggered between ${a.i} and ${b.i}`);
+
 			let normalFruit = a.isRainbow ? b : a; // Find non-rainbowfruit
+			let rainbowFruit = a.isRainbow ? a : b;
+
+			const board = normalFruit.board || rainbowFruit.board;
+
 			let newType = normalFruit.level + 1;
 			if (normalFruit.level === 7) {
 				newType = 7;
@@ -60,9 +65,25 @@ export class RainbowFruit extends Fruit {
 			let newY = (a.sprite.y + b.sprite.y) / 2;
 			let newSize = 30 + 20 * newType;
 
+			let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal || 1);
+
+			if (board) {
+				mergedFruit.board = board;
+
+				// Check to see if there is a fruit that is waiting
+				const isWaitingFruit =
+					board.isWaitingForFruitToDrop &&
+					(board.lastDroppedFruit === a || board.lastDroppedFruit === b);
+
+				// If fruit is waiting, update reference
+				if (isWaitingFruit) {
+					board.lastDroppedFruit = mergedFruit;
+				}
+			}
+
 			a.remove();
 			b.remove();
-			return new Fruit(newType, newX, newY, newSize);
+			return mergedFruit;
 		}
 		return null;
 	}

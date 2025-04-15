@@ -6,6 +6,7 @@ import { Fruit } from './index.js';
 const DISTFROMGAME = 40;
 const DISTFROMSHOP = 150;
 const KEYBOARD_MOVE_SPEED = 5;
+const WAIT_TIMEOUT = 120; // Add wait timeout frames
 
 export class Board {
 	constructor(player, area, scaleVal) {
@@ -13,7 +14,7 @@ export class Board {
 		this.displayArea = area.display; // { x, y, w, h }
 		this.leftBoardArea = area.game1; // { x, y, w, h }
 
-		this.gravity = 15;
+		this.gravity = 30;
 		this.fruits = [];
 		this.currentFruit = null;
 		this.nextFruit = null;
@@ -30,6 +31,15 @@ export class Board {
 		this.gameArea = this.mode === 'single' ? area.game1 : this.id === 1 ? area.game1 : area.game2;
 		this.endLine =
 			this.mode === 'single' ? area.dashLine1 : this.id === 1 ? area.dashLine1 : area.dashLine2;
+
+		this.isWaitingForFruitToDrop = false;
+		this.lastDroppedFruit = null;
+		this.waitTimer = 0; // Add Wait Timer
+		this.dashLineY = this.isSingleMode
+			? area.dashLine1.y1
+			: this.id === 1
+			? area.dashLine1.y1
+			: area.dashLine2.y1;
 
 		// Set fruit level range according to game mode
 		if (this.isSingleMode) {
@@ -88,6 +98,9 @@ export class Board {
 			30 + 20 * initialLevel,
 			this.scaleVal
 		);
+
+		this.currentFruit.board = this;
+
 		// Create the next fruit, also using grades within the allowed range
 		const nextLevel = this.getNextFruitLevel();
 		let nextFruitX, nextFruitY;
@@ -107,6 +120,8 @@ export class Board {
 			30 + 20 * nextLevel,
 			this.scaleVal
 		);
+
+		this.nextFruit.board = this;
 		this.nextFruit.doNotFall();
 
 		this.toolManager = this.player.toolManager;
@@ -148,6 +163,46 @@ export class Board {
 		this.handleMerging();
 
 		this.fruits = this.fruits.filter(fruit => !fruit.removed);
+
+		if (this.isWaitingForFruitToDrop) {
+			// Increase wait timer to prevent permanent wait
+			this.waitTimer++;
+
+			// Check whether lastDropped Fruit is valid
+			const fruitExists =
+				this.lastDroppedFruit &&
+				!this.lastDroppedFruit.removed &&
+				this.fruits.includes(this.lastDroppedFruit);
+
+			// Modify here-use the bottom position of the whole fruit instead of the top to judge
+			if (!fruitExists) {
+				// 如果水果不存在了（可能被合并或移除）
+				console.log('重置等待状态: 水果不存在');
+				this.isWaitingForFruitToDrop = false;
+				this.lastDroppedFruit = null;
+				this.waitTimer = 0;
+			} else if (this.waitTimer > WAIT_TIMEOUT) {
+				// 如果等待时间过长，强制重置
+				console.log('重置等待状态: 等待超时');
+				this.isWaitingForFruitToDrop = false;
+				this.lastDroppedFruit = null;
+				this.waitTimer = 0;
+			}
+			// 使用最严格的条件：水果完全通过dashline
+			else if (
+				this.lastDroppedFruit.sprite.y - this.lastDroppedFruit.sprite.d / 2 >
+				this.dashLineY + 20
+			) {
+				console.log('重置等待状态: 水果已完全通过dashLine');
+				this.isWaitingForFruitToDrop = false;
+				this.lastDroppedFruit = null;
+				this.waitTimer = 0;
+			}
+		}
+
+		// Modify the incident code to ensure that the event gets the latest fruits array
+		this.incidentManager.game = this; // Ensure incidentManager references the latest Board
+
 		this.fruits.forEach(fruit => {
 			//check if the fruit is in fog
 			if (this.incidentManager.incidents.Fog.active && fruit.sprite.y > 200) {
@@ -165,7 +220,11 @@ export class Board {
 		for (let fruit of this.fruits) {
 			fruit.updateState();
 		}
+
 		this.incidentManager.update();
+
+		// Check if any fruit crosses the line (make sure the end-of-game logic works)
+		this.checkFruitOverLine(this.dashLineY);
 	}
 
 	updateScale(newScale) {
@@ -198,10 +257,15 @@ export class Board {
 		this.currentFruit?.remove?.();
 
 		this.currentFruit = fruit;
+
+		fruit.board = this;
 	}
 
 	// Handle mouse controls (for single mode) - just track position, not dropping
 	handleCurrentFruitMouse() {
+		// If waiting on a fruit cross line, do not process mouse movement
+		if (this.isWaitingForFruitToDrop) return;
+
 		const topY = this.gameArea.y;
 		const dashLineY = this.dashLineY || topY + 130;
 		const currentFruitPosition = (topY + dashLineY) / 2;
@@ -219,6 +283,11 @@ export class Board {
 
 	// Handle mouse click for single mode (drop fruit)
 	handleMouseClick() {
+		// If in wait state, ignore click
+		if (this.isWaitingForFruitToDrop) {
+			console.log('正在等待上一个水果通过dashline，忽略点击');
+			return;
+		}
 		// Check if it is within the game protection period
 		if (millis() - this.gameStartTime < this.GAME_START_PROTECTION) {
 			console.log('Game just started, ignore click');
@@ -240,6 +309,9 @@ export class Board {
 
 	// Handle keyboard controls (for double mode)
 	handleCurrentFruitKeyboard() {
+		// If waiting on a fruit line, do not process keyboard input
+		if (this.isWaitingForFruitToDrop) return;
+
 		const topY = this.gameArea.y;
 		const dashLineY = this.dashLineY || topY + 130;
 		if (this.currentFruit && this.currentFruit?.sprite) {
@@ -256,6 +328,12 @@ export class Board {
 
 	// Handle keyboard input for the current fruit
 	handleKeyboardInput(action) {
+		// If in wait state, ignore keyboard input
+		if (this.isWaitingForFruitToDrop && (action === 'player1-drop' || action === 'player2-drop')) {
+			console.log('正在等待上一个水果通过dashline，忽略投放操作');
+			return;
+		}
+
 		if (!this.currentFruit || !this.currentFruit?.sprite) return;
 
 		let leftBound = this.gameArea.x + this.wallWidth;
@@ -339,7 +417,13 @@ export class Board {
 	dropCurrentFruit() {
 		if (!this.currentFruit) return;
 
-		this.currentFruit.sprite.vel.y = this.gravity;
+		this.isWaitingForFruitToDrop = true;
+		this.lastDroppedFruit = this.currentFruit;
+		this.waitTimer = 0; // Reset wait timer
+
+		// Set reference back to Board for fruit
+		this.currentFruit.board = this;
+
 		this.currentFruit.startFalling();
 		this.fruits.push(this.currentFruit);
 		this.currentFruit = null;
@@ -347,6 +431,43 @@ export class Board {
 
 	// Handle switching to the next fruit
 	handleNextFruit() {
+		// If you currently have fruit, do nothing
+		if (this.currentFruit) return;
+
+		// If you are waiting for the last fruit to cross the line, do nothing
+		if (this.isWaitingForFruitToDrop) {
+			// Check if the previous fruit is no longer in the array (removed or merged)
+			if (!this.lastDroppedFruit || !this.fruits.includes(this.lastDroppedFruit)) {
+				console.log('上一个水果已不存在，允许生成新水果');
+				this.isWaitingForFruitToDrop = false;
+				this.lastDroppedFruit = null;
+				this.waitTimer = 0;
+			}
+			// Check whether the previous fruit has passed the dashline
+			else if (
+				this.lastDroppedFruit.sprite.y - this.lastDroppedFruit.sprite.d / 4 >
+				this.dashLineY
+			) {
+				console.log('上一个水果已完全通过dashline，允许生成新水果');
+				this.isWaitingForFruitToDrop = false;
+				this.lastDroppedFruit = null;
+				this.waitTimer = 0;
+			}
+			// Force reset if wait time is too long
+			else if (this.waitTimer > WAIT_TIMEOUT) {
+				// Increase wait time, give more time via dashline
+				console.log('等待超时，强制允许生成新水果');
+				this.isWaitingForFruitToDrop = false;
+				this.lastDroppedFruit = null;
+				this.waitTimer = 0;
+			}
+
+			// If you are still waiting, return directly and no new fruit will be generated.
+			if (this.isWaitingForFruitToDrop) {
+				return;
+			}
+		}
+
 		// Timer increments when there is no current fruit
 		this.timer++;
 		if (this.timer > 10) {
@@ -354,6 +475,8 @@ export class Board {
 			this.currentFruit = this.nextFruit;
 
 			if (this.currentFruit) {
+				this.currentFruit.board = this;
+
 				const topY = this.gameArea.y;
 				const dashLineY = this.dashLineY || topY + 130;
 				const currentFruitPosition = (topY + dashLineY) / 2;
@@ -399,6 +522,7 @@ export class Board {
 			}
 
 			this.nextFruit = new Fruit(newType, nextFruitX, nextFruitY, 30 + 20 * newType, this.scaleVal);
+			this.nextFruit.board = this;
 			this.nextFruit.doNotFall();
 			this.timer = 0;
 		}
@@ -416,18 +540,44 @@ export class Board {
 				// Skip merging if either fruit is frozen
 				if (a.isFrozen || b.isFrozen) continue;
 
+				// Check if waiting fruit is involved
+				const involvesWaitingFruit =
+					this.isWaitingForFruitToDrop &&
+					(this.lastDroppedFruit === a || this.lastDroppedFruit === b);
+
 				// bomb fruit explpsion
 				if (a instanceof BombFruit || b instanceof BombFruit) {
 					if (a instanceof BombFruit) a.explode(this);
 					if (b instanceof BombFruit) b.explode(this);
+
+					// If the exploding fruit is waiting, reset waiting status
+					if (involvesWaitingFruit) {
+						this.isWaitingForFruitToDrop = false;
+						this.lastDroppedFruit = null;
+						this.waitTimer = 0;
+					}
 					continue;
 				}
 
 				// rainbow fruit merging
 				if (a instanceof RainbowFruit || b instanceof RainbowFruit) {
 					let mergedFruit = RainbowFruit.universalMerge(a, b);
-					if (mergedFruit) this.processMergedFruit(mergedFruit);
-					continue;
+					if (mergedFruit) {
+						// Update reference if merge involves fruit in waiting
+						if (involvesWaitingFruit) {
+							this.lastDroppedFruit = mergedFruit;
+							mergedFruit.board = this;
+
+							// Check whether the combined fruit has crossed the line
+							if (mergedFruit.sprite.y - mergedFruit.sprite.d / 2 > this.dashLineY + 20) {
+								this.isWaitingForFruitToDrop = false;
+								this.lastDroppedFruit = null;
+								this.waitTimer = 0;
+								console.log('合并后的水果已过线，重置等待状态');
+							}
+						}
+						this.processMergedFruit(mergedFruit);
+					}
 				}
 
 				// normal fruit merging
@@ -438,13 +588,31 @@ export class Board {
 					}
 
 					let mergedFruit = Fruit.merge(a, b);
-					if (mergedFruit) this.processMergedFruit(mergedFruit);
+					if (mergedFruit) {
+						// If the merger involves fruit in waiting
+						if (involvesWaitingFruit) {
+							console.log('合并了等待中的水果，更新引用');
+							this.lastDroppedFruit = mergedFruit;
+							mergedFruit.board = this;
+
+							// Check whether the combined fruit has crossed the line
+							if (mergedFruit.sprite.y - mergedFruit.sprite.d / 2 > this.dashLineY + 20) {
+								this.isWaitingForFruitToDrop = false;
+								this.lastDroppedFruit = null;
+								this.waitTimer = 0;
+								console.log('合并后的水果已过线，重置等待状态');
+							}
+						}
+						this.processMergedFruit(mergedFruit);
+					}
 				}
 			}
 		}
 	}
 
 	processMergedFruit(mergedFruit) {
+		mergedFruit.board = this;
+
 		this.fruits.push(mergedFruit);
 
 		let scoreLevel = mergedFruit.level;
@@ -497,12 +665,26 @@ export class Board {
 	}
 
 	checkFruitOverLine(y) {
+		// First, check whether all non-safe fruits cross the line
 		for (const fruit of this.fruits) {
-			if (fruit.getState() !== Fruit.STATE.FALLING || fruit.getSafePeriod() > 0) continue;
+			// Ignore only the fruit that is waiting and the fruit that is safe
+			if (
+				(fruit === this.lastDroppedFruit && this.isWaitingForFruitToDrop) ||
+				fruit.getSafePeriod() > 0
+			) {
+				continue;
+			}
 
 			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
 			if (fruitTop <= y) {
 				this.uiControllor.drawGameOver(this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
+				console.log('水果越线，游戏结束');
+
+				// Make sure gameManager knows the game is over
+				if (this.player && this.player.gameManager) {
+					this.player.gameManager.isGameOver = true;
+				}
+
 				return true;
 			}
 		}

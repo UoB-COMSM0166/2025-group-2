@@ -55,6 +55,11 @@ export class IncidentManager {
 	}
 
 	update() {
+		// Update all events to ensure they are using the latest game references
+		for (const incidentName in this.incidents) {
+			this.incidents[incidentName].game = this.game;
+		}
+
 		if (this.isWarning) {
 			let elapsed = millis() - this.warningStartTime;
 			if (elapsed < 2000) {
@@ -73,19 +78,20 @@ export class IncidentManager {
 	}
 
 	activateIncident(incidentName) {
-		if(this.shieldOn){
+		if (this.shieldOn) {
 			return;
 		}
 		const incident = this.incidents[incidentName];
 		if (incident && !this.activeIncidents.includes(incident)) {
+			incident.game = this.game;
+
 			this.isWarning = true;
 			this.warningStartTime = millis();
 			this.pendingIncident = incident;
 			incident.manager = this;
 			incident.name = incidentName;
 
-				this.activeIncidents.push(incident);
-
+			this.activeIncidents.push(incident);
 		}
 	}
 

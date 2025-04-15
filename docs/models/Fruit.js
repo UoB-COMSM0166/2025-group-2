@@ -33,6 +33,7 @@ export class Fruit {
 		this.firePaused = false;
 		this.isFrozen = false;
 		this.scaleVal = scaleVal;
+		this.board = null;
 
 		// Default to zero velocity - important for keyboard controls
 		this.sprite.vel.x = 0;
@@ -77,6 +78,7 @@ export class Fruit {
 
 	startFalling() {
 		this.state = Fruit.STATE.FALLING;
+		this.fallStartTime = frameCount;
 	}
 
 	getState() {
@@ -209,6 +211,12 @@ export class Fruit {
 	remove() {
 		this.removed = true;
 		this.sprite.remove();
+
+		if (this.board && this.board.lastDroppedFruit === this) {
+			this.board.isWaitingForFruitToDrop = false;
+			this.board.lastDroppedFruit = null;
+			console.log('等待水果被移除，重置等待状态');
+		}
 	}
 
 	static merge(a, b) {
