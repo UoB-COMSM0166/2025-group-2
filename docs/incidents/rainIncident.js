@@ -8,7 +8,7 @@ export class RainIncident extends Incident {
 		this.scaleVal = this.game.scaleVal;
 		this.area = gameArea;
 		this.hasDropped = false;
-		this.fruitCount = 6; // The amount of fruit dropped
+		this.fruitCount = this.game?.isSingleMode ? 4 : 6; // The amount of fruit dropped
 		this.dashLineY = this.game.endLine.y1;
 	}
 
@@ -45,17 +45,32 @@ export class RainIncident extends Incident {
 			// Calculate the X-coordinate of the fruit (uniform distribution)
 			const x = leftWall + spacing * (i + 1);
 			const y = this.game.isSindleMode
-				? this.area.y
+				? this.area.y + this.area.h * 0.2
 				: this.area.y + (this.dashLineY - this.area.y) / 2; // Top wall inside position
 
+			let minFruitLevel, maxFruitLevel;
+
+			if (this.game.isSingleMode) {
+				// Single player mode uses fixed levels to avoid generating too many different types
+				minFruitLevel = this.game.minFruitLevel;
+				maxFruitLevel = minFruitLevel + 1;
+			} else {
+				// Double mode usage range
+				minFruitLevel = this.game.minFruitLevel;
+				maxFruitLevel = Math.min(this.game.minFruitLevel + 2, this.game.maxFruitLevel);
+			}
+
 			// Random fruit type (between 0 and 6)
-			const fruitType = floor(random(4));
+			const fruitType = floor(random(minFruitLevel, maxFruitLevel + 1));
 
 			// Create fruit
 			const newFruit = new Fruit(fruitType, x, y, 30 + 20 * fruitType, this.scaleVal);
 
+			newFruit.board = this.game;
+
 			// Make sure the fruit is in a falling state
-			newFruit.isFalling = true;
+			newFruit.startFalling();
+			newFruit.isRainFruit = true;
 
 			// Added to the game
 			this.game.fruits.push(newFruit);

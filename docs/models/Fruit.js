@@ -22,13 +22,12 @@ export class Fruit {
 
 	constructor(level, x, y, size, scaleVal) {
 		this.state = Fruit.STATE.WAITING;
-		this.safePeriod = 80;
 		this.level = level;
 		this.removed = false;
 		this.initialY = y;
 		this.sprite = new Sprite(x, y, size, 'd');
 		this.randomId = int(random(100000));
-		this.isFalling = true;
+		this.isFalling = false;
 		this.fireAffected = false;
 		this.firePaused = false;
 		this.isFrozen = false;
@@ -79,6 +78,10 @@ export class Fruit {
 	startFalling() {
 		this.state = Fruit.STATE.FALLING;
 		this.fallStartTime = frameCount;
+		this.isFalling = true;
+		this.sprite.collider = 'd';
+
+		this.sprite.vel.y = 2;
 	}
 
 	getState() {
@@ -98,8 +101,13 @@ export class Fruit {
 	}
 
 	updateState() {
-		if (this.state === Fruit.STATE.FALLING) {
-			if (this.safePeriod > 0) this.safePeriod--;
+		// Update status if fruit is still
+		if (
+			this.state === Fruit.STATE.FALLING &&
+			Math.abs(this.sprite.vel.y) < 0.1 &&
+			Math.abs(this.sprite.vel.x) < 0.1
+		) {
+			this.state = Fruit.STATE.LANDED;
 		}
 	}
 
@@ -211,12 +219,6 @@ export class Fruit {
 	remove() {
 		this.removed = true;
 		this.sprite.remove();
-
-		if (this.board && this.board.lastDroppedFruit === this) {
-			this.board.isWaitingForFruitToDrop = false;
-			this.board.lastDroppedFruit = null;
-			console.log('等待水果被移除，重置等待状态');
-		}
 	}
 
 	static merge(a, b) {
@@ -240,6 +242,8 @@ export class Fruit {
 				let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal);
 				mergedFruit.fireAffected = a.fireAffected || b.fireAffected;
 
+				mergedFruit.sprite.vel.y = 2;
+
 				a.remove();
 				b.remove();
 				return mergedFruit;
@@ -252,10 +256,7 @@ export class Fruit {
 		this.sprite.collider = 'static';
 		this.sprite.vel.x = 0;
 		this.sprite.vel.y = 0;
-	}
-
-	letFall() {
-		this.sprite.collider = 'd';
+		this.isFalling = false;
 	}
 
 	applyWind(windSpeed) {
