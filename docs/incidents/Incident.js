@@ -46,16 +46,20 @@ export class Incident {
 
 	update() {
 		const isDoubleMode = this.game.mode === 'double';
-		const gameId = this.game.id;
-		const gameArea = this.game.nextFruitArea;
-		const labelX = gameArea.x + gameArea.w * 2;
-		const labelY = gameArea.y + 20;
+		const nextFruitArea = this.game.nextFruitArea;
+		const labelX = nextFruitArea.x + nextFruitArea.w * 2;
+		const labelY = nextFruitArea.y + 20;
+		const gameArea = this.game.gameArea;
+
 		if (this.active) {
 			if (!isDoubleMode) {
 				fill('#6B4F3F');
 				textSize(20);
-				textAlign(RIGHT, TOP);
-				text(`${this.name} Effect Time Left: ${this.timeLeft}`, 240, 90);
+				text(
+					`${this.name} Effect Time Left: ${this.timeLeft}`,
+					gameArea.x + gameArea.w / 2,
+					gameArea.y - 30
+				);
 			} else {
 				fill('#6B4F3F');
 				textSize(20);
