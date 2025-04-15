@@ -77,8 +77,6 @@ export class FruitDisplay {
 				const fruit = this.fruits[i];
 				if (fruit && typeof fruit.draw === 'function') {
 					fruit.draw();
-				} else {
-					console.warn(`Fruit at index ${i} does not have a draw method`);
 				}
 			}
 		} else {
