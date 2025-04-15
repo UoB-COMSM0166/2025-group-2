@@ -1,8 +1,9 @@
 export class DoubleScoreTool {
-	constructor() {
+	constructor(area) {
 		this.doubleScoreTimeLeft = 20;
 		this.doubleScoreTimer = null;
 		this.doubleScoreActive = false;
+		this.gameArea = area;
 	}
 
 	activate() {
@@ -21,10 +22,20 @@ export class DoubleScoreTool {
 	}
 
 	update() {
+		const game1Area = this.gameArea.game1;
+		const game2Area = this.gameArea.game2 ?? null;
 		if (this.doubleScoreActive) {
-			fill(0);
-			textSize(20);
-			text('Double score Time Left: ' + this.doubleScoreTimeLeft, 240, 30);
+			if (game2Area == null) {
+				fill('#6B4F3F');
+				textSize(20);
+				text(
+					'Double score Time Left: ' + this.doubleScoreTimeLeft,
+					game1Area.x + game1Area.w / 2,
+					game1Area.y - 60
+				);
+			} else {
+				console.log('game1Area :>> ', game1Area);
+			}
 		}
 	}
 
