@@ -49,6 +49,14 @@ export class ToolManager {
 			this.activateSpecialFruit(toolName);
 			return;
 		}
+
+		if (toolName === 'Wind' || toolName === 'Rain') {
+			const opponent = this.player.id === 1 ? this.player.gameManager.player[1] : this.player.gameManager.player[0];
+			const board = opponent.boards;
+			if (toolName === 'Wind') board.incidentManager.activateIncident('Wind');
+			if (toolName === 'Rain') board.incidentManager.activateIncident('Rain');
+			return;
+	  }
 	}
 
 	activateTool(toolName) {
