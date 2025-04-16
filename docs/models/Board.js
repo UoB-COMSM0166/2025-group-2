@@ -456,7 +456,7 @@ export class Board {
 
 		let scoreMultiplier = this.toolManager.tools.doubleScore.doubleScoreActive ? 2 : 1;
 
-		// 如果 `mergedFruit` 被火焰影響，則扣分
+		// minus score if the mergedFruit is on fire
 		if (mergedFruit.fireAffected) {
 			this.score.minusScore(scoreLevel);
 		} else {
