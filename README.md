@@ -283,7 +283,14 @@ The evaluated result confirms that the addition of our key twist and new core me
 
 ## Contribution Statement
 
-- Provide a table of everyone's contribution, which may be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Let us know as soon as possible if there are any issues with teamwork as soon as they are apparent.
+|        Name         | Contribution |
+| :-----------------: | :----------: |
+|  Hayley Yi Li Tay   |     1.00     |
+| Doris Chia Chia Wu  |     1.00     |
+|      Shiyu Fan      |     1.00     |
+| Jimmy Chih Chun Lin |     1.00     |
+|   Octave Jin Liao   |     1.00     |
+|   Gerald Rodrigue   |     1.00     |
 
 ## Additional Marks
 
