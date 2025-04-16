@@ -32,52 +32,111 @@ export class TutorialManager {
 		this.setupClickListener();
 
 		// Define all tutorial steps
-		this.tutorialSteps = [
-			{
-				text: this.getObjectivesText(),
-				highlight: null,
-			},
-			{
-				text: this.getControlsText(),
-				highlight: null,
-			},
-			{
-				text: 'Random incidents will occur throughout gameplay that will create challenges for you!',
-				highlight: null,
-			},
-			{
-				text: 'The shop contains special tools that you can purchase with coins earned by merging fruits.',
-				highlight: this.gameManager.uiManager.AREAS.shop,
-			},
-			{
-				text: "Shuffle: Shakes all fruits to help rearrange them when you're stuck.",
-				highlight: 'shuffle',
-			},
-			{
-				text: 'Divine Shield: Protects you from incidents for a short period of time.',
-				highlight: 'divineShield',
-			},
-			{
-				text: 'Double Score: Doubles your score for each merge for a limited time.',
-				highlight: 'doubleScore',
-			},
-			{
-				text: 'Bomb: Creates an explosive fruit that clears nearby fruits when it collides.',
-				highlight: 'bombTool',
-			},
-			{
-				text: 'Rainbow: Creates a special fruit that can merge with any other fruit.',
-				highlight: 'rainbowTool',
-			},
-			{
-				text: 'Random: Gives you a random tool or special fruit for a lower price.',
-				highlight: 'random',
-			},
-			{
-				text: 'Get ready! The game will start when you click.',
-				highlight: null,
-			},
-		];
+		if(this.mode === 'single'){
+			this.tutorialSteps = [
+				{
+					text: this.getObjectivesText(),
+					highlight: null,
+				},
+				{
+					text: this.getControlsText(),
+					highlight: null,
+				},
+				{
+					text: 'Random incidents will occur throughout gameplay that will create challenges for you!',
+					highlight: null,
+				},
+				{
+					text: 'The shop contains special tools that you can purchase with coins earned by merging fruits.',
+					highlight: this.gameManager.uiManager.AREAS.shop,
+				},
+				{
+					text: "Shuffle: Shakes all fruits to help rearrange them when you're stuck.",
+					highlight: 'shuffle',
+				},
+				{
+					text: 'Divine Shield: Protects you from incidents for a short period of time.',
+					highlight: 'divineShield',
+				},
+				{
+					text: 'Double Score: Doubles your score for each merge for a limited time.',
+					highlight: 'doubleScore',
+				},
+				{
+					text: 'Bomb: Creates an explosive fruit that clears nearby fruits when it collides.',
+					highlight: 'bombTool',
+				},
+				{
+					text: 'Rainbow: Creates a special fruit that can merge with any other fruit.',
+					highlight: 'rainbowTool',
+				},
+				{
+					text: 'Random: Gives you a random tool or special fruit for a lower price.',
+					highlight: 'random',
+				},
+				{
+					text: 'Get ready! The game will start when you click.',
+					highlight: null,
+				},
+			];
+		}
+		else if(this.mode === 'double'){
+			this.tutorialSteps = [
+				{
+					text: this.getObjectivesText(),
+					highlight: null,
+				},
+				{
+					text: this.getControlsText(),
+					highlight: null,
+				},
+				{
+					text: 'Random incidents will occur throughout gameplay that will create challenges for you!',
+					highlight: null,
+				},
+				{
+					text: 'The shop contains special tools that you can purchase with coins earned by merging fruits.',
+					highlight: this.gameManager.uiManager.AREAS.shop,
+				},
+				{
+					text: "Shuffle: Shakes all fruits to help rearrange them when you're stuck.",
+					highlight: 'shuffle',
+				},
+				{
+					text: 'Divine Shield: Protects you from incidents for a short period of time.',
+					highlight: 'divineShield',
+				},
+				{
+					text: 'Double Score: Doubles your score for each merge for a limited time.',
+					highlight: 'doubleScore',
+				},
+				{
+					text: 'Bomb: Creates an explosive fruit that clears nearby fruits when it collides.',
+					highlight: 'bombTool',
+				},
+				{
+					text: 'Rainbow: Creates a special fruit that can merge with any other fruit.',
+					highlight: 'rainbowTool',
+				},
+				{
+					text: 'Random: Gives you a random tool or special fruit for a lower price.',
+					highlight: 'random',
+				},
+				{
+					text: 'Strong Wind: Cause a wind on your opponent side.',
+					highlight: 'Wind',
+				},
+				{
+					text: 'Heavy Rain: Cause a rain on your opponent side.',
+					highlight: 'Rain',
+				},
+				{
+					text: 'Get ready! The game will start when you click.',
+					highlight: null,
+				},
+			];
+		}
+
 
 		// Freeze all fruits in place at construction time
 		this.freezeAllFruits();

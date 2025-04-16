@@ -133,9 +133,17 @@ export class GameManager {
 		this.player.forEach(player => player.update());
 
 		// If counter is 0, end game
-		if (this.counter.getTimeLeft() <= 0 || this.isGameOver) {
-			console.log('End of game because counter or GameisOver is TRUE');
-			noLoop();
+		if(this.mode == 'single'){
+			if (this.isGameOver) {
+				console.log('End of game because counter or GameisOver is TRUE');
+				noLoop();
+			}
+		}
+		else if(this.mode == 'double'){
+			if (this.counter.getTimeLeft() <= 0 || this.isGameOver) {
+				console.log('End of game because counter or GameisOver is TRUE');
+				noLoop();
+			}
 		}
 	}
 
