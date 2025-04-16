@@ -35,7 +35,7 @@ export class MenuPage {
 		// Button status
 		this.buttons = [
 			{
-				text: 'Single Player',
+				text: 'Casual Mode',
 				action: () => this.game.startGame('single'),
 				bounds: { x: 0, y: 0, w: this.buttonWidth, h: this.buttonHeight },
 				isHovered: false,
@@ -194,7 +194,7 @@ export class MenuPage {
 		textSize(64);
 		textAlign(CENTER, CENTER);
 		fill(this.titleColor);
-		text('Merge Fruit', width / 2, height / 4);
+		text('Crazy Bubble', width / 2, height / 4);
 
 		// subtitle
 		textSize(32);

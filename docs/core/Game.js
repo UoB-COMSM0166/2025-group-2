@@ -89,8 +89,6 @@ export class Game {
 		try {
 			// Reset anything needed after tutorial
 			if (this.gameManager) {
-				this.gameManager.reset();
-
 				// Start the timer after tutorial ends - wrapped in try/catch
 				try {
 					if (this.gameManager.counter) {
