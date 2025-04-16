@@ -190,7 +190,7 @@ export class GameUIManager {
 			this.ui.createLabel(
 				'timer',
 				this.AREAS.game1.x + this.AREAS.game1.w / 2,
-				this.AREAS.game1.y - 150,
+				this.AREAS.game1.y - 200,
 				`Time: ${formattedTime}`,
 				textColour,
 				50
