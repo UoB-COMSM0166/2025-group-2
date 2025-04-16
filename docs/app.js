@@ -14,6 +14,17 @@ const keysPressed = {
 	ArrowRight: false,
 };
 
+const extraKeysPressed = {
+	q: false,
+	Q: false,
+	e: false,
+	E: false,
+	'.': false,
+	'>': false,
+	'/': false,
+	'?': false,
+};
+
 // Prevent immediate fruit drops triggered by clicking when mode is switched
 let modeChangeTime = 0;
 const MODE_CHANGE_DELAY = 500; // millisecond
@@ -75,6 +86,12 @@ window.keyPressed = function () {
 	if (keyCode === LEFT_ARROW) keysPressed['ArrowLeft'] = true;
 	if (keyCode === RIGHT_ARROW) keysPressed['ArrowRight'] = true;
 
+	// Track additional key states
+	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = true;
+	if (key === 'e' || key === 'E') extraKeysPressed['e'] = true;
+	if (key === '.' || key === '>') extraKeysPressed['.'] = true;
+	if (key === '/' || key === '?') extraKeysPressed['/'] = true;
+
 	if (game && game.gameManager) {
 		// Handle drop keys only on initial press
 		if (game.gameManager.mode === 'double') {
@@ -86,6 +103,27 @@ window.keyPressed = function () {
 			// Player 2 drop
 			if (keyCode === DOWN_ARROW) {
 				game.gameManager.handleKeyPress('player2-drop');
+			}
+
+			// Handling store browsing and purchases
+			if (game.gameManager.uiManager && game.gameManager.uiManager.shop) {
+				const shop = game.gameManager.uiManager.shop;
+
+				if (key === 'q' || key === 'Q') {
+					shop.player1Browse('next');
+				}
+
+				if (key === 'e' || key === 'E') {
+					shop.player1Buy();
+				}
+
+				if (key === '.' || key === '>') {
+					shop.player2Browse('next');
+				}
+
+				if (key === '/' || key === '?') {
+					shop.player2Buy();
+				}
 			}
 		}
 	}
@@ -100,6 +138,11 @@ window.keyReleased = function () {
 
 	if (keyCode === LEFT_ARROW) keysPressed['ArrowLeft'] = false;
 	if (keyCode === RIGHT_ARROW) keysPressed['ArrowRight'] = false;
+
+	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = false;
+	if (key === 'e' || key === 'E') extraKeysPressed['e'] = false;
+	if (key === '.' || key === '>') extraKeysPressed['.'] = false;
+	if (key === '/' || key === '?') extraKeysPressed['/'] = false;
 
 	return false; // Prevent default browser behavior
 };
