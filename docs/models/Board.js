@@ -110,32 +110,6 @@ export class Board {
 		this.nextFruit.doNotFall();
 
 		this.toolManager = this.player.toolManager;
-
-		// incident button have to remove after Jimmy do the random effect
-		// start here
-		let buttons = [
-			{ label: 'Wind Incident', type: 'Wind' },
-			{ label: 'Fog Incident', type: 'Fog' },
-			{ label: 'Freeze Incident', type: 'Freeze' },
-			{ label: 'Fire Incident', type: 'Fire' },
-			{ label: 'Rain Incident', type: 'Rain' },
-		];
-
-		let startY = 100;
-		let spacing = 50;
-
-		buttons.forEach((btn, index) => {
-			let button = createButton(btn.label);
-			button.position(50, startY + index * spacing);
-			button.mousePressed(() => this.incidentManager.activateIncident(btn.type));
-		});
-
-		// end here
-
-		// Debug log to verify fruit positioning
-		console.log(
-			`Player ${this.id} initial fruit position: x=${this.currentFruit.sprite.x}, y=${this.currentFruit.sprite.y}`
-		);
 	}
 
 	update() {
