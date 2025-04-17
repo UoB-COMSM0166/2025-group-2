@@ -63,14 +63,5 @@ export class KeyGuide {
 
 		this.drawLeftPlayerKeys(this.leftX, this.baseY);
 		this.drawRightPlayerKeys(this.rightX, this.baseY);
-
-		// Optional: 玩家標籤
-		// push();
-		// fill('#6B4F3F');
-		// textAlign(CENTER, BOTTOM);
-		// textSize(18 * this.scaleVal);
-		// text('Player 1', this.leftX + 40, this.baseY - 20);
-		// text('Player 2', this.rightX + 40, this.baseY - 20);
-		// pop();
 	}
 }

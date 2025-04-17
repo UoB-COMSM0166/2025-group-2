@@ -53,6 +53,10 @@ export class Player {
 
 		// Reset board state
 		if (this.boards) {
+			this.boards.fruits.forEach(fruit => {
+				fruit.remove?.();
+			});
+
 			// Clear existing fruits
 			this.boards.fruits = [];
 			if (this.boards.currentFruit) {
@@ -66,6 +70,7 @@ export class Player {
 
 			// Reset timer
 			this.boards.timer = 0;
+			this.boards.setup();
 		}
 
 		// Reset tool manager state

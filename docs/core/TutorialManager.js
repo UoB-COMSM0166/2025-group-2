@@ -23,23 +23,18 @@ export class TutorialManager {
 		// Create skip button
 		this.createSkipButton();
 
-		// Pause the game's counter
-		if (this.gameManager.counter) {
-			this.gameManager.counter.stop();
-		}
-
 		// Setup click listener for tutorial progression
 		this.setupClickListener();
 
 		// Define all tutorial steps
-		if(this.mode === 'single'){
+		if (this.mode === 'single') {
 			this.tutorialSteps = [
 				{
-					text: this.getObjectivesText(),
+					text: "Welcome to the Fruit Merge Game! \nYour goal is to merge fruits of the same size to create larger fruits and earn points. \nDon't let fruits stack up past the red line!",
 					highlight: null,
 				},
 				{
-					text: this.getControlsText(),
+					text: 'Move your mouse to position the fruit. Click to drop the fruit. \nTry to drop fruits on top of other fruits of the same size to merge them!',
 					highlight: null,
 				},
 				{
@@ -79,15 +74,14 @@ export class TutorialManager {
 					highlight: null,
 				},
 			];
-		}
-		else if(this.mode === 'double'){
+		} else if (this.mode === 'double') {
 			this.tutorialSteps = [
 				{
-					text: this.getObjectivesText(),
+					text: 'Move your mouse to position the fruit. Click to drop the fruit. \nTry to drop fruits on top of other fruits of the same size to merge them!',
 					highlight: null,
 				},
 				{
-					text: this.getControlsText(),
+					text: 'Player 1: Use  A/D  keys to move and  S  to drop. \nPlayer 2: Use  LEFT/RIGHT  arrow keys to move and  DOWN  arrow to drop. \nMerge fruits of the same size to score points!',
 					highlight: null,
 				},
 				{
@@ -136,7 +130,6 @@ export class TutorialManager {
 				},
 			];
 		}
-
 
 		// Freeze all fruits in place at construction time
 		this.freezeAllFruits();
@@ -200,22 +193,6 @@ export class TutorialManager {
 		}
 	}
 
-	getObjectivesText() {
-		if (this.mode === 'single') {
-			return "Welcome to the Fruit Merge Game! \nYour goal is to merge fruits of the same size to create larger fruits and earn points. \nDon't let fruits stack up past the red line!";
-		} else {
-			return 'Welcome to Two-Player Mode! \nPlayers must merge fruits in their own area. You lose if you stack fruits past the red line! \nWin Conditions: \n1. First player to achieve biggest fruit size wins! \nOR  \n2. Player with highest score after time limit wins!';
-		}
-	}
-
-	getControlsText() {
-		if (this.mode === 'single') {
-			return 'Move your mouse to position the fruit. Click to drop the fruit. \nTry to drop fruits on top of other fruits of the same size to merge them!';
-		} else {
-			return 'Player 1: Use  A/D  keys to move and  S  to drop. \nPlayer 2: Use  LEFT/RIGHT  arrow keys to move and  DOWN  arrow to drop. \nMerge fruits of the same size to score points!';
-		}
-	}
-
 	setupClickListener() {
 		// Store the original mouseClicked function
 		this.originalMouseClicked = window.mouseClicked;
@@ -225,7 +202,6 @@ export class TutorialManager {
 			if (this.isActive) {
 				// Ignore clicks during the initial protection period
 				if (this.initialClickProtection) {
-					console.log('Click ignored due to initial protection');
 					return false;
 				}
 
@@ -247,7 +223,6 @@ export class TutorialManager {
 		try {
 			window.mouseClicked = this.originalMouseClicked;
 		} catch (e) {
-			console.log('Error restoring click handler:', e);
 			// Provide a fallback click handler if necessary
 			window.mouseClicked = function () {
 				return false;
@@ -266,7 +241,6 @@ export class TutorialManager {
 	}
 
 	endTutorial() {
-		console.log('Ending tutorial...');
 		this.isActive = false;
 
 		// Remove the skip button if it exists
@@ -279,19 +253,14 @@ export class TutorialManager {
 		// Tell the game to start after tutorial - with proper error handling
 		try {
 			if (this.game && typeof this.game.startActualGame === 'function') {
-				console.log('Starting actual game...');
 				this.game.startActualGame();
 			} else {
-				console.error('game.startActualGame is not available');
-				// Fallback
 				if (this.game) {
 					this.game.currentScene = 'game';
 					this.game.isTutorialMode = false;
 				}
 			}
 		} catch (e) {
-			console.error('Error starting actual game:', e);
-			// Fallback to starting the game directly
 			if (this.game) {
 				this.game.currentScene = 'game';
 				this.game.isTutorialMode = false;

@@ -65,8 +65,6 @@ export class FruitDisplay {
 			fruit.doNotFall();
 			this.fruits.push(fruit);
 		}
-
-		console.log(`Created ${this.fruits.length} display fruits`);
 	}
 
 	draw() {
