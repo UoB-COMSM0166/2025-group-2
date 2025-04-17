@@ -43,6 +43,51 @@ export class UIControllor {
 		pop();
 	}
 
+	drawMaximum(x, y) {
+		push();
+		textAlign(CENTER, CENTER);
+		textSize(48);
+		fill('#ff0000');
+		text('You reached maximun fruit!', x, y);
+		pop();
+	}
+
+	drawCrossLine(x, y) {
+		push();
+		textAlign(CENTER, CENTER);
+		textSize(48);
+		fill('#ff0000');
+		text('You crossed the line!', x, y);
+		pop();
+	}
+
+	drawTie(x, y) {
+		push();
+		textAlign(CENTER, CENTER);
+		textSize(48);
+		fill('#ff0000');
+		text('IT IS A TIE!', x, y);
+		pop();
+	}
+
+	drawWinner(x, y) {
+		push();
+		textAlign(CENTER, CENTER);
+		textSize(48);
+		fill('#ff0000');
+		text('YOU WIN!', x, y);
+		pop();
+	}
+
+	drawLoser(x, y) {
+		push();
+		textAlign(CENTER, CENTER);
+		textSize(48);
+		fill('#ff0000');
+		text('YOU LOSE!', x, y);
+		pop();
+	}
+
 	createLabel(id, x, y, text, colour = '#000000', size = 12, bgColour = null, textAlign = CENTER) {
 		textSize(size);
 		let w = textWidth(text) + 15;
@@ -104,7 +149,9 @@ export class UIControllor {
 		});
 	}
 
-	createCircle(text) {}
+	clearLabels() {
+		this.labels = {};
+	}
 
 	drawNextFruitBox(area) {
 		push();

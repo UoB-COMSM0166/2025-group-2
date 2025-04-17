@@ -70,7 +70,6 @@ export class Board {
 
 	// Start random incident
 	incidentBegin() {
-		console.log('incident start');
 		this.incidentManager.startIncident();
 	}
 
@@ -195,7 +194,6 @@ export class Board {
 	handleMouseClick() {
 		// Check if it is within the game protection period
 		if (millis() - this.gameStartTime < this.GAME_START_PROTECTION) {
-			console.log('Game just started, ignore click');
 			return;
 		}
 
@@ -208,7 +206,6 @@ export class Board {
 		// Check if mouse is in valid drop area
 		if (currentMouseX >= leftBound && currentMouseX <= rightBound) {
 			this.dropCurrentFruit();
-			console.log('Fruit dropped via mouse click');
 		}
 	}
 
@@ -235,43 +232,35 @@ export class Board {
 		let leftBound = this.gameArea.x + this.wallWidth;
 		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
 
-		console.log(`Player ${this.id} received action: ${action}`);
-
 		switch (action) {
 			case 'player1-left':
 				if (this.id === 1) {
 					this.moveCurrentFruitLeft(leftBound);
-					console.log(`Player 1 fruit moved left: ${this.currentFruit.sprite.x}`);
 				}
 				break;
 			case 'player1-right':
 				if (this.id === 1) {
 					this.moveCurrentFruitRight(rightBound);
-					console.log(`Player 1 fruit moved right: ${this.currentFruit.sprite.x}`);
 				}
 				break;
 			case 'player1-drop':
 				if (this.id === 1) {
 					this.dropCurrentFruit();
-					console.log('Player 1 fruit dropped');
 				}
 				break;
 			case 'player2-left':
 				if (this.id === 2) {
 					this.moveCurrentFruitLeft(leftBound);
-					console.log(`Player 2 fruit moved left: ${this.currentFruit.sprite.x}`);
 				}
 				break;
 			case 'player2-right':
 				if (this.id === 2) {
 					this.moveCurrentFruitRight(rightBound);
-					console.log(`Player 2 fruit moved right: ${this.currentFruit.sprite.x}`);
 				}
 				break;
 			case 'player2-drop':
 				if (this.id === 2) {
 					this.dropCurrentFruit();
-					console.log('Player 2 fruit dropped');
 				}
 				break;
 		}
@@ -504,7 +493,7 @@ export class Board {
 
 	checkFruitIsMaximun() {
 		//define max level
-		let max = this.isSingleMode ? 9 : 8; //Maximum level 10 (index 9) for single mode and 9 (index 8) for double mode
+		let max = this.isSingleMode ? 7 : 6; //Maximum level 10 (index 9) for single mode and 9 (index 8) for double mode
 		let maxLevel = this.getMaxFruitLevel();
 
 		if (maxLevel != max) {

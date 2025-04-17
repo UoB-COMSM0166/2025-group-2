@@ -150,7 +150,6 @@ window.keyReleased = function () {
 // Handle mouse click for single mode
 window.mouseClicked = function () {
 	if (millis() - modeChangeTime < MODE_CHANGE_DELAY) {
-		console.log('Ignore clicks after mode switching');
 		return false;
 	}
 
@@ -165,5 +164,4 @@ window.mouseClicked = function () {
 window.onModeChange = function () {
 	// Record when mode changes
 	modeChangeTime = millis();
-	console.log('The game mode has changed.，设置点击保护');
 };

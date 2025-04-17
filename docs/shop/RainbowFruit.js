@@ -49,7 +49,6 @@ export class RainbowFruit extends Fruit {
 	 */
 	static universalMerge(a, b) {
 		if (a.isRainbow || b.isRainbow) {
-			console.log(`🌈 Universal Merge triggered between ${a.i} and ${b.i}`);
 			let normalFruit = a.isRainbow ? b : a; // Find non-rainbowfruit
 			let newType = normalFruit.level + 1;
 			if (normalFruit.level === 7) {
