@@ -59,6 +59,11 @@ export class IncidentManager {
 			this.incidents[incidentName].game = this.game;
 		}
 
+		if (this.game.player?.gameManager?.isGameOver) {
+			this.stopAllIncidents();
+			return;
+		}
+
 		if (this.isWarning) {
 			let elapsed = millis() - this.warningStartTime;
 			if (elapsed < 2000) {
