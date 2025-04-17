@@ -51,7 +51,6 @@ export class IncidentManager {
 		const incident = incidentNames[randomIndex];
 
 		this.activateIncident(incident);
-		console.log(`active: ${incident}`);
 	}
 
 	update() {
@@ -139,5 +138,18 @@ export class IncidentManager {
 		});
 
 		this.activeIncidents = [];
+	}
+
+	reset() {
+		this.stopAllIncidents(); // ← limpia incidentes activos e intervalos
+
+		// Reset flags
+		this.isWarning = false;
+		this.warningStartTime = 0;
+		this.pendingIncident = null;
+		this.shieldOn = false;
+
+		// Re-iniciar si quieres que empiece de nuevo inmediatamente:
+		this.startIncident(); // ← Solo si deseas reiniciar automáticamente
 	}
 }

@@ -20,8 +20,6 @@ export class Game {
 	}
 
 	startGame(mode) {
-		console.log(`Starting game in ${mode} mode!`);
-
 		// Check if tutorial should be shown
 		if (this.tutorialEnabled) {
 			this.currentScene = 'tutorial';
@@ -37,11 +35,7 @@ export class Game {
 
 		if (this.isTutorialMode) {
 			// Make sure the counter is stopped during tutorial
-			if (this.gameManager && this.gameManager.counter) {
-				this.gameManager.counter.stop();
-			}
 
-			// Also stop the uiManager counter
 			if (this.gameManager && this.gameManager.uiManager && this.gameManager.uiManager.counter) {
 				this.gameManager.uiManager.counter.stop();
 			}
@@ -50,16 +44,12 @@ export class Game {
 			try {
 				this.tutorialManager = new TutorialManager(this, this.gameManager);
 			} catch (error) {
-				console.error('Error creating tutorial manager:', error);
 				// Fall back to starting the game directly if tutorial fails
 				this.currentScene = 'game';
 				this.isTutorialMode = false;
 			}
 		} else {
 			// Start the counter immediately if tutorial is skipped
-			if (this.gameManager.counter) {
-				this.gameManager.counter.start();
-			}
 			if (this.gameManager.uiManager && this.gameManager.uiManager.counter) {
 				this.gameManager.uiManager.counter.start();
 			}
@@ -82,7 +72,6 @@ export class Game {
 
 	// Method to start the actual game after tutorial ends
 	startActualGame() {
-		console.log('Starting actual gameplay after tutorial');
 		this.currentScene = 'game';
 		this.isTutorialMode = false;
 
@@ -91,22 +80,12 @@ export class Game {
 			if (this.gameManager) {
 				// Start the timer after tutorial ends - wrapped in try/catch
 				try {
-					if (this.gameManager.counter) {
-						// Reset and start the counter to ensure it starts from the beginning
-						this.gameManager.counter = new Timer(120);
-						this.gameManager.counter.start();
-					}
-
 					// Also reset and start the uiManager counter
 					if (this.gameManager.uiManager && this.gameManager.uiManager.counter) {
 						this.gameManager.uiManager.counter = new Timer(120);
 						this.gameManager.uiManager.counter.start();
 					}
 				} catch (e) {
-					console.error('Error resetting timers:', e);
-					// Create new timers as fallback
-					this.gameManager.counter = new Timer(120);
-					this.gameManager.counter.start();
 					if (this.gameManager.uiManager) {
 						this.gameManager.uiManager.counter = new Timer(120);
 						this.gameManager.uiManager.counter.start();
@@ -168,16 +147,18 @@ export class Game {
 		}
 	}
 
-	// createBackButton() {
-	// 	this.backButton = createButton('Back to Menu');
-	// 	this.backButton.position(20, 20); // 設定按鈕位置（左上角）
-	// 	this.backButton.mousePressed(() => this.backToMenu());
-	// }
-
 	updateScale(newScale) {
 		this.scaleVal = newScale;
 		if (this.gameManager) {
 			this.gameManager.updateScale(this.scaleVal);
 		}
+	}
+
+	backToMenu() {
+		if (this.gameManager) {
+			this.gameManager.cleanup();
+			this.gameManager = null;
+		}
+		this.currentScene = 'menu';
 	}
 }
