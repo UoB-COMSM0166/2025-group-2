@@ -185,6 +185,11 @@ export class GameManager {
 				noLoop();
 			}
 		}
+
+		// ✅ Esto siempre va después de todo
+		if (this.isGameOver && this.endMessage) {
+			this.uiManager.ui.drawEndGameOverlay(this.endMessage);
+		}
 	}
 
 	createPlayers(mode) {
@@ -254,6 +259,9 @@ export class GameManager {
 			const player1 = this.player[0];
 			const player2 = this.player[1];
 
+			this.endMessage1 = 'Player 1 Wins';
+			this.endMessage2 = 'Player 2 Wins';
+
 			//You can check the value of the max level in player X using ${player2.boards.getMaxFruitLevel()}
 			//first checking fruit over line
 			if (player1.boards.checkFruitOverLine(dashLineY)) {
@@ -261,7 +269,11 @@ export class GameManager {
 					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
 					60
 				);
-				this.uiManager.ui.drawWinner(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);
+				//this.uiManager.ui.drawWinner(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);
+				//this.uiManager.ui.drawGameOver(width / 2, height / 2 - 200);
+
+				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
 				this.isGameOver = true;
 				this.showEndGameButtons();
 
@@ -273,7 +285,11 @@ export class GameManager {
 					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
 					60
 				);
-				this.uiManager.ui.drawWinner(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
+				//this.uiManager.ui.drawWinner(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
+				//this.uiManager.ui.drawGameOver(width / 2, height / 2 - 200);
+
+				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
 				this.isGameOver = true;
 				this.showEndGameButtons();
 
@@ -286,11 +302,11 @@ export class GameManager {
 					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
 					60
 				);
-				this.uiManager.ui.drawWinner(
-					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-					110
-				);
-				this.uiManager.ui.drawLoser(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 110);
+
+				//this.uiManager.ui.drawWinner(	player1.boards.gameArea.x + player1.boards.gameArea.w / 2,110);
+				//this.uiManager.ui.drawLoser(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 110);
+
+				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -303,11 +319,10 @@ export class GameManager {
 					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
 					60
 				);
-				this.uiManager.ui.drawWinner(
-					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-					110
-				);
-				this.uiManager.ui.drawLoser(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 110);
+				//this.uiManager.ui.drawWinner(player2.boards.gameArea.x + player2.boards.gameArea.w / 2,110);
+				//this.uiManager.ui.drawLoser(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 110);
+
+				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -320,6 +335,9 @@ export class GameManager {
 				if (player1.score.getScore() == player2.score.getScore()) {
 					this.uiManager.ui.drawTie(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
 					this.uiManager.ui.drawTie(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);
+
+					this.uiManager.ui.drawEndGameOverlay("It's a Tie!", true);
+
 					this.isGameOver = true;
 					this.showEndGameButtons();
 					return;
@@ -337,6 +355,8 @@ export class GameManager {
 						60
 					);
 					winner = player1;
+					this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
 					this.isGameOver = true;
 					this.showEndGameButtons();
 
@@ -354,6 +374,9 @@ export class GameManager {
 						player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
 						60
 					);
+
+					this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
 					this.isGameOver = true;
 					this.showEndGameButtons();
 
@@ -395,7 +418,7 @@ export class GameManager {
 			},
 			{
 				x: centerX - 110,
-				y: buttonY,
+				y: buttonY - 600,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#A5D6A7',
 				textColor: '#1B5E20',
@@ -411,7 +434,7 @@ export class GameManager {
 			},
 			{
 				x: centerX + 30,
-				y: buttonY,
+				y: buttonY - 600,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#EF9A9A',
 				textColor: '#B71C1C',
