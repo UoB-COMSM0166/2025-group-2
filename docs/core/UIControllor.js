@@ -52,6 +52,39 @@ export class UIControllor {
 		pop();
 	}
 
+	drawEndGameOverlay(message, isTie = false) {
+		push();
+		// Fondo oscuro
+		fill(0, 0, 0, 180);
+		noStroke();
+		rect(0, 0, width, height);
+
+		// Panel central
+		const panelWidth = 250;
+		const panelHeight = 250;
+		const panelX = width / 2 - panelWidth / 2;
+		const panelY = height / 2 - panelHeight / 2 - 250;
+
+		fill(255);
+		stroke(80);
+		strokeWeight(2);
+		rect(panelX, panelY, panelWidth, panelHeight, 20);
+
+		// 🏆 Emoji de resultado
+		textAlign(CENTER, CENTER);
+		textSize(70);
+		text(isTie ? '⚖️' : '🏆', width / 2, panelY + 140);
+
+		// Texto del resultado
+		fill('#6B4F3F');
+		noStroke();
+		textAlign(CENTER, CENTER);
+		textSize(35);
+		text(message, width / 2, height / 2 - 310);
+
+		pop();
+	}
+
 	drawCrossLine(x, y) {
 		push();
 		textAlign(CENTER, CENTER);
