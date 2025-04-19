@@ -7,6 +7,8 @@ export class GameManager {
 		this.game = game;
 		this.scaleVal = scaleVal;
 		this.uiManager = new GameUIManager(this);
+		this.highestSingleScore = 0;
+
 		this.setup();
 
 		this.player = this.createPlayers(mode);
@@ -388,25 +390,50 @@ export class GameManager {
 		if (this.mode == 'single') {
 			for (const player of this.player) {
 				if (player.boards.checkFruitOverLine(dashLineY)) {
+					const currentScore = player.score.getScore();
+
+					// Verifica si este score supera al highest registrado
+					if (currentScore > this.highestSingleScore) {
+						this.highestSingleScore = currentScore;
+						this.uiManager.ui.updateLabelText(
+							'highest_score',
+							`Highest Score: ${this.highestSingleScore}`
+						);
+					}
+					console.log('Current score:', currentScore);
+
+					console.log('Highest single score:', this.highestSingleScore);
+
 					this.uiManager.ui.drawCrossLine(
 						player.boards.gameArea.x + player.boards.gameArea.w / 2,
 						60
 					);
+
 					this.isGameOver = true;
 					if (this.isGameOver && gameOverMusic && !gameOverMusic.isPlaying()) {
 						gameOverMusic.loop();
 					}
 
-					this.showEndGameButtons();
+					this.uiManager.ui.drawEndGameSingleOverlay(
+						'GAME OVER',
+						currentScore,
+						this.highestSingleScore
+					);
+					this.showEndGameButtons(true);
 					return;
 				}
 			}
 		}
 	}
 
-	showEndGameButtons() {
+	showEndGameButtons(single = false) {
+		let temp = 0;
 		const centerX = width / 2;
 		const buttonY = height - 80;
+
+		if (single == true) {
+			temp = -50;
+		}
 
 		this.playAgainButton = new Button(
 			'Play Again',
@@ -418,7 +445,7 @@ export class GameManager {
 			},
 			{
 				x: centerX - 110,
-				y: buttonY - 600,
+				y: buttonY - 600 + temp,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#A5D6A7',
 				textColor: '#1B5E20',
@@ -434,7 +461,7 @@ export class GameManager {
 			},
 			{
 				x: centerX + 30,
-				y: buttonY - 600,
+				y: buttonY - 600 + temp,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#EF9A9A',
 				textColor: '#B71C1C',
