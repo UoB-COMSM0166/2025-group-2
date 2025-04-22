@@ -60,6 +60,44 @@ In conclusion, the requirements gathering process provided us with valuable insi
 - 15% ~750 words
 - System architecture. Class diagrams, behavioural diagrams.
 
+Once we identified the stakeholders and evaluated the User Stories, we were able to determine a list of features to be implemented into our game, with the Use Case Model acting as a planning tool to guide us on the flow of our system behaviour from a user's perspective.
+
+**Class Diagram**
+With the information we had on hand, we came up with a Class Diagram to help visualise the static structure of our system along with plotting the relationships between the different objects. This allowed us to design and develop our game using an Object Oriented Design (OOD) approach.
+
+The first version of the Class Diagram was created by brainstorming together during a face-to-face session around reading week where we came up with the skeleton of the basic game we had in mind.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v1.jpeg">
+<span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Initial Class Diagram</span>
+</p>
+
+The various twists that we decided to add to the game, like the double player mode, the shop function, the various new tools found in the shop function and the random incidences occuring during gameplay, made it such that we had to create many different components.
+
+As we developed the game further and added more features, it became apparent that we would have to refactor our codes with how complex the codes were becoming. This would lead to us creating the second and final class diagram to help visualise the way our components relate to each other.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v2.png">
+<span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Final Class Diagram</span>
+</p>
+
+**Sequence Diagram**
+
+After we completed our Class Diagram, we worked on creating the Sequence Diagram which would give us an overview of how we want the flow of our gameplay to look like, along with how the objects should collaborate with each other during the gameplay.
+
+Here, we have the Sequence Diagram which shows the overarching gameplay. Our system architecture begins with the main menu where the player selects the game mode they want and also have the option to decide whether they would like to turn off the tutorials.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/sequence-diagram.png">
+<span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Sequence Diagram</span>
+</p>
+
+One issue that we realised while working on this project is that since we adopted the Agile methodology, there were very frequent updates and modifications made to the game design. With these changes, there was a need to constantly keep our system architecture, Class Diagram and Sequence Diagrams up to date.
+
+However, due to the fast pace at which we had to complete the project, we ultimately had to sacrifice on the documentations for this area and focus on developing working software instead, with the diagrams updated only when there was a lull or lesser tasks to complete between sprints. This is in line with the one of the key values of the Agile Manifesto: Working Software over Comprehensive Documentation.
+
+This does appear to be an area for improvement as we believe that we could have had better control over our planning of tasks and not be overly ambitious every sprint in order to factor in more time to keep a better update of the diagrams and documentations.
+
 ### Implementation
 
 - 15% ~750 words
