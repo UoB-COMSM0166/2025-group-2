@@ -69,6 +69,7 @@ The first version of the Class Diagram was created by brainstorming together dur
 
 <p align="center">
 <img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v1.jpeg">
+<br>
 <span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Initial Class Diagram</span>
 </p>
 
@@ -78,6 +79,7 @@ As we developed the game further and added more features, it became apparent tha
 
 <p align="center">
 <img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v2.png">
+<br>
 <span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Final Class Diagram</span>
 </p>
 
@@ -89,6 +91,7 @@ Here, we have the Sequence Diagram which shows the overarching gameplay. Our sys
 
 <p align="center">
 <img width="90%" src="./ReportMaterial/Diagrams/sequence-diagram.png">
+<br>
 <span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Sequence Diagram</span>
 </p>
 
