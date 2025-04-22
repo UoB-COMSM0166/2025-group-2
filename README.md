@@ -70,7 +70,7 @@ The first version of the Class Diagram was created by brainstorming together dur
 <p align="center">
 <img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v1.jpeg">
 <br>
-<span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Initial Class Diagram</span>
+<em><sub>Initial Class Diagram</sub></em>
 </p>
 
 The various twists that we decided to add to the game, like the double player mode, the shop function, the various new tools found in the shop function and the random incidences occuring during gameplay, made it such that we had to create many different components.
@@ -80,7 +80,7 @@ As we developed the game further and added more features, it became apparent tha
 <p align="center">
 <img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v2.png">
 <br>
-<span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Final Class Diagram</span>
+<em><sub>Final Class Diagram</sub></em>
 </p>
 
 **Sequence Diagram**
@@ -92,7 +92,7 @@ Here, we have the Sequence Diagram which shows the overarching gameplay. Our sys
 <p align="center">
 <img width="90%" src="./ReportMaterial/Diagrams/sequence-diagram.png">
 <br>
-<span style="font-size: 0.8rem; display: block; text-align: center; font-style: italic;">Sequence Diagram</span>
+<em><sub>Sequence Diagram</sub></em>
 </p>
 
 One issue that we realised while working on this project is that since we adopted the Agile methodology, there were very frequent updates and modifications made to the game design. With these changes, there was a need to constantly keep our system architecture, Class Diagram and Sequence Diagrams up to date.
