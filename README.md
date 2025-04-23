@@ -37,14 +37,12 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 |   Octave Jin Liao   | ge24446@bristol.ac.uk |
 |   Gerald Rodrigue   | nu24692@bristol.ac.uk |
 
-## Project Report
-
-### Introduction
+## Introduction
 
 - 5% ~250 words
 - Describe your game, what is based on, what makes it novel?
 
-### Requirements
+## Requirements
 
 - 15% ~750 words
 - Use case diagrams, user stories. Early stages design. Ideation process. How did you decide as a team what to develop?
@@ -55,18 +53,78 @@ Furthermore, by having a clear understanding of the tasks at hand, we were able 
 
 In conclusion, the requirements gathering process provided us with valuable insights on how to organize and prioritize activities to successfully fulfill the project requirements.
 
-### Design
+## Design
 
 - 15% ~750 words
 - System architecture. Class diagrams, behavioural diagrams.
 
-### Implementation
+Once we identified the stakeholders and evaluated the User Stories, we were able to determine a list of features to be implemented into our game, with the Use Case Model acting as a planning tool to guide us on the flow of our system behaviour from a user's perspective.
+
+### System Architecture
+
+Our game utilises several manager classes to handle the different areas of gameplay, essentially implementing a component-based architecture which follows an expanded Model-View-Controller pattern. This means that our game state, logic and rendering are each separated into different components.
+
+The primary manager classes (found in the folder named "[core](/docs/core)") are:
+
+1. **Game**: Main coordinator to manage all game states and transitions
+2. **GameManager**: Focuses on controlling the physics, game logic and entity updates
+3. **GameUIManager**: Focuses on managing UI components and all visual elements
+4. **IncidentManager**: Focuses on handling the random events that were incorporated to increase game challenge and act as a twist to the original game
+5. **ToolManager**: Focuses on controlling the tools found in our shop function
+6. **UIController**: Focuses on rendering the UI elements and handling updates to the display
+
+Creating multiple primary manager classes allows us to modify the different components independently. In the final version of our Class Diagram (covered in the section below), you can see clearly that the Game class sits at the top of the hierarchy, managing all the other manager classes.
+
+### Class Diagram
+
+We came up with an initial Class Diagram to help visualise the static structure of our system along with plotting the relationships between the different objects, following an Object Oriented Design (OOD) approach.
+
+This first version was created by brainstorming together during a face-to-face session around reading week where we came up with the skeleton of the basic game we had in mind.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v1.jpeg">
+<br>
+<em><sub>Initial Class Diagram</sub></em>
+</p>
+
+As we developed the game further and added in more features according to the various twists planned, like the double player mode, the shop function, the various new tools found in the shop function and the random incidences occuring during gameplay, code complexity quickly increased and refactoring became necessary.
+This led to us creating the second and final Class Diagram.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v2.png">
+<br>
+<em><sub>Final Class Diagram</sub></em>
+</p>
+
+The final Class Diagram reflects our System Architecture by visualising the way our components relate to one another, with the Game class serving as the main controller and connecting to the GameManager, TutorialManager and MenuPage.
+
+### Sequence Diagram
+
+The Sequence Diagram gives an overview of how we want the flow of our gameplay to look like, along with how the objects should collaborate with each other during the gameplay.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/sequence-diagram.png">
+<br>
+<em><sub>Sequence Diagram</sub></em>
+</p>
+
+Here, we have the Sequence Diagram which shows the overarching gameplay. Our system architecture begins with the main menu where the player selects the game mode they want and also have the option to decide whether they would like to turn off the tutorials.
+
+### Agile Approach
+
+Since we worked while following the Agile methodology, there were very frequent updates and modifications made to the game design and a need to constantly keep our System Architecture, Class Diagram and Sequence Diagram up to date.
+
+However, due to the fast pace at which we had to complete the project, we ultimately had to sacrifice on the documentations for this area and focus on developing working software instead, with the diagrams updated only when there was a lull or lesser tasks to complete between sprints. This is in line with the one of the key values of the Agile Manifesto: Working Software over Comprehensive Documentation.
+
+This does appear to be an area for improvement as we believe that we could have had better control over our planning of tasks and not be overly ambitious every sprint in order to factor in more time to keep a better update of the diagrams and documentations.
+
+## Implementation
 
 - 15% ~750 words
 
 - Describe implementation of your game, in particular highlighting the three areas of challenge in developing your game.
 
-### Evaluation
+## Evaluation
 
 - 15% ~750 words
 
@@ -211,23 +269,23 @@ The calculated W value for our evaluation was 0, which is well below the critica
 
 The evaluated result confirms that the addition of our key twist and new core mechanic, i.e. the random Incidences, increases the difficulty level of our gameplay relative to the basic version and is statistically significant. This is a positive outcome as it assures the team that the direction we took in creating a twist to the game is correct and that the addition of the random Incidences made during the sprint over reading week was not in vain.
 
-### Process
+## Process
 
 - 15% ~750 words
 
 - Teamwork. How did you work together, what tools did you use. Did you have team roles? Reflection on how you worked together.
 
-### Conclusion
+## Conclusion
 
 - 10% ~500 words
 
 - Reflect on project as a whole. Lessons learned. Reflect on challenges. Future work.
 
-### Contribution Statement
+## Contribution Statement
 
 - Provide a table of everyone's contribution, which may be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Let us know as soon as possible if there are any issues with teamwork as soon as they are apparent.
 
-### Additional Marks
+## Additional Marks
 
 You can delete this section in your own repo, it's just here for information. in addition to the marks above, we will be marking you on the following two points:
 
