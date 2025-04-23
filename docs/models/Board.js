@@ -498,7 +498,7 @@ export class Board {
 
 	checkFruitIsMaximun() {
 		//define max level
-		let max = this.isSingleMode ? 7 : 6; //Maximum level 10 (index 9) for single mode and 9 (index 8) for double mode
+		let max = 8;
 		let maxLevel = this.getMaxFruitLevel();
 
 		if (maxLevel != max) {
