@@ -465,7 +465,12 @@ export class Board {
 
 			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
 			if (fruitTop <= y) {
-				this.uiControllor.drawGameOver(this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
+				if (this.mode == 'single') {
+					this.uiControllor.drawGameOver(
+						this.gameArea.x + this.gameArea.w / 2,
+						this.gameArea.y - 60
+					);
+				}
 				return true;
 			}
 		}
@@ -493,7 +498,7 @@ export class Board {
 
 	checkFruitIsMaximun() {
 		//define max level
-		let max = this.isSingleMode ? 7 : 6; //Maximum level 10 (index 9) for single mode and 9 (index 8) for double mode
+		let max = 8;
 		let maxLevel = this.getMaxFruitLevel();
 
 		if (maxLevel != max) {
