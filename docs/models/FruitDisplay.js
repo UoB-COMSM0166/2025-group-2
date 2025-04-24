@@ -6,34 +6,77 @@ export class FruitDisplay {
 		this.scaleVal = scaleVal;
 	}
 
-	setupFruitDisplay(area) {
+	setupFruitDisplay(area, isDoubleMode) {
 		const fruitsLevel = [];
+		let startLevel, endLevel;
+
+		// Determine the fruit level range displayed according to the game mode
+		if (isDoubleMode) {
+			startLevel = 0;
+			endLevel = 8;
+		} else {
+			startLevel = 2;
+			endLevel = 9;
+		}
+
+		const totalFruits = endLevel - startLevel + 1;
+		const gap = 18;
+		let prevX = null;
 		let prevY = null;
 		let prevSize = null;
-		const totalFruits = 7;
-		const gap = 18;
 
 		for (let i = 0; i < totalFruits; i++) {
-			let size = 20 + 10 * i;
-			let x = area.x + area.w / 2;
-			let y;
+			// Calculate the actual fruit grade
+			const actualLevel = startLevel + i;
 
-			if (i === 0) {
-				// the y position of first fruit: from the top add a gap and the radius
-				y = area.y + gap + size / 2;
+			// Adjust fruit size according to game mode
+			let size = isDoubleMode ? 20 + 8 * actualLevel : 20 + 10 * actualLevel;
+
+			let x, y;
+
+			if (isDoubleMode) {
+				// Double mode fruit horizontal arrangement
+				y = area.y + area.h / 2;
+
+				if (i === 0) {
+					x = area.x + gap + size / 2;
+				} else {
+					x = prevX + prevSize / 2 + size / 2 + gap;
+				}
+
+				prevX = x;
+				prevSize = size;
 			} else {
-				// the y position of the next fruit = the prevY + prevSize / 2 + currentSize / 2 + gap
-				y = prevY + prevSize / 2 + size / 2 + gap;
+				// Single mode fruit vertical arrangement
+				x = area.x + area.w / 2;
+
+				if (i === 0) {
+					y = area.y + gap + size / 2;
+				} else {
+					y = prevY + prevSize / 2 + size / 2 + gap;
+				}
+
+				prevY = y;
+				prevSize = size;
 			}
-			let fruit = new Fruit(i, x, y, size, this.scaleVal);
+
+			// Create fruit and set the correct grade
+			let fruit = new Fruit(actualLevel, x, y, size, this.scaleVal);
 			fruit.doNotFall();
-			fruitsLevel.push(fruit);
-			prevY = y;
-			prevSize = size;
+			this.fruits.push(fruit);
 		}
 	}
 
 	draw() {
-		this.fruits.forEach(fruit => fruit.draw());
+		// Make sure this.fruits exists and is an array
+		if (this.fruits && Array.isArray(this.fruits) && this.fruits.length > 0) {
+			// Traverse the array and call the draw method for each fruit
+			for (let i = 0; i < this.fruits.length; i++) {
+				const fruit = this.fruits[i];
+				if (fruit && typeof fruit.draw === 'function') {
+					fruit.draw();
+				}
+			}
+		}
 	}
 }

@@ -2,7 +2,7 @@ import { Incident } from './Incident.js';
 
 export class WindIncident extends Incident {
 	constructor(game) {
-		super(game,"",20);
+		super(game,"",10);
 		this.windSpeed = 0;
 		this.noisePos = 0;
 		this.windInc = 0.01;
@@ -56,15 +56,3 @@ export class WindIncident extends Incident {
 	}
 }
 
-// // 隨機開關風
-// randomWind() {
-// 	if (this.randomWindTimer) clearInterval(this.randomWindTimer);
-
-// 	this.randomWindTimer = setInterval(() => {
-// 		let affectTime = Math.floor(Math.random() * 15) + 5;
-// 		setTimeout(() => {
-// 			this.active = !this.active;
-// 			console.log(`Wind is now ${this.active ? 'ON' : 'OFF'}`);
-// 		}, affectTime * 1000);
-// 	}, 30000);
-// }

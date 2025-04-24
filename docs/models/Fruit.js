@@ -7,6 +7,9 @@ export class Fruit {
 		'#2d92d1',
 		'#f6aeae',
 		'#277da1',
+		'#3b498e',
+		'#ffd043',
+		'#66418a',
 	];
 
 	static STATE = {
@@ -27,8 +30,13 @@ export class Fruit {
 		this.randomId = int(random(100000));
 		this.isFalling = true;
 		this.fireAffected = false;
+		this.firePaused = false;
 		this.isFrozen = false;
 		this.scaleVal = scaleVal;
+
+		// Default to zero velocity - important for keyboard controls
+		this.sprite.vel.x = 0;
+		this.sprite.vel.y = 0;
 
 		this.sprite.draw = () => {
 			push();
@@ -116,16 +124,22 @@ export class Fruit {
 		ellipse(leftEyeX, eyeY, eyeSize * 2, eyeSize * 2);
 		ellipse(rightEyeX, eyeY, eyeSize * 2, eyeSize * 2);
 
-		// Pupil Follows Mouse Movement
+		// Pupil Follows Mouse Movement in single mode or stays centered in double mode
 		function getPupilOffset(eyeX, eyeY) {
-			let scaledMouseX = mouseX / this.scaleVal;
-			let scaledMouseY = mouseY / this.scaleVal;
-			let dx = scaledMouseX - (this.sprite.x + eyeX);
-			let dy = scaledMouseY - (this.sprite.y + eyeY);
-			let angle = atan2(dy, dx);
-			let maxOffset = eyeSize * 0.4;
+			// If we're in a game context that uses mouse tracking
+			if (mouseX !== undefined && mouseY !== undefined) {
+				let scaledMouseX = mouseX / this.scaleVal;
+				let scaledMouseY = mouseY / this.scaleVal;
+				let dx = scaledMouseX - (this.sprite.x + eyeX);
+				let dy = scaledMouseY - (this.sprite.y + eyeY);
+				let angle = atan2(dy, dx);
+				let maxOffset = eyeSize * 0.4;
 
-			return createVector(cos(angle) * maxOffset, sin(angle) * maxOffset);
+				return createVector(cos(angle) * maxOffset, sin(angle) * maxOffset);
+			} else {
+				// Default eye position (looking forward)
+				return createVector(0, 0);
+			}
 		}
 
 		// Left Eye Pupil
@@ -184,31 +198,52 @@ export class Fruit {
 		this.sprite.vel.y = 0;
 	}
 
+	// Move the fruit to a specific position (for keyboard control)
+	moveTo(x, y) {
+		this.sprite.x = x;
+		this.sprite.y = y;
+		this.sprite.vel.x = 0;
+		this.sprite.vel.y = 0;
+	}
+
 	remove() {
 		this.removed = true;
 		this.sprite.remove();
 	}
 
 	static merge(a, b) {
-		if (a.level === b.level && a.level < Fruit.maxFruitLevel) {
-			const newType = a.level + 1;
-			const newX = (a.sprite.x + b.sprite.x) / 2;
-			const newY = (a.sprite.y + b.sprite.y) / 2;
-			const newSize = 30 + 20 * newType;
+		// Check the game mode (judging by the block where a and b are located)
+		// If fruits with index 8 (level 9) are merged in two-person mode, merge is not performed
+		const isSingleMode = a.board ? a.board.isSingleMode : true;
 
-			let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal);
-			mergedFruit.fireAffected = a.fireAffected || b.fireAffected;
+		if (a.level === b.level) {
+			// In Double mode, merging is not allowed if both fruits are level 9 (index 8).
+			if (!isSingleMode && a.level === 8) {
+				return null;
+			}
 
-			a.remove();
-			b.remove();
-			return mergedFruit;
+			// Normally, merge is performed if the fruit grades are the same and less than the maximum grade
+			if (a.level < Fruit.maxFruitLevel) {
+				const newType = a.level + 1;
+				const newX = (a.sprite.x + b.sprite.x) / 2;
+				const newY = (a.sprite.y + b.sprite.y) / 2;
+				const newSize = 30 + 20 * newType;
+
+				let mergedFruit = new Fruit(newType, newX, newY, newSize, a.scaleVal);
+				mergedFruit.fireAffected = a.fireAffected || b.fireAffected;
+
+				a.remove();
+				b.remove();
+				return mergedFruit;
+			}
 		}
-
 		return null;
 	}
 
 	doNotFall() {
 		this.sprite.collider = 'static';
+		this.sprite.vel.x = 0;
+		this.sprite.vel.y = 0;
 	}
 
 	letFall() {

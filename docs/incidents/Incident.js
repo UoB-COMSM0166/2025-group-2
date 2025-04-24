@@ -45,10 +45,26 @@ export class Incident {
 	}
 
 	update() {
+		const isDoubleMode = this.game.mode === 'double';
+		const nextFruitArea = this.game.nextFruitArea;
+		const labelX = nextFruitArea.x + nextFruitArea.w * 2;
+		const labelY = nextFruitArea.y + 20;
+		const gameArea = this.game.gameArea;
+
 		if (this.active) {
-			fill(0);
-			textSize(20);
-			text(`${this.name} Effect Time Left: ${this.timeLeft}`, 240, 90);
+			if (!isDoubleMode) {
+				fill('#6B4F3F');
+				textSize(20);
+				text(
+					`${this.name} Effect Time Left: ${this.timeLeft}`,
+					gameArea.x + gameArea.w / 2,
+					gameArea.y - 30
+				);
+			} else {
+				fill('#6B4F3F');
+				textSize(20);
+				text(`${this.name} Effect Time Left: ${this.timeLeft}`, labelX, labelY);
+			}
 		}
 	}
 }
