@@ -266,20 +266,9 @@ export class TutorialManager {
 		this.restoreOriginalClickHandler();
 
 		// Tell the game to start after tutorial - with proper error handling
-		try {
-			if (this.game && typeof this.game.startActualGame === 'function') {
-				this.game.startActualGame();
-			} else {
-				if (this.game) {
-					this.game.currentScene = 'game';
-					this.game.isTutorialMode = false;
-				}
-			}
-		} catch (e) {
-			if (this.game) {
-				this.game.currentScene = 'game';
-				this.game.isTutorialMode = false;
-			}
+		if (this.gameManager && typeof this.gameManager.startActualGameAfterTutorial === 'function') {
+			this.game.currentScene = 'game';
+			this.gameManager.startActualGameAfterTutorial();
 		}
 	}
 

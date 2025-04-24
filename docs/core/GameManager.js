@@ -1,5 +1,7 @@
 import { Button, Player } from '../models/index.js';
+import { Timer } from '../models/Timer.js';
 import { GameUIManager } from './GameUIManager.js';
+import { TutorialManager } from './TutorialManager.js';
 
 export class GameManager {
 	constructor(game, mode, scaleVal) {
@@ -8,6 +10,8 @@ export class GameManager {
 		this.scaleVal = scaleVal;
 		this.uiManager = new GameUIManager(this);
 		this.highestSingleScore = 0;
+		this.tutorialManager = null;
+		this.isTutorialMode = false;
 
 		this.setup();
 
@@ -15,39 +19,67 @@ export class GameManager {
 		this.isGameOver = false;
 	}
 
+	startTutorialIfNeeded() {
+		if (this.game.tutorialEnabled) {
+			this.isTutorialMode = true;
+			this.tutorialManager = new TutorialManager(this.game, this);
+
+			if (this.uiManager?.counter) {
+				this.uiManager.counter.stop();
+			}
+		} else {
+			this.isTutorialMode = false;
+			this.uiManager?.counter?.start();
+			this.player.forEach(player => player.boards?.incidentBegin());
+		}
+	}
+
+	startActualGameAfterTutorial() {
+		this.isTutorialMode = false;
+		this.uiManager.counter = new Timer(120);
+		this.uiManager.counter.start();
+
+		this.player.forEach(player => {
+			if (player.boards?.incidentManager) {
+				player.boards.incidentBegin();
+			}
+		});
+	}
+
+	updateTutorial() {
+		if (this.isTutorialMode && this.tutorialManager) {
+			this.drawWithoutUpdate(); // Draw the UI and game elements without updating them
+			this.tutorialManager.update();
+		}
+	}
+
 	drawWithoutUpdate() {
 		// Only draw the UI and game elements without updating them
 		if (this.uiManager && this.uiManager.ui) {
 			this.uiManager.ui.drawLabels();
-
 			// Only draw UI elements without updating
 			push();
 			this.uiManager.draw(true); // Pass a parameter to indicate we're in tutorial mode
 			pop();
 		}
-
 		// Draw players and their boards without physics updates
 		if (this.player && this.player.length > 0) {
 			push(); // Save the drawing state
-
 			this.player.forEach(player => {
 				if (player && player.boards) {
 					// Draw the current board state without updates
 					player.boards.draw();
-
 					// Ensure fruits don't move during tutorial by setting them to static
 					if (player.boards.currentFruit && player.boards.currentFruit.sprite) {
 						player.boards.currentFruit.sprite.vel.x = 0;
 						player.boards.currentFruit.sprite.vel.y = 0;
 						player.boards.currentFruit.sprite.collider = 'static';
 					}
-
 					if (player.boards.nextFruit && player.boards.nextFruit.sprite) {
 						player.boards.nextFruit.sprite.vel.x = 0;
 						player.boards.nextFruit.sprite.vel.y = 0;
 						player.boards.nextFruit.sprite.collider = 'static';
 					}
-
 					// Ensure no physics updates happen during the tutorial
 					if (player.boards.fruits && player.boards.fruits.length > 0) {
 						player.boards.fruits.forEach(fruit => {
@@ -60,18 +92,7 @@ export class GameManager {
 					}
 				}
 			});
-
 			pop(); // Restore the drawing state
-		}
-
-		// Freeze the game timer display
-		if (this.uiManager && this.uiManager.ui && this.uiManager.ui.labels) {
-			// Find the timer label
-			const timerLabel = this.uiManager.ui.labels['timer'];
-			if (timerLabel) {
-				// Always show 120s during tutorial
-				this.uiManager.ui.updateLabelText('timer', 'Time: 120s');
-			}
 		}
 	}
 
