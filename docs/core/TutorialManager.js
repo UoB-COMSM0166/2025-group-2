@@ -81,7 +81,13 @@ export class TutorialManager {
 					highlight: null,
 				},
 				{
-					text: 'Player 1: Use  A/D  keys to move and  S  to drop. \nPlayer 2: Use  LEFT/RIGHT  arrow keys to move and  DOWN  arrow to drop. \nMerge fruits of the same size to score points!',
+					text:
+						'Player 1:\n' +
+						'- A / D: Move bubble left / right\n' +
+						'- S: Drop bubble\n' +
+						'Player 2:\n' +
+						'- ← / →: Move bubble left / right\n' +
+						'- ↓: Drop bubble\n',
 					highlight: null,
 				},
 				{
@@ -91,6 +97,15 @@ export class TutorialManager {
 				{
 					text: 'The shop contains special tools that you can purchase with coins earned by merging fruits.',
 					highlight: this.gameManager.uiManager.AREAS.shop,
+				},
+				{
+					text:
+						'Shop Controls:\n' +
+						'Player 1:\n' +
+						'- W / Q to browse, E to buy\n\n' +
+						'Player 2:\n' +
+						"- ⭡ / '.' to browse, '?' to buy",
+					highlight: null,
 				},
 				{
 					text: "Shuffle: Shakes all fruits to help rearrange them when you're stuck.",
