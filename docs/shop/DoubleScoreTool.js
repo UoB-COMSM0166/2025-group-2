@@ -1,5 +1,6 @@
 export class DoubleScoreTool {
-	constructor() {
+	constructor(incidentManager) {
+		this.incidentManager = incidentManager;
 		this.doubleScoreTimeLeft = 20;
 		this.doubleScoreTimer = null;
 		this.doubleScoreActive = false;
@@ -22,9 +23,11 @@ export class DoubleScoreTool {
 
 	update() {
 		if (this.doubleScoreActive) {
-			fill(0);
+			fill(0,128,0);
 			textSize(20);
-			text('Double score Time Left: ' + this.doubleScoreTimeLeft, 240, 30);
+			const x = this.incidentManager.gameArea.x + this.incidentManager.gameArea.w / 2;
+			const y = this.incidentManager.gameArea.y - 100;
+			text('Double score Time Left: ' + this.doubleScoreTimeLeft, x, y);
 		}
 	}
 

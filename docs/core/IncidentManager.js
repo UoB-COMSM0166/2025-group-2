@@ -30,15 +30,13 @@ export class IncidentManager {
 
 	startIncident() {
 		//start random incident
-		setTimeout(() => {
-			this.incidentInterval = setInterval(() => {
-				this.randomIncident();
-			}, this.getRandomInterval());
-		}, 10000);
+		this.incidentInterval = setInterval(() => {
+			this.randomIncident();
+		}, this.getRandomInterval());
 	}
 
 	getRandomInterval() {
-		return Math.floor(Math.random() * (18000 - 11000) + 11000);
+		return Math.floor(Math.random() * (20000 - 15000) + 15000);
 	}
 
 	randomIncident() {
@@ -73,7 +71,7 @@ export class IncidentManager {
 			}
 		}
 
-		this.activeIncidents.forEach(incident => incident.update());
+		this.activeIncidents.forEach((incident) => incident.update());
 	}
 
 	activateIncident(incidentName) {
@@ -81,7 +79,7 @@ export class IncidentManager {
 			return;
 		}
 		const incident = this.incidents[incidentName];
-		if (incident && !this.activeIncidents.includes(incident)) {
+		if (incident) {
 			incident.game = this.game;
 
 			this.isWarning = true;
@@ -117,11 +115,20 @@ export class IncidentManager {
 		textAlign(CENTER, CENTER);
 		textSize(30);
 		fill(255, 0, 0);
-		text(
-			`${this.pendingIncident.name} Incident Coming!`,
-			this.gameArea.x + this.gameArea.w / 2,
-			this.gameArea.y + this.gameArea.h / 2
-		);
+		if(this.game.mode === 'double'){
+			text(
+				`${this.pendingIncident.name} Incident Coming!`,
+				this.gameArea.x + this.gameArea.w / 2,
+				this.gameArea.y + this.gameArea.h / 2
+			);
+		}
+		else if(this.game.mode === 'single'){
+			text(
+				`${this.pendingIncident.name} Incident Coming!`,
+				this.gameArea.x + this.gameArea.w / 2,
+				this.gameArea.y -30
+			);
+		}
 		pop();
 	}
 
