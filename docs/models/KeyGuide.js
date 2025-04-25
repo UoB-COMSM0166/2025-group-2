@@ -1,31 +1,42 @@
 export class KeyGuide {
 	constructor(scaleVal = 1) {
 		this.scaleVal = scaleVal;
+		this.highlightKeys = new Set();
 	}
 
 	setupKeyGuide(displayArea) {
-		const baseY = displayArea.y + displayArea.h / 2 - 30 * this.scaleVal;
+		const baseY = displayArea.y + displayArea.h / 2 - 70 * this.scaleVal;
 
-		this.leftX = displayArea.x - 100;
+		this.leftX = displayArea.x - 150;
 		this.rightX = displayArea.x + displayArea.w + 50;
 		this.baseY = baseY;
 	}
 
 	drawKey(x, y, label) {
+		let size = 60 * this.scaleVal;
+
+		const isHighlighted = this.highlightKeys.has(label);
+
 		push();
-		fill(255);
-		stroke(0);
-		let size = 30 * this.scaleVal;
+		if (isHighlighted) {
+			fill('#ffff80');
+			stroke('#ffcc00');
+			strokeWeight(3);
+		} else {
+			fill(255);
+			stroke(0);
+		}
 		rect(x, y, size, size, 5 * this.scaleVal);
 		fill(0);
 		noStroke();
 		textAlign(CENTER, CENTER);
-		textSize(16 * this.scaleVal);
+		textSize(28 * this.scaleVal);
 		text(label, x + size / 2, y + size / 2);
 		pop();
 	}
 
 	drawLeftPlayerKeys(baseX, baseY) {
+		const spacing = 75 * this.scaleVal;
 		let layout = [
 			[-1, 0, 'Q'],
 			[0, 0, 'W'],
@@ -35,16 +46,18 @@ export class KeyGuide {
 			[1, 1, 'D'],
 		];
 		layout.forEach(([dx, dy, label]) => {
-			this.drawKey(baseX + dx * 40 * this.scaleVal, baseY + dy * 40 * this.scaleVal, label);
+			let x = baseX + dx * spacing;
+			let y = baseY + dy * spacing;
+			this.drawKey(x, y, label);
 		});
 	}
 
 	drawRightPlayerKeys(baseX, baseY) {
-		const spacing = 40 * this.scaleVal;
+		const spacing = 75 * this.scaleVal;
 
 		let layout = [
 			[0, 0, '.'], // buy
-			[0, 1, '/'], // next
+			[0, 1, '?'], // next
 			[0, 3, '↑'], // up
 			[1, 2, '←'], // left
 			[1, 3, '↓'], // down
@@ -63,5 +76,13 @@ export class KeyGuide {
 
 		this.drawLeftPlayerKeys(this.leftX, this.baseY);
 		this.drawRightPlayerKeys(this.rightX, this.baseY);
+	}
+
+	setHighlight(labels) {
+		this.highlightKeys = new Set(labels);
+	}
+
+	clearHighlight() {
+		this.highlightKeys.clear();
 	}
 }
