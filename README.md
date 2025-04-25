@@ -275,11 +275,32 @@ The evaluated result confirms that the addition of our key twist and new core me
 
 - Teamwork. How did you work together, what tools did you use. Did you have team roles? Reflection on how you worked together.
 
+## Sustainability, ethics and accessibility
+
+- 100% ~750 words
+
+- Evidence of the impact of your game across the environment and two of the other areas:
+  - Environmental + 2 of the following: Social, Economic, Technical, Individual
+
 ## Conclusion
 
-- 10% ~500 words
+We learnt a lot throughout this whole journey of creating a game from scratch, allowing us to grow through various challenges faced and expanding our repertoire of both soft and hard skills. This is especially true since none of the group members had any experience with game development or coding in p5.js.
 
-- Reflect on project as a whole. Lessons learned. Reflect on challenges. Future work.
+Learning and adapting as we moved along, the development of the game was made easier after learning the Agile development methodology as we were able adopt a Scrum-Inspired Agile approach to design and develop the game in a much more structured way as opposed to the initial vague ideas that we had in mind. User feedback also turned out to be extremely important as it influenced the directions of our game, allowing us to further improve our game to make it more fun and enjoyable. Our team collected user feedback throughout the development of the game in order to further polish our game.
+
+As we progressed in the development of the game, the complexity of our codes increased and modifications to any individual functions started to implicate other areas of the game in ways that were unexpected. Since the game was jointly developed by all members of the team, ensuring that we have effective communication and proper support for each other was crucial as we had to help each other understand all areas of the codes to prevent breaking any logics created by other members.
+
+One main challenge was the integration of all "Incidences" and "Tools" within the game. These "Incidences" and "Tools" were developed by different team members and they all worked well when doing isolated testing. The problem came when they were all thrown together during a full playtesting, where we saw broken logics or unexpected bugs occurring because the codes on the backend clashed with each other. The cleaning up for this lasted for most of the second half of our project and required a lot of refactoring and redesigning.
+
+Another challenge faced during development was the implementation of our shop function into the double player mode. Various considerations had to be taken in order to ensure that the different effects from items bought in the shared shop activates in the correct player's playing field, determining how each player can access the shared shop function individually at the same time without affecting gameplay, and not breaking any existing logics like in the previous challenge mentioned.
+
+Both the challenges mentioned above were overcome by the team through many meetings between different team members to ensure all codes are fully understood before attempting any modifications. This helped prevent unwanted bugs from appearing and allowed development to proceed smoother after we learnt from the experience.
+
+Perhaps due to our lack of experience and skills due to having come from various different backgrounds not related to software development, we were not able to fully adopt a Test-Driven Development (TDD) process for this game. A lot of our functions had to be tested through playtesting, finding new bugs this way and going back to resolve them, wasting a lot of time as there were always bugs missed out during the rounds of playtesting. This is an area for improvement and a lesson that the team will take to heart for future projects.
+
+As for the future of Crazy Bubble itself, there were a few features that we would have liked to implement if there was enough time. Modifying the game into an online version with individual player accounts and storing each player's high scores in a database would allow the player to access their old game data and attempt to beat either their own previous high scores or get on the leaderboard for highest score across all players. With the online version also comes the possibility of a new game mode of playing with more than just one other opponent, much like [Tetris 99](https://www.nintendo.com/en-gb/Games/Nintendo-Switch-download-software/TETRIS-99-1505396.html) where 99 different opponents compete with each other. On a smaller scale, we would also have liked to add more tools into the shop function in our game, especially on the double player mode where adding more tools for disrupting other players would have made the game more interesting.
+
+All members of our team agree that this was an invaluable experience as it allowed each of us to experience working in a team as developers, explore the different aspects of software engineering and challenge ourselves in a new way that we had never experienced before, all before actually stepping out into the industry. The lessons learnt in this project will be something that helps define us as we grow as software developers in the future.
 
 ## Contribution Statement
 
