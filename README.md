@@ -275,11 +275,14 @@ The evaluated result confirms that the addition of our key twist and new core me
 
 - Teamwork. How did you work together, what tools did you use. Did you have team roles? Reflection on how you worked together.
 
+## Sustainability, ethics and accessibility
+
+- 100% ~750 words
+
+- Evidence of the impact of your game across the environment and two of the other areas:
+  - Environmental + 2 of the following: Social, Economic, Technical, Individual
+
 ## Conclusion
-
-- 10% ~500 words
-
-- Reflect on project as a whole. Lessons learned. Reflect on challenges. Future work.
 
 We learnt a lot throughout this whole journey of creating a game from scratch, allowing us to grow through various challenges faced and expanding our repertoire of both soft and hard skills. This is especially true since none of the group members had any experience with game development or coding in p5.js.
 
