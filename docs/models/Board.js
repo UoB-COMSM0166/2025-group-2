@@ -47,7 +47,6 @@ export class Board {
 		}
 
 		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
-		// this.incidentBegin();
 
 		// Record game start time to prevent accidental clicks
 		this.gameStartTime = millis();
@@ -70,7 +69,9 @@ export class Board {
 
 	// Start random incident
 	incidentBegin() {
-		this.incidentManager.startIncident();
+		if (!this.player.gameManager.isGameOver) {
+			this.incidentManager.startIncident();
+		}
 	}
 
 	setup() {
@@ -151,13 +152,6 @@ export class Board {
 		}
 		for (let fruit of this.fruits) {
 			fruit.updateScale(newScale);
-		}
-	}
-
-	draw() {
-		// Draw placed fruit
-		for (let fruit of this.fruits) {
-			fruit.draw();
 		}
 	}
 

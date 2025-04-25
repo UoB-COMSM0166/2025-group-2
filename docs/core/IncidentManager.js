@@ -7,17 +7,17 @@ import {
 } from '../incidents/index.js';
 
 export class IncidentManager {
-	constructor(game, gameArea, endLine) {
-		this.game = game;
+	constructor(board, gameArea, endLine) {
+		this.game = board;
 		this.gameArea = gameArea;
 		this.endLine = endLine;
 
 		this.incidents = {
-			Wind: new WindIncident(game),
-			Fog: new FogIncident(game, gameArea, endLine),
-			Freeze: new FreezeIncident(game),
-			Fire: new FireIncident(game),
-			Rain: new RainIncident(game, gameArea),
+			Wind: new WindIncident(board),
+			Fog: new FogIncident(board, gameArea, endLine),
+			Freeze: new FreezeIncident(board),
+			Fire: new FireIncident(board),
+			Rain: new RainIncident(board, gameArea),
 		};
 		this.activeIncidents = [];
 		this.isWarning = false;
@@ -57,11 +57,6 @@ export class IncidentManager {
 		// Update all events to ensure they are using the latest game references
 		for (const incidentName in this.incidents) {
 			this.incidents[incidentName].game = this.game;
-		}
-
-		if (this.game.player?.gameManager?.isGameOver) {
-			this.stopAllIncidents();
-			return;
 		}
 
 		if (this.isWarning) {
