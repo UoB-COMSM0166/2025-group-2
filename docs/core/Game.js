@@ -20,7 +20,7 @@ export class Game {
 	startGame(mode) {
 		this.gameManager = new GameManager(this, mode, this.scaleVal);
 
-		this.gameManager.startTutorialIfNeeded();
+		this.gameManager.startTutorial();
 		this.currentScene = this.gameManager.isTutorialMode ? 'tutorial' : 'game';
 
 		// Call the mode change callback to notify app.js that the game mode has changed

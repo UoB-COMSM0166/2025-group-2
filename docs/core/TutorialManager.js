@@ -307,9 +307,9 @@ export class TutorialManager {
 		push();
 		// Position the tutorial box
 		let boxX = width / 2;
-		let boxY = 138;
+		let boxY = 117;
 		let boxWidth = min(850, width * 0.9);
-		let boxHeight = 250;
+		let boxHeight = 220;
 
 		// Draw background
 		fill(53, 47, 42, 255);

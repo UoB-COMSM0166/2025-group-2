@@ -154,13 +154,6 @@ export class Board {
 		}
 	}
 
-	draw() {
-		// Draw placed fruit
-		for (let fruit of this.fruits) {
-			fruit.draw();
-		}
-	}
-
 	getCurrentFruits() {
 		return this.fruits;
 	}

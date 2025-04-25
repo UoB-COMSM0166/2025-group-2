@@ -19,7 +19,7 @@ export class GameManager {
 		this.isGameOver = false;
 	}
 
-	startTutorialIfNeeded() {
+	startTutorial() {
 		if (this.game.tutorialEnabled) {
 			this.isTutorialMode = true;
 			this.tutorialManager = new TutorialManager(this.game, this);
@@ -40,6 +40,7 @@ export class GameManager {
 		this.uiManager.counter.start();
 
 		this.player.forEach(player => {
+			player.boards.nextFruit.sprite.visible = true;
 			if (player.boards?.incidentManager) {
 				player.boards.incidentBegin();
 			}
@@ -67,8 +68,6 @@ export class GameManager {
 			push(); // Save the drawing state
 			this.player.forEach(player => {
 				if (player && player.boards) {
-					// Draw the current board state without updates
-					player.boards.draw();
 					// Ensure fruits don't move during tutorial by setting them to static
 					if (player.boards.currentFruit && player.boards.currentFruit.sprite) {
 						player.boards.currentFruit.sprite.vel.x = 0;
@@ -79,6 +78,7 @@ export class GameManager {
 						player.boards.nextFruit.sprite.vel.x = 0;
 						player.boards.nextFruit.sprite.vel.y = 0;
 						player.boards.nextFruit.sprite.collider = 'static';
+						player.boards.nextFruit.sprite.visible = false;
 					}
 					// Ensure no physics updates happen during the tutorial
 					if (player.boards.fruits && player.boards.fruits.length > 0) {
