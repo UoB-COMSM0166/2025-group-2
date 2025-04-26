@@ -1,16 +1,16 @@
 import { FaceComponents, FaceMapping } from './Face.js';
 export class Fruit {
 	static fruitColors = [
-		'#e63232', // red
-		'#f8961e', // orange
-		'#7fc96b', // green
-		'#43aa8b', // teal
-		'#2d92d1', // blue
-		'#f6aeae', // pink
-		'#277da1', // dark blue
-		'#3b498e', // purple
-		'#ffd043', // yellow
-		'#66418a', // dark purple
+		'#b38ebe',
+		'#c0c0c0',
+		'#ff6f7a',
+		'#ffb98a',
+		'#ffe08a',
+		'#c8e275',
+		'#76e6b8',
+		'#7ac9e0',
+		'#99a7e7',
+		'#c9ad95',
 	];
 
 	static STATE = {
