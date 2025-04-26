@@ -47,7 +47,6 @@ export class Board {
 		}
 
 		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
-		// this.incidentBegin();
 
 		// Record game start time to prevent accidental clicks
 		this.gameStartTime = millis();
@@ -70,7 +69,9 @@ export class Board {
 
 	// Start random incident
 	incidentBegin() {
-		this.incidentManager.startIncident();
+		if (!this.player.gameManager.isGameOver) {
+			this.incidentManager.startIncident();
+		}
 	}
 
 	setup() {
@@ -154,13 +155,6 @@ export class Board {
 		}
 	}
 
-	draw() {
-		// Draw placed fruit
-		for (let fruit of this.fruits) {
-			fruit.draw();
-		}
-	}
-
 	getCurrentFruits() {
 		return this.fruits;
 	}
@@ -199,9 +193,46 @@ export class Board {
 
 		if (!this.currentFruit) return;
 
+	// Handle mouse controls (for single mode) - just track position, not dropping
+	handleCurrentFruitMouse() {
+		const topY = this.gameArea.y;
+		const dashLineY = this.dashLineY || topY + 130;
+		const currentFruitPosition = (topY + dashLineY) / 2;
+		if (this.currentFruit && this.currentFruit?.sprite) {
+			let leftBound = this.gameArea.x + this.wallWidth;
+			let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
+
+			// Allow current fruit to move with mouse
+			this.currentFruit.moveWithMouse(leftBound, rightBound, currentFruitPosition);
+			this.currentFruit.letFall();
+		} else {
+			this.handleNextFruit();
+		}
+	}
+
+	// Handle mouse click for single mode (drop fruit)
+	handleMouseClick() {
+		// Check if it is within the game protection period
+		if (millis() - this.gameStartTime < this.GAME_START_PROTECTION) {
+			return;
+		}
+
+		if (!this.currentFruit) return;
+
 		let leftBound = this.gameArea.x + this.wallWidth;
 		let rightBound = this.gameArea.x + this.gameArea.w - this.wallWidth;
 		let currentMouseX = mouseX / this.scaleVal;
+
+		// Check if mouse is in valid drop area
+		if (currentMouseX >= leftBound && currentMouseX <= rightBound) {
+			this.dropCurrentFruit();
+		}
+	}
+
+	// Handle keyboard controls (for double mode)
+	handleCurrentFruitKeyboard() {
+		const topY = this.gameArea.y;
+		const dashLineY = this.dashLineY || topY + 130;
 
 		// Check if mouse is in valid drop area
 		if (currentMouseX >= leftBound && currentMouseX <= rightBound) {
@@ -465,7 +496,12 @@ export class Board {
 
 			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
 			if (fruitTop <= y) {
-				this.uiControllor.drawGameOver(this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
+				if (this.mode == 'single') {
+					this.uiControllor.drawGameOver(
+						this.gameArea.x + this.gameArea.w / 2,
+						this.gameArea.y - 60
+					);
+				}
 				return true;
 			}
 		}
@@ -493,7 +529,7 @@ export class Board {
 
 	checkFruitIsMaximun() {
 		//define max level
-		let max = this.isSingleMode ? 7 : 6; //Maximum level 10 (index 9) for single mode and 9 (index 8) for double mode
+		let max = 8;
 		let maxLevel = this.getMaxFruitLevel();
 
 		if (maxLevel != max) {
@@ -502,4 +538,5 @@ export class Board {
 
 		return true;
 	}
+
 }

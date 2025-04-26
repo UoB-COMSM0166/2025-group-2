@@ -185,6 +185,15 @@ export class GameUIManager {
 				textColour,
 				40
 			);
+		} else {
+			this.ui.createLabel(
+				'highest_score',
+				310,
+				100,
+				`Highest Score: ${this.gameManager.highestSingleScore}`,
+				'#6B4F3F',
+				30
+			);
 		}
 	}
 
@@ -218,5 +227,9 @@ export class GameUIManager {
 	displayCounter() {
 		const formattedTime = this.formatTime(this.counter.getTimeLeft());
 		this.ui.updateLabelText('timer', `Time: ${formattedTime}`);
+	}
+
+	updateHighestScoreLabel(score) {
+		this.ui.updateLabelText('highestScore', `Highest Score: ${score}`);
 	}
 }

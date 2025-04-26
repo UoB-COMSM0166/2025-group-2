@@ -36,15 +36,25 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 | Jimmy Chih Chun Lin | jp24407@bristol.ac.uk |
 |   Octave Jin Liao   | ge24446@bristol.ac.uk |
 |   Gerald Rodrigue   | nu24692@bristol.ac.uk |
+<<<<<<< HEAD
+=======
 
-## Project Report
+## Introduction
+>>>>>>> dev
 
+- 5% ~250 words
+- Describe your game, what is based on, what makes it novel?
+
+<<<<<<< HEAD
 ### Introduction
 
 - 5% ~250 words
 - Describe your game, what is based on, what makes it novel?
 
 ### Requirements
+=======
+## Requirements
+>>>>>>> dev
 
 - 15% ~750 words
 - Use case diagrams, user stories. Early stages design. Ideation process. How did you decide as a team what to develop?
@@ -55,18 +65,78 @@ Furthermore, by having a clear understanding of the tasks at hand, we were able 
 
 In conclusion, the requirements gathering process provided us with valuable insights on how to organize and prioritize activities to successfully fulfill the project requirements.
 
-### Design
+## Design
 
 - 15% ~750 words
 - System architecture. Class diagrams, behavioural diagrams.
 
-### Implementation
+Once we identified the stakeholders and evaluated the User Stories, we were able to determine a list of features to be implemented into our game, with the Use Case Model acting as a planning tool to guide us on the flow of our system behaviour from a user's perspective.
+
+### System Architecture
+
+Our game utilises several manager classes to handle the different areas of gameplay, essentially implementing a component-based architecture which follows an expanded Model-View-Controller pattern. This means that our game state, logic and rendering are each separated into different components.
+
+The primary manager classes (found in the folder named "[core](/docs/core)") are:
+
+1. **Game**: Main coordinator to manage all game states and transitions
+2. **GameManager**: Focuses on controlling the physics, game logic and entity updates
+3. **GameUIManager**: Focuses on managing UI components and all visual elements
+4. **IncidentManager**: Focuses on handling the random events that were incorporated to increase game challenge and act as a twist to the original game
+5. **ToolManager**: Focuses on controlling the tools found in our shop function
+6. **UIController**: Focuses on rendering the UI elements and handling updates to the display
+
+Creating multiple primary manager classes allows us to modify the different components independently. In the final version of our Class Diagram (covered in the section below), you can see clearly that the Game class sits at the top of the hierarchy, managing all the other manager classes.
+
+### Class Diagram
+
+We came up with an initial Class Diagram to help visualise the static structure of our system along with plotting the relationships between the different objects, following an Object Oriented Design (OOD) approach.
+
+This first version was created by brainstorming together during a face-to-face session around reading week where we came up with the skeleton of the basic game we had in mind.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v1.jpeg">
+<br>
+<em><sub>Initial Class Diagram</sub></em>
+</p>
+
+As we developed the game further and added in more features according to the various twists planned, like the double player mode, the shop function, the various new tools found in the shop function and the random incidences occuring during gameplay, code complexity quickly increased and refactoring became necessary.
+This led to us creating the second and final Class Diagram.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/class-diagram-v2.png">
+<br>
+<em><sub>Final Class Diagram</sub></em>
+</p>
+
+The final Class Diagram reflects our System Architecture by visualising the way our components relate to one another, with the Game class serving as the main controller and connecting to the GameManager, TutorialManager and MenuPage.
+
+### Sequence Diagram
+
+The Sequence Diagram gives an overview of how we want the flow of our gameplay to look like, along with how the objects should collaborate with each other during the gameplay.
+
+<p align="center">
+<img width="90%" src="./ReportMaterial/Diagrams/sequence-diagram.png">
+<br>
+<em><sub>Sequence Diagram</sub></em>
+</p>
+
+Here, we have the Sequence Diagram which shows the overarching gameplay. Our system architecture begins with the main menu where the player selects the game mode they want and also have the option to decide whether they would like to turn off the tutorials.
+
+### Agile Approach
+
+Since we worked while following the Agile methodology, there were very frequent updates and modifications made to the game design and a need to constantly keep our System Architecture, Class Diagram and Sequence Diagram up to date.
+
+However, due to the fast pace at which we had to complete the project, we ultimately had to sacrifice on the documentations for this area and focus on developing working software instead, with the diagrams updated only when there was a lull or lesser tasks to complete between sprints. This is in line with the one of the key values of the Agile Manifesto: Working Software over Comprehensive Documentation.
+
+This does appear to be an area for improvement as we believe that we could have had better control over our planning of tasks and not be overly ambitious every sprint in order to factor in more time to keep a better update of the diagrams and documentations.
+
+## Implementation
 
 - 15% ~750 words
 
 - Describe implementation of your game, in particular highlighting the three areas of challenge in developing your game.
 
-### Evaluation
+## Evaluation
 
 - 15% ~750 words
 
@@ -211,23 +281,56 @@ The calculated W value for our evaluation was 0, which is well below the critica
 
 The evaluated result confirms that the addition of our key twist and new core mechanic, i.e. the random Incidences, increases the difficulty level of our gameplay relative to the basic version and is statistically significant. This is a positive outcome as it assures the team that the direction we took in creating a twist to the game is correct and that the addition of the random Incidences made during the sprint over reading week was not in vain.
 
+<<<<<<< HEAD
 ### Process
+=======
+## Process
+>>>>>>> dev
 
 - 15% ~750 words
 
 - Teamwork. How did you work together, what tools did you use. Did you have team roles? Reflection on how you worked together.
 
-### Conclusion
+## Sustainability, ethics and accessibility
 
-- 10% ~500 words
+- 100% ~750 words
 
+<<<<<<< HEAD
 - Reflect on project as a whole. Lessons learned. Reflect on challenges. Future work.
+=======
+- Evidence of the impact of your game across the environment and two of the other areas:
+  - Environmental + 2 of the following: Social, Economic, Technical, Individual
+>>>>>>> dev
 
-### Contribution Statement
+## Conclusion
+
+<<<<<<< HEAD
+- Provide a table of everyone's contribution, which may be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Let us know as soon as possible if there are any issues with teamwork as soon as they are apparent.
+=======
+We learnt a lot throughout this whole journey of creating a game from scratch, allowing us to grow through various challenges faced and expanding our repertoire of both soft and hard skills. This is especially true since none of the group members had any experience with game development or coding in p5.js.
+>>>>>>> dev
+
+Learning and adapting as we moved along, the development of the game was made easier after learning the Agile development methodology as we were able adopt a Scrum-Inspired Agile approach to design and develop the game in a much more structured way as opposed to the initial vague ideas that we had in mind. User feedback also turned out to be extremely important as it influenced the directions of our game, allowing us to further improve our game to make it more fun and enjoyable. Our team collected user feedback throughout the development of the game in order to further polish our game.
+
+As we progressed in the development of the game, the complexity of our codes increased and modifications to any individual functions started to implicate other areas of the game in ways that were unexpected. Since the game was jointly developed by all members of the team, ensuring that we have effective communication and proper support for each other was crucial as we had to help each other understand all areas of the codes to prevent breaking any logics created by other members.
+
+One main challenge was the integration of all "Incidences" and "Tools" within the game. These "Incidences" and "Tools" were developed by different team members and they all worked well when doing isolated testing. The problem came when they were all thrown together during a full playtesting, where we saw broken logics or unexpected bugs occurring because the codes on the backend clashed with each other. The cleaning up for this lasted for most of the second half of our project and required a lot of refactoring and redesigning.
+
+Another challenge faced during development was the implementation of our shop function into the double player mode. Various considerations had to be taken in order to ensure that the different effects from items bought in the shared shop activates in the correct player's playing field, determining how each player can access the shared shop function individually at the same time without affecting gameplay, and not breaking any existing logics like in the previous challenge mentioned.
+
+Both the challenges mentioned above were overcome by the team through many meetings between different team members to ensure all codes are fully understood before attempting any modifications. This helped prevent unwanted bugs from appearing and allowed development to proceed smoother after we learnt from the experience.
+
+Perhaps due to our lack of experience and skills due to having come from various different backgrounds not related to software development, we were not able to fully adopt a Test-Driven Development (TDD) process for this game. A lot of our functions had to be tested through playtesting, finding new bugs this way and going back to resolve them, wasting a lot of time as there were always bugs missed out during the rounds of playtesting. This is an area for improvement and a lesson that the team will take to heart for future projects.
+
+As for the future of Crazy Bubble itself, there were a few features that we would have liked to implement if there was enough time. Modifying the game into an online version with individual player accounts and storing each player's high scores in a database would allow the player to access their old game data and attempt to beat either their own previous high scores or get on the leaderboard for highest score across all players. With the online version also comes the possibility of a new game mode of playing with more than just one other opponent, much like [Tetris 99](https://www.nintendo.com/en-gb/Games/Nintendo-Switch-download-software/TETRIS-99-1505396.html) where 99 different opponents compete with each other. On a smaller scale, we would also have liked to add more tools into the shop function in our game, especially on the double player mode where adding more tools for disrupting other players would have made the game more interesting.
+
+All members of our team agree that this was an invaluable experience as it allowed each of us to experience working in a team as developers, explore the different aspects of software engineering and challenge ourselves in a new way that we had never experienced before, all before actually stepping out into the industry. The lessons learnt in this project will be something that helps define us as we grow as software developers in the future.
+
+## Contribution Statement
 
 - Provide a table of everyone's contribution, which may be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Let us know as soon as possible if there are any issues with teamwork as soon as they are apparent.
 
-### Additional Marks
+## Additional Marks
 
 You can delete this section in your own repo, it's just here for information. in addition to the marks above, we will be marking you on the following two points:
 

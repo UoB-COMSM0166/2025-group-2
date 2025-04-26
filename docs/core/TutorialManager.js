@@ -30,11 +30,11 @@ export class TutorialManager {
 		if (this.mode === 'single') {
 			this.tutorialSteps = [
 				{
-					text: "Welcome to the Fruit Merge Game! \nYour goal is to merge fruits of the same size to create larger fruits and earn points. \nDon't let fruits stack up past the red line!",
+					text: "Welcome to the Crazy Bubble! \nYour goal is to merge bubbles of the same size to create larger bubbles and earn points. \nDon't let bubbles stack up past the red line!",
 					highlight: null,
 				},
 				{
-					text: 'Move your mouse to position the fruit. Click to drop the fruit. \nTry to drop fruits on top of other fruits of the same size to merge them!',
+					text: 'Move your mouse to position the bubble. Click to drop the bubble. \nTry to drop bubbles on top of other bubbles of the same size to merge them!',
 					highlight: null,
 				},
 				{
@@ -42,11 +42,11 @@ export class TutorialManager {
 					highlight: null,
 				},
 				{
-					text: 'The shop contains special tools that you can purchase with coins earned by merging fruits.',
+					text: 'The shop contains special tools that you can purchase with coins earned by merging bubbles.',
 					highlight: this.gameManager.uiManager.AREAS.shop,
 				},
 				{
-					text: "Shuffle: Shakes all fruits to help rearrange them when you're stuck.",
+					text: "Shuffle: Shakes all bubbles to help rearrange them when you're stuck.",
 					highlight: 'shuffle',
 				},
 				{
@@ -58,15 +58,15 @@ export class TutorialManager {
 					highlight: 'doubleScore',
 				},
 				{
-					text: 'Bomb: Creates an explosive fruit that clears nearby fruits when it collides.',
+					text: 'Bomb: Creates an explosive bubble that clears nearby bubbles when it collides.',
 					highlight: 'bombTool',
 				},
 				{
-					text: 'Rainbow: Creates a special fruit that can merge with any other fruit.',
+					text: 'Rainbow: Creates a special bubble that can merge with any other bubble.',
 					highlight: 'rainbowTool',
 				},
 				{
-					text: 'Random: Gives you a random tool or special fruit for a lower price.',
+					text: 'Random: Gives you a random tool or special bubble for a lower price.',
 					highlight: 'random',
 				},
 				{
@@ -77,23 +77,39 @@ export class TutorialManager {
 		} else if (this.mode === 'double') {
 			this.tutorialSteps = [
 				{
-					text: 'Move your mouse to position the fruit. Click to drop the fruit. \nTry to drop fruits on top of other fruits of the same size to merge them!',
+					text: 'Welcome to the Crazy Bubble Two-Player Mode!',
 					highlight: null,
 				},
 				{
-					text: 'Player 1: Use  A/D  keys to move and  S  to drop. \nPlayer 2: Use  LEFT/RIGHT  arrow keys to move and  DOWN  arrow to drop. \nMerge fruits of the same size to score points!',
+					text: 'Players must merge bubbles in their own area.\n Avoid stacking bubbles beyond the red line — that ends the game!\n\nWin Conditions: \n1. First player to achieve biggest bubble size wins! \nOR  \n2.  If time runs out, the player with highest score wins!',
 					highlight: null,
+				},
+				{
+					title: 'How to play',
+					highlight: null,
+					split: true,
+					left: ['Left Side Player 1:', '- A / D: Move bubble left / right', '- S: Drop bubble'],
+					right: ['Right Side Player 2:', '- ← / →: Move bubble left / right', '- ↓: Drop bubble'],
+					highlightKeys: ['A', 'D', 'S', '←', '→', '↓'],
 				},
 				{
 					text: 'Random incidents will occur throughout gameplay that will create challenges for you!',
 					highlight: null,
 				},
 				{
-					text: 'The shop contains special tools that you can purchase with coins earned by merging fruits.',
+					text: 'The shop contains special tools that you can purchase with coins earned by merging bubbles.',
 					highlight: this.gameManager.uiManager.AREAS.shop,
 				},
 				{
-					text: "Shuffle: Shakes all fruits to help rearrange them when you're stuck.",
+					title: 'Shop Controls',
+					left: ['Left Side Player 1:', '- W / Q to browse', '- E to buy'],
+					right: ['Right Side Player 2:', "- ⭡ / '.' to browse", "- '?' to buy"],
+					highlight: this.gameManager.uiManager.AREAS.shop,
+					split: true,
+					highlightKeys: ['Q', 'W', 'E', '↑', '.', '?'],
+				},
+				{
+					text: "Shuffle: Shakes all bubbles to help rearrange them when you're stuck.",
 					highlight: 'shuffle',
 				},
 				{
@@ -105,15 +121,15 @@ export class TutorialManager {
 					highlight: 'doubleScore',
 				},
 				{
-					text: 'Bomb: Creates an explosive fruit that clears nearby fruits when it collides.',
+					text: 'Bomb: Creates an explosive bubble that clears nearby bubbles when it collides.',
 					highlight: 'bombTool',
 				},
 				{
-					text: 'Rainbow: Creates a special fruit that can merge with any other fruit.',
+					text: 'Rainbow: Creates a special bubble that can merge with any other bubble.',
 					highlight: 'rainbowTool',
 				},
 				{
-					text: 'Random: Gives you a random tool or special fruit for a lower price.',
+					text: 'Random: Gives you a random tool or special bubble for a lower price.',
 					highlight: 'random',
 				},
 				{
@@ -131,7 +147,7 @@ export class TutorialManager {
 			];
 		}
 
-		// Freeze all fruits in place at construction time
+		// Freeze all bubbles in place at construction time
 		this.freezeAllFruits();
 	}
 
@@ -159,26 +175,26 @@ export class TutorialManager {
 		this.endTutorial();
 	}
 
-	// Make sure all fruits are frozen and don't move
+	// Make sure all bubbles are frozen and don't move
 	freezeAllFruits() {
 		if (this.gameManager && this.gameManager.player) {
 			this.gameManager.player.forEach(player => {
 				if (player.boards) {
-					// Freeze current fruit
+					// Freeze current bubble
 					if (player.boards.currentFruit && player.boards.currentFruit.sprite) {
 						player.boards.currentFruit.sprite.vel.x = 0;
 						player.boards.currentFruit.sprite.vel.y = 0;
 						player.boards.currentFruit.sprite.collider = 'static';
 					}
 
-					// Freeze next fruit
+					// Freeze next bubble
 					if (player.boards.nextFruit && player.boards.nextFruit.sprite) {
 						player.boards.nextFruit.sprite.vel.x = 0;
 						player.boards.nextFruit.sprite.vel.y = 0;
 						player.boards.nextFruit.sprite.collider = 'static';
 					}
 
-					// Freeze all other fruits
+					// Freeze all other bubbles
 					if (player.boards.fruits) {
 						player.boards.fruits.forEach(fruit => {
 							if (fruit && fruit.sprite) {
@@ -235,7 +251,7 @@ export class TutorialManager {
 		if (this.currentStep >= this.tutorialSteps.length) {
 			this.endTutorial();
 		} else {
-			// Re-freeze all fruits after each step to ensure they don't move
+			// Re-freeze all bubbles after each step to ensure they don't move
 			this.freezeAllFruits();
 		}
 	}
@@ -251,20 +267,9 @@ export class TutorialManager {
 		this.restoreOriginalClickHandler();
 
 		// Tell the game to start after tutorial - with proper error handling
-		try {
-			if (this.game && typeof this.game.startActualGame === 'function') {
-				this.game.startActualGame();
-			} else {
-				if (this.game) {
-					this.game.currentScene = 'game';
-					this.game.isTutorialMode = false;
-				}
-			}
-		} catch (e) {
-			if (this.game) {
-				this.game.currentScene = 'game';
-				this.game.isTutorialMode = false;
-			}
+		if (this.gameManager && typeof this.gameManager.startActualGameAfterTutorial === 'function') {
+			this.game.currentScene = 'game';
+			this.gameManager.startActualGameAfterTutorial();
 		}
 	}
 
@@ -303,9 +308,9 @@ export class TutorialManager {
 		push();
 		// Position the tutorial box
 		let boxX = width / 2;
-		let boxY = 138;
+		let boxY = 117;
 		let boxWidth = min(850, width * 0.9);
-		let boxHeight = 250;
+		let boxHeight = 220;
 
 		// Draw background
 		fill(53, 47, 42, 255);
@@ -316,51 +321,81 @@ export class TutorialManager {
 
 		// Get current step text
 		let currentStepData = this.tutorialSteps[this.currentStep];
-		let message = currentStepData ? currentStepData.text : 'Welcome to the game!';
 
-		// Text styling
-		fill(255);
-		noStroke();
-		textSize(20);
-		textAlign(CENTER, CENTER);
+		const lineHeight = 28;
+		const isSplit = currentStepData?.split;
+		const title = currentStepData?.title;
 
-		// First split by manual line breaks
-		let paragraphs = message.split('\n');
-		let lines = [];
+		if (isSplit && Array.isArray(currentStepData.left) && Array.isArray(currentStepData.right)) {
+			let linesLeft = currentStepData.left;
+			let linesRight = currentStepData.right;
+			let maxLines = Math.max(linesLeft.length, linesRight.length);
 
-		// Then process each paragraph for word wrapping
-		for (let paragraph of paragraphs) {
-			// Split text into lines for manual wrapping
-			let words = paragraph.split(' ');
-			let currentLine = words[0] || '';
-
-			for (let i = 1; i < words.length; i++) {
-				let testLine = currentLine + ' ' + words[i];
-				let testWidth = textWidth(testLine);
-
-				if (testWidth > boxWidth - 60) {
-					lines.push(currentLine);
-					currentLine = words[i];
-				} else {
-					currentLine = testLine;
-				}
+			let baseY = boxY;
+			if (title) {
+				// Draw title above
+				textSize(24);
+				fill(255);
+				noStroke();
+				textAlign(CENTER, CENTER);
+				text(title, boxX, boxY - 70);
+				baseY = boxY;
 			}
-			if (currentLine) lines.push(currentLine);
-		}
+			textSize(20);
+			fill(255);
+			textAlign(LEFT, CENTER);
+			noStroke();
 
-		// Draw each line of text
-		let lineHeight = 28;
-		let totalTextHeight = lines.length * lineHeight;
-		let startY = boxY - totalTextHeight / 2 + lineHeight / 2;
+			let totalTextHeight = maxLines * lineHeight;
+			let startY = baseY - totalTextHeight / 2 + lineHeight / 2;
+			let padding = 40;
+			let leftX = boxX - boxWidth / 2 + padding;
+			let rightX = boxX + padding;
 
-		for (let i = 0; i < lines.length; i++) {
-			text(lines[i], boxX, startY + i * lineHeight);
+			for (let i = 0; i < linesLeft.length; i++) {
+				text(linesLeft[i], leftX, startY + i * lineHeight);
+			}
+			for (let i = 0; i < linesRight.length; i++) {
+				text(linesRight[i], rightX, startY + i * lineHeight);
+			}
+		} else {
+			let message = currentStepData?.text ?? 'Welcome to the game!';
+			let paragraphs = message.split('\n');
+			let lines = [];
+
+			textSize(20);
+			fill(255);
+			textAlign(CENTER, CENTER);
+			noStroke();
+
+			for (let paragraph of paragraphs) {
+				let words = paragraph.split(' ');
+				let currentLine = words[0] || '';
+				for (let i = 1; i < words.length; i++) {
+					let testLine = currentLine + ' ' + words[i];
+					if (textWidth(testLine) > boxWidth - 60) {
+						lines.push(currentLine);
+						currentLine = words[i];
+					} else {
+						currentLine = testLine;
+					}
+				}
+				if (currentLine) lines.push(currentLine);
+			}
+
+			let totalTextHeight = lines.length * lineHeight;
+			let startY = boxY - totalTextHeight / 2 + lineHeight / 2;
+
+			for (let i = 0; i < lines.length; i++) {
+				text(lines[i], boxX, startY + i * lineHeight);
+			}
 		}
 
 		// Draw "click to continue" instruction
 		textSize(16);
 		fill(200);
-		text('Click anywhere to continue', boxX, boxY + boxHeight / 2 - 25);
+		textAlign(CENTER, CENTER);
+		text('Click anywhere to continue', boxX, boxY + boxHeight / 2 - 20);
 		pop();
 	}
 
@@ -380,7 +415,7 @@ export class TutorialManager {
 			this.skipButton.updatePosition();
 		}
 
-		// Ensure all fruits stay frozen during tutorial
+		// Ensure all bubbles stay frozen during tutorial
 		this.freezeAllFruits();
 
 		const currentStepData = this.tutorialSteps[this.currentStep];
@@ -396,9 +431,19 @@ export class TutorialManager {
 			rect(0, 0, width, height);
 			pop();
 		}
+		if (this.mode === 'double') {
+			if (currentStepData.highlightKeys) {
+				this.gameManager.uiManager.keyGuide.setHighlight(currentStepData.highlightKeys);
+			} else {
+				this.gameManager.uiManager.keyGuide.clearHighlight();
+			}
+		}
 
 		// Draw the tutorial text box (on top of everything)
 		this.drawTutorialBox();
+		if (this.mode === 'double') {
+			this.gameManager.uiManager.keyGuide.draw();
+		}
 
 		// Update the hasDrawnFirstStep flag
 		this.hasDrawnFirstStep = true;

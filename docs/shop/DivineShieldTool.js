@@ -25,9 +25,11 @@ export class DivineShieldTool {
 	update() {
 		//show the time left of divine shield
 		if (this.shieldActive) {
-			fill(0);
+			textAlign(CENTER, CENTER);
+			fill(35,71,148);
 			textSize(20);
-			text('Divine Shield Time Left: ' + this.shieldTimeLeft, 240, 60);
+			text('Divine Shield Time Left: ' + this.shieldTimeLeft, this.incidentManager.gameArea.x + this.incidentManager.gameArea.w / 2
+				,this.incidentManager.gameArea.y - 60);
 		}
 	}
 

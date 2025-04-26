@@ -7,17 +7,17 @@ import {
 } from '../incidents/index.js';
 
 export class IncidentManager {
-	constructor(game, gameArea, endLine) {
-		this.game = game;
+	constructor(board, gameArea, endLine) {
+		this.game = board;
 		this.gameArea = gameArea;
 		this.endLine = endLine;
 
 		this.incidents = {
-			Wind: new WindIncident(game),
-			Fog: new FogIncident(game, gameArea, endLine),
-			Freeze: new FreezeIncident(game),
-			Fire: new FireIncident(game),
-			Rain: new RainIncident(game, gameArea),
+			Wind: new WindIncident(board),
+			Fog: new FogIncident(board, gameArea, endLine),
+			Freeze: new FreezeIncident(board),
+			Fire: new FireIncident(board),
+			Rain: new RainIncident(board, gameArea),
 		};
 		this.activeIncidents = [];
 		this.isWarning = false;
@@ -30,15 +30,13 @@ export class IncidentManager {
 
 	startIncident() {
 		//start random incident
-		setTimeout(() => {
-			this.incidentInterval = setInterval(() => {
-				this.randomIncident();
-			}, this.getRandomInterval());
-		}, 10000);
+		this.incidentInterval = setInterval(() => {
+			this.randomIncident();
+		}, this.getRandomInterval());
 	}
 
 	getRandomInterval() {
-		return Math.floor(Math.random() * (18000 - 11000) + 11000);
+		return Math.floor(Math.random() * (20000 - 15000) + 15000);
 	}
 
 	randomIncident() {
@@ -59,11 +57,6 @@ export class IncidentManager {
 			this.incidents[incidentName].game = this.game;
 		}
 
-		if (this.game.player?.gameManager?.isGameOver) {
-			this.stopAllIncidents();
-			return;
-		}
-
 		if (this.isWarning) {
 			let elapsed = millis() - this.warningStartTime;
 			if (elapsed < 2000) {
@@ -78,7 +71,7 @@ export class IncidentManager {
 			}
 		}
 
-		this.activeIncidents.forEach(incident => incident.update());
+		this.activeIncidents.forEach((incident) => incident.update());
 	}
 
 	activateIncident(incidentName) {
@@ -86,7 +79,7 @@ export class IncidentManager {
 			return;
 		}
 		const incident = this.incidents[incidentName];
-		if (incident && !this.activeIncidents.includes(incident)) {
+		if (incident) {
 			incident.game = this.game;
 
 			this.isWarning = true;
@@ -122,11 +115,20 @@ export class IncidentManager {
 		textAlign(CENTER, CENTER);
 		textSize(30);
 		fill(255, 0, 0);
-		text(
-			`${this.pendingIncident.name} Incident Coming!`,
-			this.gameArea.x + this.gameArea.w / 2,
-			this.gameArea.y + this.gameArea.h / 2
-		);
+		if(this.game.mode === 'double'){
+			text(
+				`${this.pendingIncident.name} Incident Coming!`,
+				this.gameArea.x + this.gameArea.w / 2,
+				this.gameArea.y + this.gameArea.h / 2
+			);
+		}
+		else if(this.game.mode === 'single'){
+			text(
+				`${this.pendingIncident.name} Incident Coming!`,
+				this.gameArea.x + this.gameArea.w / 2,
+				this.gameArea.y -30
+			);
+		}
 		pop();
 	}
 
