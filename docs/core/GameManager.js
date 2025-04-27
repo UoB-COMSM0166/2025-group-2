@@ -118,6 +118,10 @@ export class GameManager {
 			this.uiManager.counter.reset();
 		}
 
+		if (this.uiManager?.shop) {
+			this.uiManager.shop.resetIndicators(this.uiManager.AREAS.shop);
+		}
+
 		if (this.player && this.player.length > 0) {
 			this.player.forEach(player => {
 				if (typeof player.reset === 'function') {
