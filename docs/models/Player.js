@@ -12,7 +12,7 @@ export class Player {
 		this.gameManager = gameManager;
 		this.mode = this.gameManager.mode;
 		this.score = new Score();
-		this.coin = new Coin(100);
+		this.coin = new Coin(0);
 		this.scaleVal = gameManager.scaleVal;
 		this.uiManager = gameManager.uiManager;
 		this.uiControllor = this.uiManager.ui;

@@ -49,7 +49,7 @@ export class RainIncident extends Incident {
 				: this.area.y + (this.dashLineY - this.area.y) / 2; // Top wall inside position
 
 			// Random fruit type (between 0 and 6)
-			const fruitType = floor(random(4));
+			const fruitType = this.game.mode === 'single' ? 2 + floor(random(2)) : floor(random(4));
 
 			// Create fruit
 			const newFruit = new Fruit(fruitType, x, y, 30 + 20 * fruitType, this.scaleVal);
