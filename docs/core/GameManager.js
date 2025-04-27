@@ -118,7 +118,7 @@ export class GameManager {
 			this.uiManager.counter.reset();
 		}
 
-		if (this.uiManager?.shop) {
+		if (this.uiManager?.shop && this.mode === 'double') {
 			this.uiManager.shop.resetIndicators(this.uiManager.AREAS.shop);
 		}
 
