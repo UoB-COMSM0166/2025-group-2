@@ -7,7 +7,10 @@ export class DivineShieldTool {
 	}
 
 	activate() {
-		if (this.shieldActive) return;
+		if (this.shieldActive) {
+			this.shieldTimeLeft += 10;
+			return;
+		}
 
 		this.shieldTimeLeft = 10; //divine shield lasting time
 		this.shieldActive = true;
@@ -26,10 +29,13 @@ export class DivineShieldTool {
 		//show the time left of divine shield
 		if (this.shieldActive) {
 			textAlign(CENTER, CENTER);
-			fill(35,71,148);
+			fill(35, 71, 148);
 			textSize(20);
-			text('Divine Shield Time Left: ' + this.shieldTimeLeft, this.incidentManager.gameArea.x + this.incidentManager.gameArea.w / 2
-				,this.incidentManager.gameArea.y - 60);
+			text(
+				'Divine Shield Time Left: ' + this.shieldTimeLeft,
+				this.incidentManager.gameArea.x + this.incidentManager.gameArea.w / 2,
+				this.incidentManager.gameArea.y - 60
+			);
 		}
 	}
 
@@ -37,5 +43,7 @@ export class DivineShieldTool {
 		this.shieldActive = false;
 		clearInterval(this.shieldTimer);
 		this.incidentManager.resumePausedIncidents();
+		this.shieldTimeLeft = 0;
+		this.shieldTimer = null;
 	}
 }
