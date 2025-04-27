@@ -70,33 +70,72 @@ export class IncidentManager {
 				}
 			}
 		}
+		const visibleIncidents = this.activeIncidents.filter(i => i.name !== 'Rain');
+		if (visibleIncidents.length > 0) {
+			let incidentMap = new Map();
 
-		this.activeIncidents.forEach((incident) => incident.update());
+			visibleIncidents.forEach(i => {
+				if (!incidentMap.has(i.name)) {
+					incidentMap.set(i.name, i.timeLeft);
+				}
+			});
+
+			let labels = Array.from(incidentMap.entries())
+				.map(([name, timeLeft]) => `${name} Effect Time Left: ${timeLeft}`)
+				.join(', ');
+
+			fill('#6B4F3F');
+			textSize(20);
+
+			if (this.game.mode === 'double') {
+				const nextFruitArea = this.game.nextFruitArea;
+				const labelX = nextFruitArea.x + nextFruitArea.w * 2 + 50;
+				const labelY = nextFruitArea.y + 40;
+				text(labels, labelX, labelY);
+			} else {
+				const gameArea = this.gameArea;
+				text(labels, gameArea.x + gameArea.w / 2, gameArea.y - 30);
+			}
+		}
+
+		this.activeIncidents.forEach(incident => incident.update());
 	}
 
-	activateIncident(incidentName) {
+	activateIncident(incidentName, fromPlayer = false) {
 		if (this.shieldOn) {
 			return;
 		}
+
 		const incident = this.incidents[incidentName];
-		if (incident) {
-			incident.game = this.game;
-
-			this.isWarning = true;
-			this.warningStartTime = millis();
-			this.pendingIncident = incident;
-			incident.manager = this;
-			incident.name = incidentName;
-
-			this.activeIncidents.push(incident);
+		if (!incident) {
+			return;
 		}
+
+		incident.game = this.game;
+		incident.manager = this;
+		incident.name = incidentName;
+
+		const existing = this.activeIncidents.find(i => i.name === incidentName);
+		if (existing) {
+			existing.timeLeft += incident.duration;
+			this.pendingIncident = existing;
+			this.timeIncreasedByPlayer = fromPlayer;
+		} else {
+			this.pendingIncident = incident;
+			this.timeIncreasedByPlayer = false;
+		}
+
+		this.isWarning = true;
+		this.warningStartTime = millis();
 	}
 
 	deactivateIncident(incidentName) {
 		const incident = this.incidents[incidentName];
 		if (incident) {
 			incident.disable();
-			this.activeIncidents = this.activeIncidents.filter(incident => incident !== incident);
+			this.activeIncidents = this.activeIncidents.filter(incident => {
+				return incident.name !== incidentName;
+			});
 		}
 	}
 
@@ -115,19 +154,17 @@ export class IncidentManager {
 		textAlign(CENTER, CENTER);
 		textSize(30);
 		fill(255, 0, 0);
-		if(this.game.mode === 'double'){
-			text(
-				`${this.pendingIncident.name} Incident Coming!`,
-				this.gameArea.x + this.gameArea.w / 2,
-				this.gameArea.y + this.gameArea.h / 2
-			);
+		let warningText = '';
+		if (this.timeIncreasedByPlayer) {
+			warningText = `${this.pendingIncident.name} Time Left Increased!`;
+		} else {
+			warningText = `${this.pendingIncident.name} Incident Coming!`;
 		}
-		else if(this.game.mode === 'single'){
-			text(
-				`${this.pendingIncident.name} Incident Coming!`,
-				this.gameArea.x + this.gameArea.w / 2,
-				this.gameArea.y -30
-			);
+
+		if (this.game.mode === 'double') {
+			text(warningText, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
+		} else if (this.game.mode === 'single') {
+			text(warningText, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 30);
 		}
 		pop();
 	}

@@ -501,4 +501,28 @@ export class Board {
 
 		return true;
 	}
+
+	reset() {
+		// Clear fruits
+		this.fruits.forEach(fruit => fruit.remove?.());
+		this.fruits = [];
+
+		// Remove current and next fruits
+		this.currentFruit?.remove?.();
+		this.nextFruit?.remove?.();
+		this.currentFruit = null;
+		this.nextFruit = null;
+
+		// Reset gravity
+		world.gravity.y = this.gravity;
+
+		// Reset timer
+		this.timer = 0;
+
+		// Stop all incidents
+		this.incidentManager?.reset();
+
+		// Re-setup board (new fruits etc.)
+		this.setup();
+	}
 }

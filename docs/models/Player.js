@@ -12,7 +12,7 @@ export class Player {
 		this.gameManager = gameManager;
 		this.mode = this.gameManager.mode;
 		this.score = new Score();
-		this.coin = new Coin(0);
+		this.coin = new Coin(100);
 		this.scaleVal = gameManager.scaleVal;
 		this.uiManager = gameManager.uiManager;
 		this.uiControllor = this.uiManager.ui;
@@ -49,38 +49,16 @@ export class Player {
 	reset() {
 		// Reset player score and coins
 		this.score.reset();
-		this.coins = 0; // Reset to starting coins
+		this.coin.reset();
 
 		// Reset board state
 		if (this.boards) {
-			this.boards.fruits.forEach(fruit => {
-				fruit.remove?.();
-			});
-
-			// Clear existing fruits
-			this.boards.fruits = [];
-			if (this.boards.currentFruit) {
-				this.boards.currentFruit.remove();
-				this.boards.currentFruit = null;
-			}
-			if (this.boards.nextFruit) {
-				this.boards.nextFruit.remove();
-				this.boards.nextFruit = null;
-			}
-
-			// Reset timer
-			this.boards.timer = 0;
-			this.boards.setup();
+			this.boards.reset();
 		}
 
 		// Reset tool manager state
 		if (this.toolManager) {
-			// Reset all tools
-			Object.values(this.toolManager.tools).forEach(tool => {
-				if (tool.deactivate) {
-					tool.deactivate();
-				}
-			});
+			this.toolManager.reset();
 		}
 	}
 
