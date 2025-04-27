@@ -10,6 +10,7 @@ export class FireIncident extends Incident {
 
 	enable() {
 		super.enable();
+		this.paused = false;
 		this.affectFruits();
 	}
 
@@ -19,7 +20,6 @@ export class FireIncident extends Incident {
 			if (Math.random() < this.chance) {
 				fruit.fireAffected = true;
 				fruit.sprite.draw = () => {
-
 					//redraw the fruit
 					push();
 					fill(Fruit.fruitColors[fruit.level % Fruit.fruitColors.length]);
@@ -47,15 +47,9 @@ export class FireIncident extends Incident {
 		this.game.fruits.forEach(fruit => {
 			if (!fruit || !fruit.sprite) return;
 			fruit.fireAffected = false;
-			fruit.sprite.draw = () => {
-				//redraw the fruit when the fire is off
-				push();
-				fill(Fruit.fruitColors[fruit.level % Fruit.fruitColors.length]);
-				stroke(10);
-				ellipse(0, 0, fruit.sprite.d, fruit.sprite.d);
-				fruit.drawFace();
-				pop();
-			};
+
+			fruit.firePaused = false;
+			fruit.resetDraw();
 		});
 	}
 
@@ -86,7 +80,6 @@ export class FireIncident extends Incident {
 			if (fruit.firePaused) {
 				fruit.firePaused = false;
 				fruit.sprite.draw = () => {
-
 					//redraw the fruit
 					push();
 					fill(Fruit.fruitColors[fruit.level % Fruit.fruitColors.length]);

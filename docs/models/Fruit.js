@@ -193,4 +193,42 @@ export class Fruit {
 		let windForce = windSpeed * stiffness * 0.05; // apply wind effect
 		this.sprite.vel.x += windForce;
 	}
+
+	resetDraw() {
+		this.sprite.draw = () => {
+			push();
+			if (this.isInFog) {
+				stroke(66, 84, 84);
+				fill(this.color);
+			} else if (this.isFrozen) {
+				stroke(10);
+				fill('#ADD8E6');
+			} else {
+				stroke(10);
+				fill(Fruit.fruitColors[this.level % Fruit.fruitColors.length]);
+			}
+
+			ellipse(0, 0, this.sprite.d, this.sprite.d);
+
+			if (this.isFrozen) {
+				stroke(255);
+				strokeWeight(2);
+				line(-this.sprite.d / 4, -this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4);
+				line(-this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4, -this.sprite.d / 4);
+			} else {
+				this.drawFace();
+			}
+
+			if (this.fireAffected) {
+				fill(255, 165, 0, 180);
+				noStroke();
+				for (let i = 0; i < 5; i++) {
+					let flameX = random(-this.sprite.d / 3, this.sprite.d / 3);
+					let flameY = random(-this.sprite.d / 2, -this.sprite.d / 4);
+					ellipse(flameX, flameY, random(10, 20), random(15, 25));
+				}
+			}
+			pop();
+		};
+	}
 }

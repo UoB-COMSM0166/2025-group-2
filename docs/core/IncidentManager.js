@@ -161,11 +161,8 @@ export class IncidentManager {
 			warningText = `${this.pendingIncident.name} Incident Coming!`;
 		}
 
-		if (this.game.mode === 'double') {
-			text(warningText, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
-		} else if (this.game.mode === 'single') {
-			text(warningText, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 30);
-		}
+		text(warningText, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
+
 		pop();
 	}
 
