@@ -34,7 +34,7 @@ export class DivineShieldTool {
 			text(
 				'Divine Shield Time Left: ' + this.shieldTimeLeft,
 				this.incidentManager.gameArea.x + this.incidentManager.gameArea.w / 2,
-				this.incidentManager.gameArea.y - 60
+				this.incidentManager.gameArea.y - 150
 			);
 		}
 	}

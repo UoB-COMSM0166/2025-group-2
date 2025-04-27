@@ -29,7 +29,7 @@ export class DoubleScoreTool {
 			fill(0, 128, 0);
 			textSize(20);
 			const x = this.incidentManager.gameArea.x + this.incidentManager.gameArea.w / 2;
-			const y = this.incidentManager.gameArea.y - 100;
+			const y = this.incidentManager.gameArea.y - 125;
 			text('Double score Time Left: ' + this.doubleScoreTimeLeft, x, y);
 		}
 	}

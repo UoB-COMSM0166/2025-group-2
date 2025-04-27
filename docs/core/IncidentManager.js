@@ -82,7 +82,7 @@ export class IncidentManager {
 
 			let labels = Array.from(incidentMap.entries())
 				.map(([name, timeLeft]) => `${name} Effect Time Left: ${timeLeft}`)
-				.join(', ');
+				.join('\n ');
 
 			fill('#6B4F3F');
 			textSize(20);
@@ -90,7 +90,7 @@ export class IncidentManager {
 			if (this.game.mode === 'double') {
 				const nextFruitArea = this.game.nextFruitArea;
 				const labelX = nextFruitArea.x + nextFruitArea.w * 2 + 50;
-				const labelY = nextFruitArea.y + 40;
+				const labelY = nextFruitArea.y + 25;
 				text(labels, labelX, labelY);
 			} else {
 				const gameArea = this.gameArea;
