@@ -148,15 +148,16 @@ export class IncidentManager {
 	}
 
 	reset() {
-		this.stopAllIncidents(); // ← limpia incidentes activos e intervalos
+		this.stopAllIncidents(); // Stop all active incidents and clear the incident interval
 
 		// Reset flags
 		this.isWarning = false;
 		this.warningStartTime = 0;
 		this.pendingIncident = null;
 		this.shieldOn = false;
+		this.activeIncidents = [];
 
-		// Re-iniciar si quieres que empiece de nuevo inmediatamente:
-		this.startIncident(); // ← Solo si deseas reiniciar automáticamente
+		// Restart random incident generation immediately after reset
+		this.startIncident();
 	}
 }
