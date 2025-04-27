@@ -11,8 +11,13 @@ export class FogIncident extends Incident {
 
 	enable() {
 		super.enable();
-		// create fog cape
-		this.fogLayer = createGraphics(width, height);
+
+		this.paused = false;
+		if (!this.fogLayer) {
+			this.fogLayer = createGraphics(width, height);
+		} else {
+			this.fogLayer.clear();
+		}
 		this.fogLayer.fill(0);
 		this.fogLayer.noStroke();
 	}
@@ -20,6 +25,7 @@ export class FogIncident extends Incident {
 	disable() {
 		super.disable();
 		this.applyFogToBoard(true);
+		this.fogLayer = null;
 	}
 
 	pause() {

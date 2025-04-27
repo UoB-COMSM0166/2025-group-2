@@ -124,13 +124,17 @@ export class Board {
 		this.fruits = this.fruits.filter(fruit => !fruit.removed);
 		this.fruits.forEach(fruit => {
 			//check if the fruit is in fog
-			if (this.incidentManager.incidents.Fog.active && fruit.sprite.y > 200) {
+			const fog = this.incidentManager.incidents.Fog;
+			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
+
+			if (fog.active && !fog.paused && fruitTop > this.endLine.y1) {
 				fruit.isInFog = true;
 				fruit.setColor(66, 84, 84);
 			} else {
-				// Si quieres restaurar el color original de la fruta cuando no está bajo la niebla
-				fruit.isInFog = false; // Marcar como dentro de la niebla
+				fruit.isInFog = false;
+				fruit.color = null;
 			}
+
 			if (fruit instanceof BombFruit) {
 				fruit.checkCollision(this);
 			}
@@ -500,5 +504,29 @@ export class Board {
 		}
 
 		return true;
+	}
+
+	reset() {
+		// Clear fruits
+		this.fruits.forEach(fruit => fruit.remove?.());
+		this.fruits = [];
+
+		// Remove current and next fruits
+		this.currentFruit?.remove?.();
+		this.nextFruit?.remove?.();
+		this.currentFruit = null;
+		this.nextFruit = null;
+
+		// Reset gravity
+		world.gravity.y = this.gravity;
+
+		// Reset timer
+		this.timer = 0;
+
+		// Stop all incidents
+		this.incidentManager?.reset();
+
+		// Re-setup board (new fruits etc.)
+		this.setup();
 	}
 }

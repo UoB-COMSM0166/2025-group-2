@@ -10,6 +10,7 @@ export class FreezeIncident extends Incident {
 
 	enable() {
 		super.enable();
+		this.paused = false;
 		this.frozenFruits = this.selectRandomFruits(5);
 		this.frozenFruits.forEach(fruit => {
 			fruit.isFrozen = true;

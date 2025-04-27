@@ -1,3 +1,4 @@
+import { FaceComponents, FaceMapping } from '../models/Face.js';
 export class MenuPage {
 	constructor(game) {
 		this.game = game;
@@ -17,16 +18,16 @@ export class MenuPage {
 
 		// The same array of colors as the Fruit class
 		this.fruitColors = [
-			'#e63232',
-			'#f8961e',
-			'#7fc96b',
-			'#43aa8b',
-			'#2d92d1',
-			'#f6aeae',
-			'#277da1',
-			'#3b498e',
-			'#ffd043',
-			'#66418a',
+			'#b38ebe',
+			'#c0c0c0',
+			'#ff6f7a',
+			'#ffb98a',
+			'#ffe08a',
+			'#c8e275',
+			'#76e6b8',
+			'#7ac9e0',
+			'#99a7e7',
+			'#c9ad95',
 		];
 
 		// Game title configuration
@@ -91,6 +92,7 @@ export class MenuPage {
 				size: size,
 				type: fruitType,
 				randomId: randomId,
+				sprite: { x: x, y: y },
 				color: this.fruitColors[fruitType],
 			};
 
@@ -124,6 +126,7 @@ export class MenuPage {
 
 			// Update location
 			fruit.y += fruit.speed;
+			fruit.sprite.y = fruit.y;
 
 			// If the fruit goes beyond the bottom of the canvas, reset to the top
 			if (fruit.y > height + fruit.size) {
@@ -153,58 +156,40 @@ export class MenuPage {
 
 	drawFruitFace(fruit) {
 		let d = fruit.size;
-		let eyeSize = map(d, 0, 100, 2, 6);
-		let eyeOffsetX = eyeSize * (fruit.randomId % 2 == 0 ? 1.5 : 1);
-		let eyeOffsetY = eyeSize * (fruit.randomId % 2 == 0 ? 1.5 : 1);
 
-		// Eye coordinate
-		let leftEyeX = -eyeOffsetX;
-		let rightEyeX = eyeOffsetX;
-		let eyeY = -eyeOffsetY;
+		const faceConfig = FaceMapping[fruit.type] || { eye: 0, nose: null, mouth: 0 };
 
-		// The white of the eye
-		fill(255);
-		noStroke();
-		ellipse(leftEyeX, eyeY, eyeSize * 2, eyeSize * 2);
-		ellipse(rightEyeX, eyeY, eyeSize * 2, eyeSize * 2);
-
-		// Eyeball (simplified version, no mouse)
-		fill(0);
-		ellipse(leftEyeX, eyeY, eyeSize, eyeSize);
-		ellipse(rightEyeX, eyeY, eyeSize, eyeSize);
-
-		// mouth
-		let mouthY = eyeY + eyeSize * 2;
-		let mouthOffset = map(
-			noise(frameCount / 20, fruit.x, fruit.y),
-			0,
-			1,
-			-eyeOffsetX / 4,
-			eyeOffsetX / 4
-		);
-
-		stroke(0);
-		strokeWeight(2);
-		line(-eyeOffsetX / 2, mouthY + mouthOffset, eyeOffsetX / 2, mouthY - mouthOffset);
+		if (faceConfig.eye !== null) {
+			FaceComponents.eyes[faceConfig.eye](d, fruit);
+		}
+		if (faceConfig.nose !== null) {
+			FaceComponents.noses[faceConfig.nose](d, fruit);
+		}
+		if (faceConfig.mouth !== null) {
+			FaceComponents.mouths[faceConfig.mouth](d, fruit);
+		}
 	}
 
 	drawTitle() {
 		push();
 		// Draw main headings
 		textSize(64);
+		stroke(255);
+		strokeWeight(4);
 		textAlign(CENTER, CENTER);
 		fill(this.titleColor);
 		text('Crazy Bubble', width / 2, height / 4);
 
 		// subtitle
 		textSize(32);
+		strokeWeight(2);
 		text('Select Game Mode', width / 2, height / 3);
 		pop();
 	}
 
 	updateButtonPositions() {
 		const centerX = width / 2 - this.buttonWidth / 2;
-		const startY = height / 2;
+		const startY = height * 0.4;
 
 		this.buttons.forEach((button, index) => {
 			button.bounds.x = centerX;

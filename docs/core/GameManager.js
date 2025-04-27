@@ -118,6 +118,10 @@ export class GameManager {
 			this.uiManager.counter.reset();
 		}
 
+		if (this.uiManager?.shop && this.mode === 'double') {
+			this.uiManager.shop.resetIndicators(this.uiManager.AREAS.shop);
+		}
+
 		if (this.player && this.player.length > 0) {
 			this.player.forEach(player => {
 				if (typeof player.reset === 'function') {
@@ -125,25 +129,25 @@ export class GameManager {
 				}
 
 				if (player.coin) {
-					player.coin.reset(); // Asegúrate que este método existe
-					player.updateCoin?.(); // Si hay un método visual de actualización
+					player.coin.reset(); // Make sure this method exists
+					player.updateCoin?.(); // If there is a visual update method
 				}
 
-				// Eliminar frutas del juego de forma segura
+				// Safely remove fruits from the game
 				if (player.boards) {
-					// Eliminar frutas visual y físicamente
+					// Remove fruits visually and physically
 					player.boards.fruits.forEach(fruit => {
-						fruit.remove?.(); // método seguro de eliminación de sprites
+						fruit.remove?.(); // Safe method to remove sprites
 					});
 					player.boards.fruits = [];
 
-					// Eliminar current y next fruit si existen
+					// Remove current and next fruit if they exist
 					player.boards.currentFruit?.remove?.();
 					player.boards.nextFruit?.remove?.();
 					player.boards.currentFruit = null;
 					player.boards.nextFruit = null;
 
-					// Crear frutas nuevas como si fuera el comienzo
+					// Create new fruits as if starting a new game
 					player.boards.setup();
 				}
 			});
@@ -209,7 +213,7 @@ export class GameManager {
 			}
 		}
 
-		// ✅ Esto siempre va después de todo
+		// This should always go at the very end
 		if (this.isGameOver && this.endMessage) {
 			this.uiManager.ui.drawEndGameOverlay(this.endMessage);
 		}
@@ -292,8 +296,6 @@ export class GameManager {
 					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
 					60
 				);
-				//this.uiManager.ui.drawWinner(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);
-				//this.uiManager.ui.drawGameOver(width / 2, height / 2 - 200);
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
 
@@ -308,8 +310,6 @@ export class GameManager {
 					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
 					60
 				);
-				//this.uiManager.ui.drawWinner(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
-				//this.uiManager.ui.drawGameOver(width / 2, height / 2 - 200);
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
 
@@ -326,9 +326,6 @@ export class GameManager {
 					60
 				);
 
-				//this.uiManager.ui.drawWinner(	player1.boards.gameArea.x + player1.boards.gameArea.w / 2,110);
-				//this.uiManager.ui.drawLoser(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 110);
-
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
 
 				this.isGameOver = true;
@@ -342,8 +339,6 @@ export class GameManager {
 					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
 					60
 				);
-				//this.uiManager.ui.drawWinner(player2.boards.gameArea.x + player2.boards.gameArea.w / 2,110);
-				//this.uiManager.ui.drawLoser(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 110);
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
 
@@ -413,7 +408,7 @@ export class GameManager {
 				if (player.boards.checkFruitOverLine(dashLineY)) {
 					const currentScore = player.score.getScore();
 
-					// Verifica si este score supera al highest registrado
+					// Check if this score exceeds the recorded highest score
 					if (currentScore > this.highestSingleScore) {
 						this.highestSingleScore = currentScore;
 						this.uiManager.ui.updateLabelText(
@@ -459,10 +454,10 @@ export class GameManager {
 		this.playAgainButton = new Button(
 			'Play Again',
 			() => {
-				this.playAgainButton.remove(); // 👈 Elimina el botón
+				this.playAgainButton.remove();
 				this.exitButton.remove();
 				this.reset();
-				loop(); // Reinicia el draw loop
+				loop();
 			},
 			{
 				x: centerX - 110,

@@ -1,15 +1,16 @@
+import { FaceComponents, FaceMapping } from './Face.js';
 export class Fruit {
 	static fruitColors = [
-		'#e63232',
-		'#f8961e',
-		'#7fc96b',
-		'#43aa8b',
-		'#2d92d1',
-		'#f6aeae',
-		'#277da1',
-		'#3b498e',
-		'#ffd043',
-		'#66418a',
+		'#b38ebe',
+		'#c0c0c0',
+		'#ff6f7a',
+		'#ffb98a',
+		'#ffe08a',
+		'#c8e275',
+		'#76e6b8',
+		'#7ac9e0',
+		'#99a7e7',
+		'#c9ad95',
 	];
 
 	static STATE = {
@@ -104,81 +105,18 @@ export class Fruit {
 	drawFace() {
 		push();
 		let d = this.sprite.d;
-		let eyeSize = map(d, 0, 100, 2, 6);
-		let eyeOffsetX = eyeSize * (this.randomId % 2 == 0 ? 1.5 : 1);
-		let eyeOffsetY = eyeSize * (this.randomId % 2 == 0 ? 1.5 : 1);
 
-		// Eye Coordinates
-		let leftEyeX = -eyeOffsetX;
-		let rightEyeX = eyeOffsetX;
-		let eyeY = -eyeOffsetY;
+		const faceConfig = FaceMapping[this.level] || { eye: 0, nose: null, mouth: 0, eyebrow: null };
 
-		// Changing color of Sclera
-		if (this.isInFog) {
-			fill(66, 84, 84); // Gris para el borde en la niebla
-		} else {
-			fill(255); // Color original del borde
+		if (faceConfig.eye !== null) {
+			FaceComponents.eyes[faceConfig.eye](d, this);
 		}
-
-		noStroke();
-		ellipse(leftEyeX, eyeY, eyeSize * 2, eyeSize * 2);
-		ellipse(rightEyeX, eyeY, eyeSize * 2, eyeSize * 2);
-
-		// Pupil Follows Mouse Movement in single mode or stays centered in double mode
-		function getPupilOffset(eyeX, eyeY) {
-			// If we're in a game context that uses mouse tracking
-			if (mouseX !== undefined && mouseY !== undefined) {
-				let scaledMouseX = mouseX / this.scaleVal;
-				let scaledMouseY = mouseY / this.scaleVal;
-				let dx = scaledMouseX - (this.sprite.x + eyeX);
-				let dy = scaledMouseY - (this.sprite.y + eyeY);
-				let angle = atan2(dy, dx);
-				let maxOffset = eyeSize * 0.4;
-
-				return createVector(cos(angle) * maxOffset, sin(angle) * maxOffset);
-			} else {
-				// Default eye position (looking forward)
-				return createVector(0, 0);
-			}
+		if (faceConfig.nose !== null) {
+			FaceComponents.noses[faceConfig.nose](d, this);
 		}
-
-		// Left Eye Pupil
-		let leftPupilOffset = getPupilOffset.call(this, leftEyeX, eyeY);
-
-		//changing color of pupils
-		if (this.isInFog) {
-			fill(66, 84, 84);
-		} else {
-			fill(0);
+		if (faceConfig.mouth !== null) {
+			FaceComponents.mouths[faceConfig.mouth](d, this);
 		}
-
-		ellipse(leftEyeX + leftPupilOffset.x, eyeY + leftPupilOffset.y, eyeSize, eyeSize);
-
-		// Right Eye Pupil
-		let rightPupilOffset = getPupilOffset.call(this, rightEyeX, eyeY);
-		ellipse(rightEyeX + rightPupilOffset.x, eyeY + rightPupilOffset.y, eyeSize, eyeSize);
-
-		// Mouth
-		let mouthY = eyeY + eyeSize * 2;
-		let mouthOffset = map(
-			noise(frameCount / 20, this.sprite.x, this.sprite.y),
-			0,
-			1,
-			-eyeOffsetX / 4,
-			eyeOffsetX / 4
-		);
-
-		stroke(0);
-
-		//changing color of mouth
-		if (this.isInFog) {
-			stroke(66, 84, 84);
-		} else {
-			stroke(0);
-		}
-
-		strokeWeight(2);
-		line(-eyeOffsetX / 2, mouthY + mouthOffset, eyeOffsetX / 2, mouthY - mouthOffset);
 
 		pop();
 	}
@@ -254,5 +192,43 @@ export class Fruit {
 		let stiffness = map(this.sprite.d, 30, 200, 1, 0.1); // bigger fruit has larger stifness
 		let windForce = windSpeed * stiffness * 0.05; // apply wind effect
 		this.sprite.vel.x += windForce;
+	}
+
+	resetDraw() {
+		this.sprite.draw = () => {
+			push();
+			if (this.isInFog) {
+				stroke(66, 84, 84);
+				fill(this.color);
+			} else if (this.isFrozen) {
+				stroke(10);
+				fill('#ADD8E6');
+			} else {
+				stroke(10);
+				fill(Fruit.fruitColors[this.level % Fruit.fruitColors.length]);
+			}
+
+			ellipse(0, 0, this.sprite.d, this.sprite.d);
+
+			if (this.isFrozen) {
+				stroke(255);
+				strokeWeight(2);
+				line(-this.sprite.d / 4, -this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4);
+				line(-this.sprite.d / 4, this.sprite.d / 4, this.sprite.d / 4, -this.sprite.d / 4);
+			} else {
+				this.drawFace();
+			}
+
+			if (this.fireAffected) {
+				fill(255, 165, 0, 180);
+				noStroke();
+				for (let i = 0; i < 5; i++) {
+					let flameX = random(-this.sprite.d / 3, this.sprite.d / 3);
+					let flameY = random(-this.sprite.d / 2, -this.sprite.d / 4);
+					ellipse(flameX, flameY, random(10, 20), random(15, 25));
+				}
+			}
+			pop();
+		};
 	}
 }

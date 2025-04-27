@@ -1,11 +1,5 @@
 import { Button } from '../models/index.js';
 
-
-const bgColour = '#E5C3A6';
-const colourAfterClick = '#F4D8C6';
-const textColour = '#6B4F3F';
-const textAfterClick = '#A3785F';
-
 export class Shop {
 	constructor(UIController, gameManager) {
 		this.gameManager = gameManager;
@@ -24,27 +18,37 @@ export class Shop {
 		this.normalTextColor = '#6B4F3F';
 		this.selectedTextColor = '#3D2E25'; // Darker text when selected
 
-		if(this.gameManager.mode == 'single'){
+		if (this.gameManager.mode == 'single') {
 			this.items = [
 				{ id: 'shuffle', label: 'Shuffle', price: 10, effect: 'shuffle', icon: '🔀' },
-				{ id: 'divineShield', label: 'Divine Shield', price: 15, effect: 'divineShield', icon: '🛡️' },
+				{
+					id: 'divineShield',
+					label: 'Divine Shield',
+					price: 15,
+					effect: 'divineShield',
+					icon: '🛡️',
+				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
 				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
 				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
 			];
-		}
-
-		else if(this.gameManager.mode == 'double'){
+		} else if (this.gameManager.mode == 'double') {
 			this.items = [
 				{ id: 'shuffle', label: 'Shuffle', price: 10, effect: 'shuffle', icon: '🔀' },
-				{ id: 'divineShield', label: 'Divine Shield', price: 15, effect: 'divineShield', icon: '🛡️' },
+				{
+					id: 'divineShield',
+					label: 'Divine Shield',
+					price: 15,
+					effect: 'divineShield',
+					icon: '🛡️',
+				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
 				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
 				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
 				{ id: 'Wind', label: 'Strong Wind', price: 10, effect: 'Wind', icon: '💨' },
-				{ id: 'Rain', label: 'Heavy Rain', price: 10, effect: 'Rain', icon: '🌧️' }
+				{ id: 'Rain', label: 'Heavy Rain', price: 10, effect: 'Rain', icon: '🌧️' },
 			];
 		}
 	}
@@ -162,6 +166,24 @@ export class Shop {
 		});
 
 		this.updateIndicatorPositions();
+	}
+
+	resetIndicators(area) {
+		// Remove old indicators if they exist
+		if (this.player1Indicator) {
+			this.player1Indicator.remove();
+			this.player1Indicator = null;
+		}
+		if (this.player2Indicator) {
+			this.player2Indicator.remove();
+			this.player2Indicator = null;
+		}
+		this.player1Selection = 0;
+		this.player2Selection = 0;
+
+		// Reinitialize indicators
+		this.initSelectionIndicators(area);
+		this.updateButtonStyles();
 	}
 
 	listShopItems(shopButtons, shopArea, padding) {
