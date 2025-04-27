@@ -5,7 +5,7 @@ export class KeyGuide {
 	}
 
 	setupKeyGuide(displayArea) {
-		const baseY = displayArea.y + displayArea.h / 2 - 70 * this.scaleVal;
+		const baseY = displayArea.y + displayArea.h / 2 - 45 * this.scaleVal;
 
 		this.leftX = displayArea.x - 150;
 		this.rightX = displayArea.x + displayArea.w + 50;
@@ -13,7 +13,7 @@ export class KeyGuide {
 	}
 
 	drawKey(x, y, label) {
-		let size = 60 * this.scaleVal;
+		let size = 35 * this.scaleVal;
 
 		const isHighlighted = this.highlightKeys.has(label);
 
@@ -30,13 +30,13 @@ export class KeyGuide {
 		fill(0);
 		noStroke();
 		textAlign(CENTER, CENTER);
-		textSize(28 * this.scaleVal);
+		textSize(24 * this.scaleVal);
 		text(label, x + size / 2, y + size / 2);
 		pop();
 	}
 
 	drawLeftPlayerKeys(baseX, baseY) {
-		const spacing = 75 * this.scaleVal;
+		const spacing = 45 * this.scaleVal;
 		let layout = [
 			[-1, 0, 'Q'],
 			[0, 0, 'W'],
@@ -53,7 +53,7 @@ export class KeyGuide {
 	}
 
 	drawRightPlayerKeys(baseX, baseY) {
-		const spacing = 75 * this.scaleVal;
+		const spacing = 45 * this.scaleVal;
 
 		let layout = [
 			[0, 0, '.'], // buy
