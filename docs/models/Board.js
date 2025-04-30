@@ -408,6 +408,10 @@ export class Board {
 	processMergedFruit(mergedFruit) {
 		this.fruits.push(mergedFruit);
 
+		if (typeof mergeSound !== 'undefined') {
+			mergeSound.play();
+		}
+
 		let scoreLevel = mergedFruit.level;
 
 		if (mergedFruit.fireAffected) {
