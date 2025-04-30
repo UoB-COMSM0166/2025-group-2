@@ -300,6 +300,7 @@ export class Board {
 	dropCurrentFruit() {
 		if (!this.currentFruit) return;
 
+		this.currentFruit.letFall();
 		this.currentFruit.sprite.vel.y = this.gravity;
 		this.currentFruit.startFalling();
 		this.fruits.push(this.currentFruit);
