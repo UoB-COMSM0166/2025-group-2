@@ -99,6 +99,9 @@ export class Fruit {
 	updateState() {
 		if (this.state === Fruit.STATE.FALLING) {
 			if (this.safePeriod > 0) this.safePeriod--;
+			if (this.sprite.vel.y === 0 && this.sprite.collider === 'static') {
+				this.state = Fruit.STATE.LANDED;
+			}
 		}
 	}
 

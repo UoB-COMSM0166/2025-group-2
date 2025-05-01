@@ -300,6 +300,7 @@ export class Board {
 	dropCurrentFruit() {
 		if (!this.currentFruit) return;
 
+		this.currentFruit.letFall();
 		this.currentFruit.sprite.vel.y = this.gravity;
 		this.currentFruit.startFalling();
 		this.fruits.push(this.currentFruit);
@@ -407,6 +408,10 @@ export class Board {
 
 	processMergedFruit(mergedFruit) {
 		this.fruits.push(mergedFruit);
+
+		if (typeof mergeSound !== 'undefined') {
+			mergeSound.play();
+		}
 
 		let scoreLevel = mergedFruit.level;
 
