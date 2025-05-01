@@ -54,12 +54,12 @@ export class UIControllor {
 
 	drawEndGameOverlay(message, isTie = false) {
 		push();
-		// Fondo oscuro
+		// Dark background
 		fill(0, 0, 0, 180);
 		noStroke();
 		rect(0, 0, width, height);
 
-		// Panel central
+		// Central panel
 		const panelWidth = 250;
 		const panelHeight = 250;
 		const panelX = width / 2 - panelWidth / 2;
@@ -70,12 +70,12 @@ export class UIControllor {
 		strokeWeight(2);
 		rect(panelX, panelY, panelWidth, panelHeight, 20);
 
-		// 🏆 Emoji de resultado
+		// Result emoji
 		textAlign(CENTER, CENTER);
 		textSize(70);
 		text(isTie ? '⚖️' : '🏆', width / 2, panelY + 140);
 
-		// Texto del resultado
+		// Result text
 		fill('#6B4F3F');
 		noStroke();
 		textAlign(CENTER, CENTER);
@@ -87,12 +87,12 @@ export class UIControllor {
 
 	drawEndGameSingleOverlay(message, score, highestScore) {
 		push();
-		// Fondo oscuro
+		// Dark background
 		fill(0, 0, 0, 180);
 		noStroke();
 		rect(0, 0, width, height);
 
-		// Panel central
+		// Central panel
 		const panelWidth = 250;
 		const panelHeight = 250;
 		const panelX = width / 2 - panelWidth / 2;
@@ -103,7 +103,7 @@ export class UIControllor {
 		strokeWeight(2);
 		rect(panelX, panelY, panelWidth, panelHeight, 20);
 
-		// Texto del resultado
+		// Result text
 		fill('#6B4F3F');
 		noStroke();
 		textAlign(CENTER, CENTER);
@@ -111,7 +111,7 @@ export class UIControllor {
 		textSize(35);
 		text(message, width / 2, height / 2 - 390);
 
-		// Muestra de resultado
+		// Display result
 		fill('#6B4F3F');
 		noStroke();
 		textAlign(CENTER, CENTER);
