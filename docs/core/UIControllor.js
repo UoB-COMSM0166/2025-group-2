@@ -48,7 +48,7 @@ export class UIControllor {
 		textAlign(CENTER, CENTER);
 		textSize(48);
 		fill('#ff0000');
-		text('You reached maximun fruit!', x, y);
+		text('You reached the max level!', x, y);
 		pop();
 	}
 
