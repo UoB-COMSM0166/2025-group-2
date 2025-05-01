@@ -47,7 +47,6 @@ export class Board {
 		}
 
 		this.incidentManager = new IncidentManager(this, this.gameArea, this.endLine);
-		// this.incidentBegin();
 
 		// Record game start time to prevent accidental clicks
 		this.gameStartTime = millis();
@@ -70,7 +69,9 @@ export class Board {
 
 	// Start random incident
 	incidentBegin() {
-		this.incidentManager.startIncident();
+		if (!this.player.gameManager.isGameOver) {
+			this.incidentManager.startIncident();
+		}
 	}
 
 	setup() {
@@ -123,13 +124,17 @@ export class Board {
 		this.fruits = this.fruits.filter(fruit => !fruit.removed);
 		this.fruits.forEach(fruit => {
 			//check if the fruit is in fog
-			if (this.incidentManager.incidents.Fog.active && fruit.sprite.y > 200) {
+			const fog = this.incidentManager.incidents.Fog;
+			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
+
+			if (fog.active && !fog.paused && fruitTop > this.endLine.y1) {
 				fruit.isInFog = true;
 				fruit.setColor(66, 84, 84);
 			} else {
-				// Si quieres restaurar el color original de la fruta cuando no está bajo la niebla
-				fruit.isInFog = false; // Marcar como dentro de la niebla
+				fruit.isInFog = false;
+				fruit.color = null;
 			}
+
 			if (fruit instanceof BombFruit) {
 				fruit.checkCollision(this);
 			}
@@ -151,13 +156,6 @@ export class Board {
 		}
 		for (let fruit of this.fruits) {
 			fruit.updateScale(newScale);
-		}
-	}
-
-	draw() {
-		// Draw placed fruit
-		for (let fruit of this.fruits) {
-			fruit.draw();
 		}
 	}
 
@@ -302,6 +300,7 @@ export class Board {
 	dropCurrentFruit() {
 		if (!this.currentFruit) return;
 
+		this.currentFruit.letFall();
 		this.currentFruit.sprite.vel.y = this.gravity;
 		this.currentFruit.startFalling();
 		this.fruits.push(this.currentFruit);
@@ -410,6 +409,10 @@ export class Board {
 	processMergedFruit(mergedFruit) {
 		this.fruits.push(mergedFruit);
 
+		if (typeof mergeSound !== 'undefined') {
+			mergeSound.play();
+		}
+
 		let scoreLevel = mergedFruit.level;
 
 		if (mergedFruit.fireAffected) {
@@ -506,5 +509,29 @@ export class Board {
 		}
 
 		return true;
+	}
+
+	reset() {
+		// Clear fruits
+		this.fruits.forEach(fruit => fruit.remove?.());
+		this.fruits = [];
+
+		// Remove current and next fruits
+		this.currentFruit?.remove?.();
+		this.nextFruit?.remove?.();
+		this.currentFruit = null;
+		this.nextFruit = null;
+
+		// Reset gravity
+		world.gravity.y = this.gravity;
+
+		// Reset timer
+		this.timer = 0;
+
+		// Stop all incidents
+		this.incidentManager?.reset();
+
+		// Re-setup board (new fruits etc.)
+		this.setup();
 	}
 }

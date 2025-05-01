@@ -15,7 +15,7 @@ export class ToolManager {
 		this.tools = {
 			shuffle: new ShuffleTool(this.board, this.area),
 			divineShield: new DivineShieldTool(this.board.incidentManager),
-			doubleScore: new DoubleScoreTool(),
+			doubleScore: new DoubleScoreTool(this.board.incidentManager),
 		};
 
 		this.specialFruits = {
@@ -51,12 +51,15 @@ export class ToolManager {
 		}
 
 		if (toolName === 'Wind' || toolName === 'Rain') {
-			const opponent = this.player.id === 1 ? this.player.gameManager.player[1] : this.player.gameManager.player[0];
+			const opponent =
+				this.player.id === 1
+					? this.player.gameManager.player[1]
+					: this.player.gameManager.player[0];
 			const board = opponent.boards;
-			if (toolName === 'Wind') board.incidentManager.activateIncident('Wind');
+			if (toolName === 'Wind') board.incidentManager.activateIncident('Wind', true);
 			if (toolName === 'Rain') board.incidentManager.activateIncident('Rain');
 			return;
-	  }
+		}
 	}
 
 	activateTool(toolName) {
@@ -84,5 +87,14 @@ export class ToolManager {
 		} else if (this.specialFruits[randomKey]) {
 			this.activateSpecialFruit(randomKey);
 		}
+	}
+
+	reset() {
+		// Reset all tools
+		Object.values(this.tools).forEach(tool => {
+			if (tool.deactivate) {
+				tool.deactivate();
+			}
+		});
 	}
 }

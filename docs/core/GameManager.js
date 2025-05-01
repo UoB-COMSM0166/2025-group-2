@@ -1,5 +1,7 @@
 import { Button, Player } from '../models/index.js';
+import { Timer } from '../models/Timer.js';
 import { GameUIManager } from './GameUIManager.js';
+import { TutorialManager } from './TutorialManager.js';
 
 export class GameManager {
 	constructor(game, mode, scaleVal) {
@@ -8,6 +10,8 @@ export class GameManager {
 		this.scaleVal = scaleVal;
 		this.uiManager = new GameUIManager(this);
 		this.highestSingleScore = 0;
+		this.tutorialManager = null;
+		this.isTutorialMode = false;
 
 		this.setup();
 
@@ -15,39 +19,67 @@ export class GameManager {
 		this.isGameOver = false;
 	}
 
+	startTutorial() {
+		if (this.game.tutorialEnabled) {
+			this.isTutorialMode = true;
+			this.tutorialManager = new TutorialManager(this.game, this);
+
+			if (this.uiManager?.counter) {
+				this.uiManager.counter.stop();
+			}
+		} else {
+			this.isTutorialMode = false;
+			this.uiManager?.counter?.start();
+			this.player.forEach(player => player.boards?.incidentBegin());
+		}
+	}
+
+	startActualGameAfterTutorial() {
+		this.isTutorialMode = false;
+		this.uiManager.counter = new Timer(120);
+		this.uiManager.counter.start();
+
+		this.player.forEach(player => {
+			player.boards.nextFruit.sprite.visible = true;
+			if (player.boards?.incidentManager) {
+				player.boards.incidentBegin();
+			}
+		});
+	}
+
+	updateTutorial() {
+		if (this.isTutorialMode && this.tutorialManager) {
+			this.drawWithoutUpdate(); // Draw the UI and game elements without updating them
+			this.tutorialManager.update();
+		}
+	}
+
 	drawWithoutUpdate() {
 		// Only draw the UI and game elements without updating them
 		if (this.uiManager && this.uiManager.ui) {
 			this.uiManager.ui.drawLabels();
-
 			// Only draw UI elements without updating
 			push();
 			this.uiManager.draw(true); // Pass a parameter to indicate we're in tutorial mode
 			pop();
 		}
-
 		// Draw players and their boards without physics updates
 		if (this.player && this.player.length > 0) {
 			push(); // Save the drawing state
-
 			this.player.forEach(player => {
 				if (player && player.boards) {
-					// Draw the current board state without updates
-					player.boards.draw();
-
 					// Ensure fruits don't move during tutorial by setting them to static
 					if (player.boards.currentFruit && player.boards.currentFruit.sprite) {
 						player.boards.currentFruit.sprite.vel.x = 0;
 						player.boards.currentFruit.sprite.vel.y = 0;
 						player.boards.currentFruit.sprite.collider = 'static';
 					}
-
 					if (player.boards.nextFruit && player.boards.nextFruit.sprite) {
 						player.boards.nextFruit.sprite.vel.x = 0;
 						player.boards.nextFruit.sprite.vel.y = 0;
 						player.boards.nextFruit.sprite.collider = 'static';
+						player.boards.nextFruit.sprite.visible = false;
 					}
-
 					// Ensure no physics updates happen during the tutorial
 					if (player.boards.fruits && player.boards.fruits.length > 0) {
 						player.boards.fruits.forEach(fruit => {
@@ -60,18 +92,7 @@ export class GameManager {
 					}
 				}
 			});
-
 			pop(); // Restore the drawing state
-		}
-
-		// Freeze the game timer display
-		if (this.uiManager && this.uiManager.ui && this.uiManager.ui.labels) {
-			// Find the timer label
-			const timerLabel = this.uiManager.ui.labels['timer'];
-			if (timerLabel) {
-				// Always show 120s during tutorial
-				this.uiManager.ui.updateLabelText('timer', 'Time: 120s');
-			}
 		}
 	}
 
@@ -97,6 +118,10 @@ export class GameManager {
 			this.uiManager.counter.reset();
 		}
 
+		if (this.uiManager?.shop && this.mode === 'double') {
+			this.uiManager.shop.resetIndicators(this.uiManager.AREAS.shop);
+		}
+
 		if (this.player && this.player.length > 0) {
 			this.player.forEach(player => {
 				if (typeof player.reset === 'function') {
@@ -104,25 +129,25 @@ export class GameManager {
 				}
 
 				if (player.coin) {
-					player.coin.reset(); // Asegúrate que este método existe
-					player.updateCoin?.(); // Si hay un método visual de actualización
+					player.coin.reset(); // Make sure this method exists
+					player.updateCoin?.(); // If there is a visual update method
 				}
 
-				// Eliminar frutas del juego de forma segura
+				// Safely remove fruits from the game
 				if (player.boards) {
-					// Eliminar frutas visual y físicamente
+					// Remove fruits visually and physically
 					player.boards.fruits.forEach(fruit => {
-						fruit.remove?.(); // método seguro de eliminación de sprites
+						fruit.remove?.(); // Safe method to remove sprites
 					});
 					player.boards.fruits = [];
 
-					// Eliminar current y next fruit si existen
+					// Remove current and next fruit if they exist
 					player.boards.currentFruit?.remove?.();
 					player.boards.nextFruit?.remove?.();
 					player.boards.currentFruit = null;
 					player.boards.nextFruit = null;
 
-					// Crear frutas nuevas como si fuera el comienzo
+					// Create new fruits as if starting a new game
 					player.boards.setup();
 				}
 			});
@@ -188,7 +213,7 @@ export class GameManager {
 			}
 		}
 
-		// ✅ Esto siempre va después de todo
+		// This should always go at the very end
 		if (this.isGameOver && this.endMessage) {
 			this.uiManager.ui.drawEndGameOverlay(this.endMessage);
 		}
@@ -271,8 +296,6 @@ export class GameManager {
 					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
 					60
 				);
-				//this.uiManager.ui.drawWinner(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);
-				//this.uiManager.ui.drawGameOver(width / 2, height / 2 - 200);
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
 
@@ -287,8 +310,6 @@ export class GameManager {
 					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
 					60
 				);
-				//this.uiManager.ui.drawWinner(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
-				//this.uiManager.ui.drawGameOver(width / 2, height / 2 - 200);
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
 
@@ -305,9 +326,6 @@ export class GameManager {
 					60
 				);
 
-				//this.uiManager.ui.drawWinner(	player1.boards.gameArea.x + player1.boards.gameArea.w / 2,110);
-				//this.uiManager.ui.drawLoser(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 110);
-
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
 
 				this.isGameOver = true;
@@ -321,8 +339,6 @@ export class GameManager {
 					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
 					60
 				);
-				//this.uiManager.ui.drawWinner(player2.boards.gameArea.x + player2.boards.gameArea.w / 2,110);
-				//this.uiManager.ui.drawLoser(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 110);
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
 
@@ -392,7 +408,7 @@ export class GameManager {
 				if (player.boards.checkFruitOverLine(dashLineY)) {
 					const currentScore = player.score.getScore();
 
-					// Verifica si este score supera al highest registrado
+					// Check if this score exceeds the recorded highest score
 					if (currentScore > this.highestSingleScore) {
 						this.highestSingleScore = currentScore;
 						this.uiManager.ui.updateLabelText(
@@ -438,10 +454,10 @@ export class GameManager {
 		this.playAgainButton = new Button(
 			'Play Again',
 			() => {
-				this.playAgainButton.remove(); // 👈 Elimina el botón
+				this.playAgainButton.remove();
 				this.exitButton.remove();
 				this.reset();
-				loop(); // Reinicia el draw loop
+				loop();
 			},
 			{
 				x: centerX - 110,

@@ -7,17 +7,17 @@ import {
 } from '../incidents/index.js';
 
 export class IncidentManager {
-	constructor(game, gameArea, endLine) {
-		this.game = game;
+	constructor(board, gameArea, endLine) {
+		this.game = board;
 		this.gameArea = gameArea;
 		this.endLine = endLine;
 
 		this.incidents = {
-			Wind: new WindIncident(game),
-			Fog: new FogIncident(game, gameArea, endLine),
-			Freeze: new FreezeIncident(game),
-			Fire: new FireIncident(game),
-			Rain: new RainIncident(game, gameArea),
+			Wind: new WindIncident(board),
+			Fog: new FogIncident(board, gameArea, endLine),
+			Freeze: new FreezeIncident(board),
+			Fire: new FireIncident(board),
+			Rain: new RainIncident(board, gameArea),
 		};
 		this.activeIncidents = [];
 		this.isWarning = false;
@@ -30,15 +30,13 @@ export class IncidentManager {
 
 	startIncident() {
 		//start random incident
-		setTimeout(() => {
-			this.incidentInterval = setInterval(() => {
-				this.randomIncident();
-			}, this.getRandomInterval());
-		}, 10000);
+		this.incidentInterval = setInterval(() => {
+			this.randomIncident();
+		}, this.getRandomInterval());
 	}
 
 	getRandomInterval() {
-		return Math.floor(Math.random() * (18000 - 11000) + 11000);
+		return Math.floor(Math.random() * (20000 - 15000) + 15000);
 	}
 
 	randomIncident() {
@@ -59,11 +57,6 @@ export class IncidentManager {
 			this.incidents[incidentName].game = this.game;
 		}
 
-		if (this.game.player?.gameManager?.isGameOver) {
-			this.stopAllIncidents();
-			return;
-		}
-
 		if (this.isWarning) {
 			let elapsed = millis() - this.warningStartTime;
 			if (elapsed < 2000) {
@@ -77,33 +70,72 @@ export class IncidentManager {
 				}
 			}
 		}
+		const visibleIncidents = this.activeIncidents.filter(i => i.name !== 'Rain');
+		if (visibleIncidents.length > 0) {
+			let incidentMap = new Map();
+
+			visibleIncidents.forEach(i => {
+				if (!incidentMap.has(i.name)) {
+					incidentMap.set(i.name, i.timeLeft);
+				}
+			});
+
+			let labels = Array.from(incidentMap.entries())
+				.map(([name, timeLeft]) => `${name} Effect Time Left: ${timeLeft}`)
+				.join('\n ');
+
+			fill('#6B4F3F');
+			textSize(20);
+
+			if (this.game.mode === 'double') {
+				const nextFruitArea = this.game.nextFruitArea;
+				const labelX = nextFruitArea.x + nextFruitArea.w * 2 + 50;
+				const labelY = nextFruitArea.y + 25;
+				text(labels, labelX, labelY);
+			} else {
+				const gameArea = this.gameArea;
+				text(labels, gameArea.x + gameArea.w / 2, gameArea.y - 30);
+			}
+		}
 
 		this.activeIncidents.forEach(incident => incident.update());
 	}
 
-	activateIncident(incidentName) {
+	activateIncident(incidentName, fromPlayer = false) {
 		if (this.shieldOn) {
 			return;
 		}
+
 		const incident = this.incidents[incidentName];
-		if (incident && !this.activeIncidents.includes(incident)) {
-			incident.game = this.game;
-
-			this.isWarning = true;
-			this.warningStartTime = millis();
-			this.pendingIncident = incident;
-			incident.manager = this;
-			incident.name = incidentName;
-
-			this.activeIncidents.push(incident);
+		if (!incident) {
+			return;
 		}
+
+		incident.game = this.game;
+		incident.manager = this;
+		incident.name = incidentName;
+
+		const existing = this.activeIncidents.find(i => i.name === incidentName);
+		if (existing) {
+			existing.timeLeft += incident.duration;
+			this.pendingIncident = existing;
+			this.timeIncreasedByPlayer = fromPlayer;
+		} else {
+			this.pendingIncident = incident;
+			this.timeIncreasedByPlayer = false;
+		}
+
+		this.isWarning = true;
+		this.warningStartTime = millis();
 	}
 
 	deactivateIncident(incidentName) {
 		const incident = this.incidents[incidentName];
 		if (incident) {
 			incident.disable();
-			this.activeIncidents = this.activeIncidents.filter(incident => incident !== incident);
+			this.activeIncidents = this.activeIncidents.filter(incident => {
+				return incident.name !== incidentName;
+			});
 		}
 	}
 
@@ -122,11 +154,15 @@ export class IncidentManager {
 		textAlign(CENTER, CENTER);
 		textSize(30);
 		fill(255, 0, 0);
-		text(
-			`${this.pendingIncident.name} Incident Coming!`,
-			this.gameArea.x + this.gameArea.w / 2,
-			this.gameArea.y + this.gameArea.h / 2
-		);
+		let warningText = '';
+		if (this.timeIncreasedByPlayer) {
+			warningText = `${this.pendingIncident.name} Time Left Increased!`;
+		} else {
+			warningText = `${this.pendingIncident.name} Incident Coming!`;
+		}
+
+		text(warningText, this.gameArea.x + this.gameArea.w / 2, this.gameArea.y - 60);
+
 		pop();
 	}
 
@@ -146,15 +182,16 @@ export class IncidentManager {
 	}
 
 	reset() {
-		this.stopAllIncidents(); // ← limpia incidentes activos e intervalos
+		this.stopAllIncidents(); // Stop all active incidents and clear the incident interval
 
 		// Reset flags
 		this.isWarning = false;
 		this.warningStartTime = 0;
 		this.pendingIncident = null;
 		this.shieldOn = false;
+		this.activeIncidents = [];
 
-		// Re-iniciar si quieres que empiece de nuevo inmediatamente:
-		this.startIncident(); // ← Solo si deseas reiniciar automáticamente
+		// Restart random incident generation immediately after reset
+		this.startIncident();
 	}
 }
