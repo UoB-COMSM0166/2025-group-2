@@ -54,13 +54,23 @@ export class Shop {
 				{ id: 'Rain', label: 'Heavy Rain', price: 10, effect: 'Rain', icon: '🌧️' },
 			];
 		}
+
+		this.lastAffordabilityCheck = 0;
+		this.affordabilityCheckInterval = 250;
+
+		this.affordabilityStatus = {
+			player1: {},
+			player2: {},
+		};
 	}
 
 	setupShopUI(area) {
-		const padding = 10;
-		const buttonWidth = area.w - 2 * padding;
+		const padding = 20;
+
+		const buttonWidth = area.w - padding * 2;
 
 		this.shopArea = area;
+		this.buttonWidth = buttonWidth;
 
 		this.shopItems = this.items.map((item, index) => {
 			// Create a label with a player selection indicator
@@ -76,14 +86,15 @@ export class Shop {
 				id: item.id,
 				bgColor: this.normalBgColor,
 				textColor: this.normalTextColor,
-				hoverBg: '#F4D8C6',
-				hoverText: '#A3785F',
+				hoverBg: this.isDoubleMode ? this.normalBgColor : '#F4D8C6',
+				hoverText: this.isDoubleMode ? this.normalTextColor : '#A3785F',
 				htmlMode: true,
 				width: buttonWidth,
 			});
 
 			// Save original position information for later addition of selection indicators
 			btn.itemIndex = index;
+			btn.item = item;
 			return btn;
 		});
 
@@ -93,6 +104,104 @@ export class Shop {
 		if (this.isDoubleMode) {
 			this.updateButtonStyles();
 		}
+	}
+
+	drawAffordabilityIndicators() {
+		// 首先检查是否有商店区域信息
+		if (!this.shopArea) return;
+
+		// 更新可购买状态
+		this.updateAffordabilityStatus();
+
+		push();
+
+		// 设置文本样式
+		textSize(16);
+		textStyle(BOLD);
+		textAlign(CENTER, CENTER);
+		strokeWeight(1.5);
+
+		// 遍历所有商店项目
+		this.shopItems.forEach((btn, index) => {
+			if (!btn || !btn.item) return;
+
+			const itemId = btn.item.id;
+
+			// 使用按钮的垂直位置，但水平位置相对于shopArea
+			const btnX = btn.x;
+			const btnY = btn.y;
+			const btnHeight = btn.button.height;
+			const btnWidth = this.buttonWidth || btn.button.width;
+
+			const leftIndicatorX = btnX - 10; // 左侧指示器X坐标
+			const rightIndicatorX = btnX + btnWidth + 10; // 右侧指示器X坐标
+			const indicatorY = btnY + btnHeight + 15;
+
+			if (this.isDoubleMode) {
+				// 双人模式
+
+				// 玩家1状态（左侧）
+				const player1CanAfford = this.affordabilityStatus.player1[itemId] || false;
+				fill(player1CanAfford ? '#4CAF50' : '#F44336'); // 绿色或红色
+				stroke(255); // 白色描边增加可见性
+				// 在商店区域左侧放置玩家1指示器
+				text(player1CanAfford ? '✓' : '✗', leftIndicatorX, indicatorY);
+
+				// 玩家2状态（右侧）
+				const player2CanAfford = this.affordabilityStatus.player2[itemId] || false;
+				fill(player2CanAfford ? '#4CAF50' : '#F44336');
+				stroke(255);
+				// 在商店区域右侧放置玩家2指示器
+				text(player2CanAfford ? '✓' : '✗', rightIndicatorX, indicatorY);
+			} else {
+				console.log('placing price indicator');
+				// 单人模式
+				const playerCanAfford = this.affordabilityStatus.player1[itemId] || false;
+				fill(playerCanAfford ? '#4CAF50' : '#F44336');
+				stroke(255);
+				// 在商店区域右侧放置指示器
+				text(playerCanAfford ? '✓' : '✗', rightIndicatorX, indicatorY);
+			}
+		});
+
+		pop();
+	}
+
+	updateAffordabilityStatus() {
+		// 检查是否需要更新（基于时间间隔）
+		const currentTime = millis();
+		if (currentTime - this.lastAffordabilityCheck < this.affordabilityCheckInterval) {
+			return; // 如果间隔太短，跳过更新
+		}
+
+		this.lastAffordabilityCheck = currentTime;
+
+		// 获取玩家信息
+		const players = this.gameManager.player;
+		if (!players || !players.length) return;
+
+		// 确保affordabilityStatus对象已初始化
+		if (!this.affordabilityStatus) {
+			this.affordabilityStatus = {
+				player1: {},
+				player2: {},
+			};
+		}
+
+		// 更新每个物品的可购买状态
+		this.items.forEach(item => {
+			// 玩家1（单人或双人模式）
+			if (players[0] && players[0].coin) {
+				// 显式检查是否是单人模式，以确保在单人模式下也更新状态
+				const canAfford = players[0].coin.canAfford(item.price);
+				this.affordabilityStatus.player1[item.id] = canAfford;
+			}
+
+			// 玩家2（仅双人模式）
+			if (this.isDoubleMode && players.length > 1 && players[1] && players[1].coin) {
+				this.affordabilityStatus.player2[item.id] = players[1].coin.canAfford(item.price);
+			}
+		});
 	}
 
 	// Update button style to reflect current selection
@@ -202,11 +311,6 @@ export class Shop {
 		});
 	}
 
-	updateAllButtonPositions(shopArea) {
-		const padding = 10;
-		this.listShopItems(this.shopItems, shopArea, padding);
-	}
-
 	// Player 1 Browse Store Items
 	player1Browse(direction) {
 		if (!this.isDoubleMode) return;
@@ -288,5 +392,17 @@ export class Shop {
 		if (!item) return;
 
 		player.buyTool(type, item);
+	}
+
+	draw() {
+		// 首先更新可购买状态
+		this.updateAffordabilityStatus();
+		this.drawAffordabilityIndicators();
+
+		// 根据游戏模式绘制不同的指示器
+		if (this.isDoubleMode) {
+			// 双人模式下绘制选择指示器
+			this.drawSelectionIndicators();
+		}
 	}
 }

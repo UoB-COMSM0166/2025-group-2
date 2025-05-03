@@ -49,7 +49,8 @@ export class GameManager {
 		// Make sure the Store indicator is displayed and updated after the tutorial ends
 		if (this.uiManager && this.uiManager.shop) {
 			// Force all button positions and indicators to update once
-			this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
+			this.uiManager.shop.setupShopUI(this.uiManager.AREAS.shop);
+			//this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
 		}
 	}
 
@@ -124,8 +125,9 @@ export class GameManager {
 			this.uiManager.counter.reset();
 		}
 
-		if (this.uiManager?.shop && this.mode === 'double') {
+		if (this.uiManager?.shop) {
 			this.uiManager.shop.resetIndicators(this.uiManager.AREAS.shop);
+			this.uiManager.shop.setupShopUI(this.uiManager.AREAS.shop);
 		}
 
 		if (this.player && this.player.length > 0) {
@@ -190,7 +192,6 @@ export class GameManager {
 		this.updateScale(this.scaleVal);
 		this.uiManager.ui.drawLabels();
 		this.uiManager.draw();
-		this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
 
 		this.player.forEach(player => player.update());
 
