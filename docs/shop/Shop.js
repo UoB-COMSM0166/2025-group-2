@@ -12,6 +12,8 @@ export class Shop {
 		this.player1Selection = 0;
 		this.player2Selection = 0;
 
+		this.useGameIndicators = true;
+
 		// Save button color settings to toggle between checked/unchecked states
 		this.normalBgColor = '#E5C3A6';
 		this.selectedBgColor = '#D5A682'; // Darker background when selected
@@ -57,6 +59,8 @@ export class Shop {
 		const padding = 10;
 		const buttonWidth = area.w - 2 * padding;
 
+		this.shopArea = area;
+
 		this.shopItems = this.items.map((item, index) => {
 			// Create a label with a player selection indicator
 			const labelHTML = `
@@ -86,61 +90,7 @@ export class Shop {
 
 		// If it is two-person mode, initialize the selection indicator
 		if (this.isDoubleMode) {
-			this.initSelectionIndicators(area);
 			this.updateButtonStyles();
-		}
-	}
-
-	// Initialize player selection indicators
-	initSelectionIndicators(area) {
-		// Create a selection indicator for Player 1
-		this.player1Indicator = document.createElement('div');
-		this.player1Indicator.innerHTML = 'P1 ◀';
-		this.player1Indicator.style.position = 'absolute';
-		this.player1Indicator.style.color = '#FF5252';
-		this.player1Indicator.style.fontWeight = 'bold';
-		this.player1Indicator.style.fontSize = '16px';
-		this.player1Indicator.style.pointerEvents = 'none'; // Prevent interference clicks
-		document.body.appendChild(this.player1Indicator);
-
-		//
-		this.player2Indicator = document.createElement('div');
-		this.player2Indicator.innerHTML = '▶ P2';
-		this.player2Indicator.style.position = 'absolute';
-		this.player2Indicator.style.color = '#2196F3';
-		this.player2Indicator.style.fontWeight = 'bold';
-		this.player2Indicator.style.fontSize = '16px';
-		this.player2Indicator.style.pointerEvents = 'none';
-		document.body.appendChild(this.player2Indicator);
-
-		// Update indicator position
-		this.updateIndicatorPositions();
-	}
-
-	updateIndicatorPositions() {
-		if (!this.isDoubleMode || !this.player1Indicator || !this.player2Indicator) return;
-
-		const canvas = document.querySelector('canvas');
-		if (!canvas) return;
-		const canvasRect = canvas.getBoundingClientRect();
-		const scale = this.gameManager.scaleVal || 1;
-
-		// Gets the position of the currently selected button
-		const player1Button = this.shopItems[this.player1Selection];
-		const player2Button = this.shopItems[this.player2Selection];
-
-		if (player1Button && player1Button.button) {
-			const btnRect = player1Button.button.elt.getBoundingClientRect();
-			this.player1Indicator.style.left = btnRect.left - 40 + 'px';
-			this.player1Indicator.style.top = btnRect.top + btnRect.height / 2 - 8 + 'px';
-			this.player1Indicator.style.transform = `scale(${scale})`;
-		}
-
-		if (player2Button && player2Button.button) {
-			const btnRect = player2Button.button.elt.getBoundingClientRect();
-			this.player2Indicator.style.left = btnRect.right + 5 + 'px';
-			this.player2Indicator.style.top = btnRect.top + btnRect.height / 2 - 8 + 'px';
-			this.player2Indicator.style.transform = `scale(${scale})`;
 		}
 	}
 
@@ -164,25 +114,73 @@ export class Shop {
 				});
 			}
 		});
+	}
 
-		this.updateIndicatorPositions();
+	drawSelectionIndicators() {
+		if (!this.isDoubleMode || this.gameManager.isTutorialMode) return;
+
+		push();
+		textSize(15);
+		textStyle(BOLD);
+
+		// Draw Player 1 indicator (left)
+		if (this.player1Selection >= 0 && this.player1Selection < this.shopItems.length) {
+			const selectedButton = this.shopItems[this.player1Selection];
+			if (selectedButton) {
+				// Set to right alignment, ensuring that text is right aligned to the specified position
+				textAlign(LEFT, TOP);
+
+				// Place the indicator near the edge of the store area, leaving only 2 pixels apart
+				//const xPos = this.shopArea.x - 2;
+				const xPos = selectedButton.x - 2;
+
+				// Make sure the y position is aligned with the button centerline
+				//const yPos = selectedButton.y + 20;
+				const yPos = selectedButton.y - 15;
+
+				// First draw a small background shadow to enhance visibility
+				fill(0, 0, 0, 80);
+				noStroke();
+				text('P1 ▼', xPos + 1, yPos + 1);
+
+				fill('#FF5252'); // red
+				stroke('#FFFFFF'); // White stroke
+				strokeWeight(0.5); // fine stroke
+				// Draw P1 indicator
+				text('P1 ▼', xPos, yPos);
+			}
+		}
+
+		// Draw Player 2's indicator (right)
+		if (this.player2Selection >= 0 && this.player2Selection < this.shopItems.length) {
+			const selectedButton = this.shopItems[this.player2Selection];
+			if (selectedButton) {
+				textAlign(RIGHT, TOP);
+
+				// const xPos = this.shopArea.x + this.shopArea.w + 2;
+				const xPos = selectedButton.x + selectedButton.button.width + 2;
+
+				// const yPos = selectedButton.y + 20;
+				const yPos = selectedButton.y - 15;
+
+				fill(0, 0, 0, 80);
+				noStroke();
+				text('P2 ▼', xPos + 1, yPos + 1);
+
+				fill('#2196F3'); // blue
+				stroke('#FFFFFF');
+				strokeWeight(0.5);
+				text('P2 ▼', xPos, yPos);
+			}
+		}
+		pop();
 	}
 
 	resetIndicators(area) {
-		// Remove old indicators if they exist
-		if (this.player1Indicator) {
-			this.player1Indicator.remove();
-			this.player1Indicator = null;
-		}
-		if (this.player2Indicator) {
-			this.player2Indicator.remove();
-			this.player2Indicator = null;
-		}
 		this.player1Selection = 0;
 		this.player2Selection = 0;
 
-		// Reinitialize indicators
-		this.initSelectionIndicators(area);
+		// Update Button Style
 		this.updateButtonStyles();
 	}
 
@@ -206,10 +204,6 @@ export class Shop {
 	updateAllButtonPositions(shopArea) {
 		const padding = 10;
 		this.listShopItems(this.shopItems, shopArea, padding);
-
-		if (this.isDoubleMode) {
-			this.updateIndicatorPositions();
-		}
 	}
 
 	// Player 1 Browse Store Items
@@ -219,7 +213,7 @@ export class Shop {
 		// Browse items up/down
 		if (direction === 'next') {
 			this.player1Selection = (this.player1Selection + 1) % this.shopItems.length;
-		} else {
+		} else if (direction === 'prev') {
 			this.player1Selection =
 				(this.player1Selection - 1 + this.shopItems.length) % this.shopItems.length;
 		}
@@ -232,7 +226,7 @@ export class Shop {
 
 		if (direction === 'next') {
 			this.player2Selection = (this.player2Selection + 1) % this.shopItems.length;
-		} else {
+		} else if (direction === 'prev') {
 			this.player2Selection =
 				(this.player2Selection - 1 + this.shopItems.length) % this.shopItems.length;
 		}

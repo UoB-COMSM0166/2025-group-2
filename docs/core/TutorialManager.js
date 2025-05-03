@@ -102,8 +102,8 @@ export class TutorialManager {
 				},
 				{
 					title: 'Shop Controls',
-					left: ['Left Side Player 1:', '- W / Q to browse', '- E to buy'],
-					right: ['Right Side Player 2:', "- ⭡ / '.' to browse", "- '?' to buy"],
+					left: ['Left Side Player 1:', '- W and Q to browse', '- E to buy'],
+					right: ['Right Side Player 2:', "- ⭡and '/' to browse", "- '.' to buy"],
 					highlight: this.gameManager.uiManager.AREAS.shop,
 					split: true,
 					highlightKeys: ['Q', 'W', 'E', '↑', '.', '?'],
