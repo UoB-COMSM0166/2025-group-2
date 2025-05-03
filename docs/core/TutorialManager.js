@@ -12,6 +12,7 @@ export class TutorialManager {
 		this.clickProtectionTimer = 20; // Wait some frames before allowing clicks
 		this.scaleVal = gameManager.scaleVal; // Get current scale value
 		this.canvasElt = document.querySelector('canvas'); // Get canvas element reference
+		this.skipButton = null;
 
 		// Listen for window resize events to update button scaling
 		window.addEventListener('resize', () => {
@@ -21,7 +22,7 @@ export class TutorialManager {
 		});
 
 		// Create skip button
-		this.createSkipButton();
+		//this.createSkipButton();
 
 		// Setup click listener for tutorial progression
 		this.setupClickListener();
@@ -152,16 +153,33 @@ export class TutorialManager {
 	}
 
 	// Create the skip button for tutorial
-	createSkipButton() {
-		this.skipButton = new Button('Skip Tutorial', () => this.skipTutorial(), {
-			x: width - 130,
-			y: 10,
-			getScaleVal: () => this.gameManager.scaleVal,
-			bgColor: '#E5C3A6',
-			textColor: '#6B4F3F',
-			hoverBg: '#F4D8C6',
-			hoverText: '#A3785F',
-		});
+	createSkipButton(tutorialBoxX, tutorialBoxY, boxWidth, boxHeight) {
+		if (this.skipButton) {
+			const buttonX =
+				this.mode === 'single' ? tutorialBoxX + boxWidth / 4 : tutorialBoxX + boxWidth / 4 + 40;
+			const buttonY = tutorialBoxY + boxHeight / 2 - 50;
+			this.skipButton.setPosition(buttonX, buttonY);
+			return;
+		}
+		const buttonX =
+			this.mode === 'single' ? tutorialBoxX + boxWidth / 4 : tutorialBoxX + boxWidth / 4 + 40;
+		const buttonY = tutorialBoxY + boxHeight / 2 - 50;
+
+		this.skipButton = new Button(
+			'Skip',
+			() => {
+				this.skipTutorial();
+			},
+			{
+				x: buttonX,
+				y: buttonY,
+				getScaleVal: () => this.gameManager.scaleVal,
+				bgColor: '#E5C3A6',
+				textColor: '#6B4F3F',
+				hoverBg: '#F4D8C6',
+				hoverText: '#A3785F',
+			}
+		);
 	}
 
 	// Skip the tutorial and go directly to gameplay
@@ -169,6 +187,7 @@ export class TutorialManager {
 		// Hide the skip button
 		if (this.skipButton) {
 			this.skipButton.remove();
+			this.skipButton = null;
 		}
 
 		// End the tutorial
@@ -262,6 +281,7 @@ export class TutorialManager {
 		// Remove the skip button if it exists
 		if (this.skipButton) {
 			this.skipButton.remove();
+			this.skipButton = null;
 		}
 
 		this.restoreOriginalClickHandler();
@@ -308,9 +328,9 @@ export class TutorialManager {
 		push();
 		// Position the tutorial box
 		let boxX = width / 2;
-		let boxY = 117;
-		let boxWidth = min(850, width * 0.9);
-		let boxHeight = 220;
+		let boxY = this.mode === 'single' ? 150 : 117;
+		let boxWidth = this.mode === 'single' ? 600 : 850;
+		let boxHeight = this.mode === 'single' ? 270 : 220;
 
 		// Draw background
 		fill(53, 47, 42, 255);
@@ -397,6 +417,8 @@ export class TutorialManager {
 		textAlign(CENTER, CENTER);
 		text('Click anywhere to continue', boxX, boxY + boxHeight / 2 - 20);
 		pop();
+
+		this.createSkipButton(boxX, boxY, boxWidth, boxHeight);
 	}
 
 	update() {
@@ -409,11 +431,11 @@ export class TutorialManager {
 				this.initialClickProtection = false;
 			}
 		}
-
+		/*
 		// Update skip button position when scaling may have changed
 		if (this.skipButton) {
 			this.skipButton.updatePosition();
-		}
+		}*/
 
 		// Ensure all bubbles stay frozen during tutorial
 		this.freezeAllFruits();
@@ -431,6 +453,7 @@ export class TutorialManager {
 			rect(0, 0, width, height);
 			pop();
 		}
+
 		if (this.mode === 'double') {
 			if (currentStepData.highlightKeys) {
 				this.gameManager.uiManager.keyGuide.setHighlight(currentStepData.highlightKeys);
