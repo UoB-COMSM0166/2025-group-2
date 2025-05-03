@@ -67,7 +67,7 @@ export class KeyGuide {
 
 		let layout = [
 			[0, 0, '.'], // buy
-			[0, 1, '?'], // next
+			[0, 1, '/'], // next
 			[0, 3, '↑'], // up
 			[1, 2, '←'], // left
 			[1, 3, '↓'], // down

@@ -7,9 +7,7 @@ let game,
 // Track pressed keys for continuous movement
 const keysPressed = {
 	a: false,
-	A: false,
 	d: false,
-	D: false,
 	ArrowLeft: false,
 	ArrowRight: false,
 	ArrowUp: false,
@@ -17,14 +15,10 @@ const keysPressed = {
 
 const extraKeysPressed = {
 	q: false,
-	//Q: false,
 	e: false,
-	//E: false,
 	w: false,
 	'.': false,
-	'>': false,
 	'/': false,
-	'?': false,
 };
 
 // Prevent immediate fruit drops triggered by clicking when mode is switched
@@ -93,8 +87,8 @@ window.keyPressed = function () {
 	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = true;
 	if (key === 'e' || key === 'E') extraKeysPressed['e'] = true;
 	if (key === 'w' || key === 'W') extraKeysPressed['w'] = true; // Add w key
-	if (key === '.' || key === '>') extraKeysPressed['.'] = true;
-	if (key === '/' || key === '?') extraKeysPressed['/'] = true;
+	if (key === '.' || key === '。') extraKeysPressed['.'] = true;
+	if (key === '/') extraKeysPressed['/'] = true;
 
 	if (game && game.gameManager) {
 		// Handle drop keys only on initial press
@@ -125,7 +119,7 @@ window.keyPressed = function () {
 					shop.player1Buy();
 				}
 
-				if (key === '.' || key === '>') {
+				if (key === '/') {
 					shop.player2Browse('next');
 				}
 
@@ -133,7 +127,7 @@ window.keyPressed = function () {
 					shop.player2Browse('prev');
 				}
 
-				if (key === '/' || key === '?') {
+				if (key === '。' || key === '.') {
 					shop.player2Buy();
 				}
 			}
@@ -155,8 +149,8 @@ window.keyReleased = function () {
 	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = false;
 	if (key === 'w' || key === 'W') extraKeysPressed['w'] = false;
 	if (key === 'e' || key === 'E') extraKeysPressed['e'] = false;
-	if (key === '.' || key === '>') extraKeysPressed['.'] = false;
-	if (key === '/' || key === '?') extraKeysPressed['/'] = false;
+	if (key === '.' || key === '。') extraKeysPressed['.'] = false;
+	if (key === '/') extraKeysPressed['/'] = false;
 
 	return false; // Prevent default browser behavior
 };
