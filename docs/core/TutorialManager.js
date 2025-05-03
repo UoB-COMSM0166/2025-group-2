@@ -270,12 +270,6 @@ export class TutorialManager {
 		if (this.gameManager && typeof this.gameManager.startActualGameAfterTutorial === 'function') {
 			this.game.currentScene = 'game';
 			this.gameManager.startActualGameAfterTutorial();
-
-			// Make sure to update the store selector display immediately after the tutorial ends
-			if (this.gameManager.uiManager && this.gameManager.uiManager.shop) {
-				// Ensure indicator position and visibility are updated immediately
-				this.gameManager.uiManager.shop.updateIndicatorPositions();
-			}
 		}
 	}
 

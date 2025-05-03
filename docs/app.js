@@ -77,14 +77,6 @@ window.windowResized = function () {
 	canvas.elt.style.top = '0px';
 	if (game) {
 		game.updateScale(scaleVal);
-
-		// Make sure store indicator position updates after window resizing
-		if (game.gameManager && game.gameManager.uiManager && game.gameManager.uiManager.shop) {
-			// Use a short delay to ensure that all element positions are updated
-			setTimeout(() => {
-				game.gameManager.uiManager.shop.updateIndicatorPositions();
-			}, 50);
-		}
 	}
 };
 

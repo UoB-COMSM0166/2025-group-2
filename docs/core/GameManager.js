@@ -50,7 +50,6 @@ export class GameManager {
 		if (this.uiManager && this.uiManager.shop) {
 			// Force all button positions and indicators to update once
 			this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
-			this.uiManager.shop.updateIndicatorPositions();
 		}
 	}
 
@@ -234,6 +233,9 @@ export class GameManager {
 		this.scaleVal = newScale;
 		for (const player of this.player) {
 			player.boards.updateScale(newScale);
+		}
+		if (this.uiManager) {
+			this.uiManager.updateScale(newScale);
 		}
 	}
 	goToMainMenu() {

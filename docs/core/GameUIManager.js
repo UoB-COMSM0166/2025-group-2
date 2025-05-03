@@ -30,8 +30,16 @@ export class GameUIManager {
 		this.counter.start();
 
 		if (this.isDoubleMode) {
-			this.keyGuide = new KeyGuide(this.gameManager.scaleVal * 1.5);
+			this.keyGuide = new KeyGuide();
 			this.keyGuide.setupKeyGuide(this.AREAS.display);
+		}
+	}
+
+	updateScale(newScale) {
+		this.scaleVal = newScale;
+
+		if (this.isDoubleMode && this.keyGuide) {
+			this.keyGuide.updateScale(newScale);
 		}
 	}
 
