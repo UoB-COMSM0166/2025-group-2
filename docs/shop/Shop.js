@@ -276,6 +276,10 @@ export class Shop {
 	}
 
 	handleToolClick(type) {
+		if (this.isDoubleMode) {
+			return; // Go back directly, do nothing
+		}
+
 		const player = this.gameManager.player?.[0];
 		if (!player) return;
 
