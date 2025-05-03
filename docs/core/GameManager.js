@@ -45,6 +45,13 @@ export class GameManager {
 				player.boards.incidentBegin();
 			}
 		});
+
+		// Make sure the Store indicator is displayed and updated after the tutorial ends
+		if (this.uiManager && this.uiManager.shop) {
+			// Force all button positions and indicators to update once
+			this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
+			this.uiManager.shop.updateIndicatorPositions();
+		}
 	}
 
 	updateTutorial() {

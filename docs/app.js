@@ -12,13 +12,15 @@ const keysPressed = {
 	D: false,
 	ArrowLeft: false,
 	ArrowRight: false,
+	ArrowUp: false,
 };
 
 const extraKeysPressed = {
 	q: false,
-	Q: false,
+	//Q: false,
 	e: false,
-	E: false,
+	//E: false,
+	w: false,
 	'.': false,
 	'>': false,
 	'/': false,
@@ -75,6 +77,14 @@ window.windowResized = function () {
 	canvas.elt.style.top = '0px';
 	if (game) {
 		game.updateScale(scaleVal);
+
+		// Make sure store indicator position updates after window resizing
+		if (game.gameManager && game.gameManager.uiManager && game.gameManager.uiManager.shop) {
+			// Use a short delay to ensure that all element positions are updated
+			setTimeout(() => {
+				game.gameManager.uiManager.shop.updateIndicatorPositions();
+			}, 50);
+		}
 	}
 };
 
@@ -85,10 +95,12 @@ window.keyPressed = function () {
 
 	if (keyCode === LEFT_ARROW) keysPressed['ArrowLeft'] = true;
 	if (keyCode === RIGHT_ARROW) keysPressed['ArrowRight'] = true;
+	if (keyCode === UP_ARROW) keysPressed['ArrowUp'] = true; // Add up arrow key
 
 	// Track additional key states
 	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = true;
 	if (key === 'e' || key === 'E') extraKeysPressed['e'] = true;
+	if (key === 'w' || key === 'W') extraKeysPressed['w'] = true; // Add w key
 	if (key === '.' || key === '>') extraKeysPressed['.'] = true;
 	if (key === '/' || key === '?') extraKeysPressed['/'] = true;
 
@@ -113,12 +125,20 @@ window.keyPressed = function () {
 					shop.player1Browse('next');
 				}
 
+				if (key === 'w' || key === 'W') {
+					shop.player1Browse('prev');
+				}
+
 				if (key === 'e' || key === 'E') {
 					shop.player1Buy();
 				}
 
 				if (key === '.' || key === '>') {
 					shop.player2Browse('next');
+				}
+
+				if (keyCode === UP_ARROW) {
+					shop.player2Browse('prev');
 				}
 
 				if (key === '/' || key === '?') {
@@ -138,8 +158,10 @@ window.keyReleased = function () {
 
 	if (keyCode === LEFT_ARROW) keysPressed['ArrowLeft'] = false;
 	if (keyCode === RIGHT_ARROW) keysPressed['ArrowRight'] = false;
+	if (keyCode === UP_ARROW) keysPressed['ArrowUp'] = false;
 
 	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = false;
+	if (key === 'w' || key === 'W') extraKeysPressed['w'] = false;
 	if (key === 'e' || key === 'E') extraKeysPressed['e'] = false;
 	if (key === '.' || key === '>') extraKeysPressed['.'] = false;
 	if (key === '/' || key === '?') extraKeysPressed['/'] = false;
