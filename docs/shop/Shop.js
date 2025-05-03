@@ -22,6 +22,7 @@ export class Shop {
 
 		if (this.gameManager.mode == 'single') {
 			this.items = [
+				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
 				{ id: 'shuffle', label: 'Shuffle', price: 10, effect: 'shuffle', icon: '🔀' },
 				{
 					id: 'divineShield',
@@ -31,12 +32,12 @@ export class Shop {
 					icon: '🛡️',
 				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
-				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
-				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
+				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 			];
 		} else if (this.gameManager.mode == 'double') {
 			this.items = [
+				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
 				{ id: 'shuffle', label: 'Shuffle', price: 10, effect: 'shuffle', icon: '🔀' },
 				{
 					id: 'divineShield',
@@ -46,9 +47,9 @@ export class Shop {
 					icon: '🛡️',
 				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
-				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
-				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
+				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
+
 				{ id: 'Wind', label: 'Strong Wind', price: 10, effect: 'Wind', icon: '💨' },
 				{ id: 'Rain', label: 'Heavy Rain', price: 10, effect: 'Rain', icon: '🌧️' },
 			];
