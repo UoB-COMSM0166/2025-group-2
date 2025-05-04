@@ -13,10 +13,26 @@ export class FireIncident extends Incident {
 		this.paused = false;
 		this.affectFruits();
 	}
+	// Check if the fruit is of a special type (independent of direct reference)
+	isSpecialFruit(fruit) {
+		if (fruit.level < 0 || fruit.level >= Fruit.fruitColors.length) return true;
+
+		return false;
+	}
 
 	affectFruits() {
 		//determine if the fruit is on fire
 		this.game.fruits.forEach(fruit => {
+			// Skip special fruit types（Rainbow或Bomb)
+			if (this.isSpecialFruit(fruit)) {
+				return;
+			}
+
+			// Skip fruits with invalid level values
+			if (fruit.level < 0 || fruit.level >= Fruit.fruitColors.length) {
+				return;
+			}
+
 			if (Math.random() < this.chance) {
 				fruit.fireAffected = true;
 				fruit.sprite.draw = () => {
@@ -46,10 +62,13 @@ export class FireIncident extends Incident {
 		super.disable();
 		this.game.fruits.forEach(fruit => {
 			if (!fruit || !fruit.sprite) return;
-			fruit.fireAffected = false;
 
-			fruit.firePaused = false;
-			fruit.resetDraw();
+			// Only process regular fruits affected by fire
+			if (!this.isSpecialFruit(fruit)) {
+				fruit.fireAffected = false;
+				fruit.firePaused = false;
+				fruit.resetDraw();
+			}
 		});
 	}
 
@@ -57,6 +76,11 @@ export class FireIncident extends Incident {
 		if (!this.active || this.paused) return;
 		this.paused = true;
 		this.game.fruits.forEach(fruit => {
+			// Skip special fruit types
+			if (this.isSpecialFruit(fruit)) {
+				return;
+			}
+
 			if (fruit.fireAffected) {
 				fruit.firePaused = true;
 				fruit.fireAffected = false;
@@ -77,6 +101,10 @@ export class FireIncident extends Incident {
 		if (!this.active || this.timeLeft <= 0) return;
 		this.paused = false;
 		this.game.fruits.forEach(fruit => {
+			// Skip special fruit types
+			if (this.isSpecialFruit(fruit)) {
+				return;
+			}
 			if (fruit.firePaused) {
 				fruit.firePaused = false;
 				fruit.sprite.draw = () => {
