@@ -32,8 +32,8 @@ export class Shop {
 					icon: '🛡️',
 				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
-				{ id: 'rainbowTool', label: 'Rainbow', price: 1, effect: 'rainbowTool', icon: '🌈' },
-				{ id: 'bombTool', label: 'Bomb', price: 1, effect: 'bombTool', icon: '💣' },
+				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
+				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 			];
 		} else if (this.gameManager.mode == 'double') {
 			this.items = [
@@ -47,8 +47,8 @@ export class Shop {
 					icon: '🛡️',
 				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
-				{ id: 'rainbowTool', label: 'Rainbow', price: 1, effect: 'rainbowTool', icon: '🌈' },
-				{ id: 'bombTool', label: 'Bomb', price: 1, effect: 'bombTool', icon: '💣' },
+				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
+				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 
 				{ id: 'Wind', label: 'Strong Wind', price: 10, effect: 'Wind', icon: '💨' },
 				{ id: 'Rain', label: 'Heavy Rain', price: 10, effect: 'Rain', icon: '🌧️' },
