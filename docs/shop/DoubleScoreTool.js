@@ -25,6 +25,15 @@ export class DoubleScoreTool {
 	}
 
 	update() {
+		// Check if game is over before displaying
+		if (
+			this.incidentManager.game.player &&
+			this.incidentManager.game.player.gameManager &&
+			this.incidentManager.game.player.gameManager.isGameOver
+		) {
+			return;
+		}
+
 		if (this.doubleScoreActive) {
 			fill(0, 128, 0);
 			textSize(20);

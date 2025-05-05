@@ -468,12 +468,6 @@ export class Board {
 
 			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
 			if (fruitTop <= y) {
-				if (this.mode == 'single') {
-					this.uiControllor.drawGameOver(
-						this.gameArea.x + this.gameArea.w / 2,
-						this.gameArea.y - 60
-					);
-				}
 				return true;
 			}
 		}

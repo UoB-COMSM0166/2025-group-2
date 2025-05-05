@@ -3,6 +3,8 @@ import { Timer } from '../models/Timer.js';
 import { GameUIManager } from './GameUIManager.js';
 import { TutorialManager } from './TutorialManager.js';
 
+const endGameTextY = 80;
+
 export class GameManager {
 	constructor(game, mode, scaleVal) {
 		this.mode = mode;
@@ -221,9 +223,9 @@ export class GameManager {
 			}
 		}
 
-		// This should always go at the very end
-		if (this.isGameOver && this.endMessage) {
-			this.uiManager.ui.drawEndGameOverlay(this.endMessage);
+		// Redraw game end messages on top of everything else
+		if (this.isGameOver && this.mode === 'double') {
+			this.redrawGameEndMessages();
 		}
 	}
 
@@ -303,12 +305,16 @@ export class GameManager {
 			//You can check the value of the max level in player X using ${player2.boards.getMaxFruitLevel()}
 			//first checking fruit over line
 			if (player1.boards.checkFruitOverLine(dashLineY)) {
-				this.uiManager.ui.drawCrossLine(
-					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
+				this.uiManager.ui.drawCrossLine(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -317,12 +323,16 @@ export class GameManager {
 			}
 
 			if (player2.boards.checkFruitOverLine(dashLineY)) {
-				this.uiManager.ui.drawCrossLine(
-					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
+				this.uiManager.ui.drawCrossLine(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -332,12 +342,16 @@ export class GameManager {
 
 			//second check if fruit is biggest
 			if (player1.boards.checkFruitIsMaximun()) {
-				this.uiManager.ui.drawMaximum(
-					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
+				this.uiManager.ui.drawMaximum(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -346,12 +360,16 @@ export class GameManager {
 			}
 
 			if (player2.boards.checkFruitIsMaximun()) {
-				this.uiManager.ui.drawMaximum(
-					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
+				this.uiManager.ui.drawMaximum(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -361,11 +379,21 @@ export class GameManager {
 
 			//third check which player has more score at the end
 			if (this.uiManager.counter.getTimeLeft() <= 0) {
-				if (player1.score.getScore() == player2.score.getScore()) {
-					this.uiManager.ui.drawTie(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
-					this.uiManager.ui.drawTie(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
+				if (player1.score.getScore() == player2.score.getScore()) {
 					this.uiManager.ui.drawEndGameOverlay("It's a Tie!", true);
+
+					this.uiManager.ui.drawTie(
+						player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+						endGameTextY
+					);
+					this.uiManager.ui.drawTie(
+						player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+						endGameTextY
+					);
 
 					this.isGameOver = true;
 					this.showEndGameButtons();
@@ -375,17 +403,18 @@ export class GameManager {
 				if (player1.score.getScore() > player2.score.getScore()) {
 					highestScore = player1.score.getScore();
 					winner = player1;
+
+					// First draw the overlay
+					this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
 					this.uiManager.ui.drawWinner(
 						player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
 					this.uiManager.ui.drawLoser(
 						player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
-					winner = player1;
-					this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
-
 					this.isGameOver = true;
 					this.showEndGameButtons();
 
@@ -395,16 +424,17 @@ export class GameManager {
 				if (player1.score.getScore() < player2.score.getScore()) {
 					highestScore = player2.score.getScore();
 					winner = player2;
+
+					this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
 					this.uiManager.ui.drawWinner(
 						player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
 					this.uiManager.ui.drawLoser(
 						player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
-
-					this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
 
 					this.isGameOver = true;
 					this.showEndGameButtons();
@@ -438,31 +468,36 @@ export class GameManager {
 
 					console.log('Highest single score:', this.highestSingleScore);
 
-					this.uiManager.ui.drawCrossLine(
-						player.boards.gameArea.x + player.boards.gameArea.w / 2,
-						60
-					);
-
 					this.isGameOver = true;
+
+					// Stop all incidents to prevent warning messages
+					if (player.boards.incidentManager) {
+						player.boards.incidentManager.stopAllIncidents();
+					}
+
 					if (this.isGameOver && gameOverMusic && !gameOverMusic.isPlaying()) {
 						gameOverMusic.loop();
 					}
 
+					// Calculate the center of the game area
+					const gameAreaCenter = player.boards.gameArea.x + player.boards.gameArea.w / 2;
+
 					this.uiManager.ui.drawEndGameSingleOverlay(
 						'GAME OVER',
 						currentScore,
-						this.highestSingleScore
+						this.highestSingleScore,
+						gameAreaCenter
 					);
-					this.showEndGameButtons(true);
+					this.showEndGameButtons(true, gameAreaCenter);
 					return;
 				}
 			}
 		}
 	}
 
-	showEndGameButtons(single = false) {
+	showEndGameButtons(single = false, gameAreaCenter = null) {
 		let temp = 0;
-		const centerX = width / 2;
+		const centerX = gameAreaCenter || width / 2;
 		const buttonY = height - 80;
 
 		if (single == true) {
@@ -478,7 +513,7 @@ export class GameManager {
 				loop();
 			},
 			{
-				x: centerX - 110,
+				x: centerX - 100,
 				y: buttonY - 600 + temp,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#A5D6A7',
@@ -494,7 +529,7 @@ export class GameManager {
 				this.goToMainMenu();
 			},
 			{
-				x: centerX + 30,
+				x: centerX + 40,
 				y: buttonY - 600 + temp,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#EF9A9A',
@@ -534,6 +569,88 @@ export class GameManager {
 		}
 	}
 
+	redrawGameEndMessages() {
+		if (!this.isGameOver || this.mode !== 'double') return;
+
+		// We need to determine which end condition triggered the game over
+		// and redraw the appropriate messages on top
+		const player1 = this.player[0];
+		const player2 = this.player[1];
+		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
+
+		// Check for crossed line
+		if (player1.boards.checkFruitOverLine(dashLineY)) {
+			this.uiManager.ui.drawCrossLine(
+				player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		if (player2.boards.checkFruitOverLine(dashLineY)) {
+			this.uiManager.ui.drawCrossLine(
+				player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		// Check for maximum fruit
+		if (player1.boards.checkFruitIsMaximun()) {
+			this.uiManager.ui.drawMaximum(
+				player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		if (player2.boards.checkFruitIsMaximun()) {
+			this.uiManager.ui.drawMaximum(
+				player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		// Check for time-based end
+		if (this.uiManager.counter.getTimeLeft() <= 0) {
+			if (player1.score.getScore() === player2.score.getScore()) {
+				this.uiManager.ui.drawTie(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				this.uiManager.ui.drawTie(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				return;
+			}
+
+			if (player1.score.getScore() > player2.score.getScore()) {
+				this.uiManager.ui.drawWinner(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				this.uiManager.ui.drawLoser(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				return;
+			}
+
+			if (player1.score.getScore() < player2.score.getScore()) {
+				this.uiManager.ui.drawWinner(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				this.uiManager.ui.drawLoser(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				return;
+			}
+			}
+			}
 	updateLeadingPlayer() {
 		if (this.mode !== 'double' || this.isGameOver) return;
 
