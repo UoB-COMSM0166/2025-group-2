@@ -209,10 +209,6 @@ export class GameManager {
 			shouldEndGame = timeLeft <= 0 || this.isGameOver;
 		}
 
-<<<<<<< HEAD
-		if (shouldEndGame && !this.isGameOver) {
-			this.checkIsGameOver();
-=======
 		if (shouldEndGame) {
 			if (!this.isGameOver) {
 				this.checkIsGameOver();
@@ -236,7 +232,6 @@ export class GameManager {
 				}
 				noLoop();
 			}
->>>>>>> 93e8ef4807b459ede42eba008ecbd8738d46e3f9
 		}
 
 		if (this.isGameOver) {
