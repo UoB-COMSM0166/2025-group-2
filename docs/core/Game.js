@@ -1,5 +1,6 @@
 import { MenuPage } from '../pages/MenuPage.js';
 import { GameManager } from './GameManager.js';
+import { SoundManager } from './SoundManager.js';
 
 export class Game {
 	constructor(scaleVal) {
@@ -10,6 +11,7 @@ export class Game {
 		this.tutorialManager = null;
 		this.isTutorialMode = false;
 		this.tutorialEnabled = true; // Default: tutorial enabled
+		this.soundManager = new SoundManager(); // Add sound management
 	}
 
 	// Set tutorial preference
@@ -18,6 +20,20 @@ export class Game {
 	}
 
 	startGame(mode) {
+		// start background music
+		this.soundManager.playBackgroundMusic();
+
+		// Check if tutorial should be shown
+		if (this.tutorialEnabled) {
+			this.currentScene = 'tutorial';
+			this.isTutorialMode = true;
+		} else {
+			// Skip tutorial and go straight to the game
+			this.currentScene = 'game';
+			this.isTutorialMode = false;
+		}
+
+		// Initialize GameManager
 		this.gameManager = new GameManager(this, mode, this.scaleVal);
 
 		this.gameManager.startTutorial();
@@ -31,6 +47,8 @@ export class Game {
 
 	setup() {
 		this.menuPage.display();
+
+		this.soundManager.preload();
 	}
 
 	draw() {

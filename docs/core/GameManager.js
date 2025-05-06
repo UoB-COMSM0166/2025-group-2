@@ -186,6 +186,7 @@ export class GameManager {
 	update() {
 		if (!this.isGameOver) {
 			this.checkIsGameOver();
+			this.updateLeadingPlayer();
 		}
 		this.updateScale(this.scaleVal);
 		this.uiManager.ui.drawLabels();
@@ -410,6 +411,13 @@ export class GameManager {
 					return;
 				}
 			}
+			if (this.isGameOver && !this.playedGameOverSound) {
+				if (this.game && this.game.soundManager) {
+					this.game.soundManager.play('gameOver');
+					this.game.soundManager.stopBackgroundMusic();
+				}
+				this.playedGameOverSound = true;
+			}
 		}
 
 		if (this.mode == 'single') {
@@ -522,6 +530,32 @@ export class GameManager {
 		const player = this.player[0];
 		if (player && player.boards) {
 			player.boards.handleMouseClick();
+		}
+	}
+
+	updateLeadingPlayer() {
+		if (this.mode !== 'double' || this.isGameOver) return;
+
+		const player1 = this.player[0];
+		const player2 = this.player[1];
+
+		// Get the current scores of both players
+		const score1 = player1.score.getScore();
+		const score2 = player2.score.getScore();
+
+		// Make the leading player's score label flash (optional effect)
+		const pulseEffect = frameCount % 40 < 20; // Flashes every 2/3 seconds
+
+		if (score1 > score2 && pulseEffect) {
+			this.uiManager.ui.updateLabelColour(`score_1`, '#FF5733');
+		} else if (score1 > score2) {
+			this.uiManager.ui.updateLabelColour(`score_1`, '#6B4F3F'); // Restore original color
+		}
+
+		if (score2 > score1 && pulseEffect) {
+			this.uiManager.ui.updateLabelColour(`score_2`, '#3366FF');
+		} else if (score2 > score1) {
+			this.uiManager.ui.updateLabelColour(`score_2`, '#6B4F3F'); // Restore original color
 		}
 	}
 }
