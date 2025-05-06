@@ -330,12 +330,16 @@ export class Shop {
 		const selectedItem = this.items[this.player1Selection];
 		if (selectedItem) {
 			const player = this.gameManager.player?.[0];
+			const button = this.shopItems[this.player1Selection];
 			if (player) {
 				// Check if the player has enough gold coins
 				if (player.coin.canAfford(selectedItem.price)) {
 					player.buyTool(selectedItem.id, selectedItem);
+					this.showPurchaseFeedback(button, true);
 					// Note: The player.buyTool method internally reduces player coins and updates the UI
 				} else {
+					this.showPurchaseFeedback(button, false);
+
 					// Display prompt message (if insufficient coins)
 					this.gameManager.uiManager.notificationManager.addNotification(
 						`Player 1 needs ${selectedItem.price} coins to buy ${selectedItem.label}`
@@ -351,17 +355,28 @@ export class Shop {
 		const selectedItem = this.items[this.player2Selection];
 		if (selectedItem) {
 			const player = this.gameManager.player?.[1];
+			const button = this.shopItems[this.player2Selection];
 			if (player) {
 				// Check if the player has enough gold coins
 				if (player.coin.canAfford(selectedItem.price)) {
 					player.buyTool(selectedItem.id, selectedItem);
+					this.showPurchaseFeedback(button, true);
 				} else {
+					this.showPurchaseFeedback(button, false);
 					this.gameManager.uiManager.notificationManager.addNotification(
 						`Player 2 needs ${selectedItem.price} coins to buy ${selectedItem.label}`
 					);
 				}
 			}
 		}
+	}
+
+	showPurchaseFeedback(button, success = true) {
+		const className = success ? 'purchased' : 'failed';
+		button.button.addClass(className);
+		setTimeout(() => {
+			button.button.removeClass(className);
+		}, 300);
 	}
 
 	handleToolClick(type) {
