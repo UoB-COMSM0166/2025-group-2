@@ -409,8 +409,8 @@ export class Board {
 	processMergedFruit(mergedFruit) {
 		this.fruits.push(mergedFruit);
 
-		if (typeof mergeSound !== 'undefined') {
-			mergeSound.play();
+		if (this.player.gameManager.game.soundManager.mergeSound) {
+			this.player.gameManager.game.soundManager.mergeSound.play();
 		}
 
 		let scoreLevel = mergedFruit.level;
