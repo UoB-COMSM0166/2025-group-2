@@ -388,9 +388,13 @@ export class Shop {
 		if (!player) return;
 
 		const item = this.items.find(item => item.id === type);
-		if (!item) return;
-
-		player.buyTool(type, item);
+		const index = this.items.findIndex(item => item.id === type);
+		if (index === -1) return;
+		const button = this.shopItems[index];
+		if (player && item && button) {
+			const success = player.buyTool(type, item);
+			this.showPurchaseFeedback(button, success);
+		}
 	}
 
 	draw() {

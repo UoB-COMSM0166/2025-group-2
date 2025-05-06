@@ -242,6 +242,7 @@ export class GameManager {
 			this.uiManager.updateScale(newScale);
 		}
 	}
+
 	goToMainMenu() {
 		if (gameOverMusic && gameOverMusic.isPlaying()) {
 			gameOverMusic.stop();
