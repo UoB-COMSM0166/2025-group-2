@@ -305,6 +305,8 @@ export class GameManager {
 		if (this.isGameOver) return;
 
 		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
+		let highestScore = 0;
+		let winner = null;
 
 		if (this.mode == 'double') {
 			const player1 = this.player[0];
