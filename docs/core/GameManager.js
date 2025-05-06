@@ -649,8 +649,9 @@ export class GameManager {
 				);
 				return;
 			}
-			}
-			}
+		}
+	}
+
 	updateLeadingPlayer() {
 		if (this.mode !== 'double' || this.isGameOver) return;
 
