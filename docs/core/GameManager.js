@@ -158,6 +158,7 @@ export class GameManager {
 				}
 			});
 		}
+		this.uiManager.setupLabels(); // 👈 Añadir esto al final
 	}
 
 	setup() {
@@ -204,25 +205,18 @@ export class GameManager {
 			shouldEndGame = timeLeft <= 0 || this.isGameOver;
 		}
 
-		if (shouldEndGame) {
-			if (!this.isGameOver) {
-				this.checkIsGameOver();
-			}
-
-			if (this.isGameOver) {
-				if (gameOverMusic && !gameOverMusic.isPlaying()) {
-					gameOverMusic.loop();
-				}
-				if (this.uiManager.counter && this.uiManager.counter.stop) {
-					this.uiManager.counter.stop();
-				}
-				noLoop();
-			}
+		if (shouldEndGame && !this.isGameOver) {
+			this.checkIsGameOver();
 		}
 
-		// This should always go at the very end
-		if (this.isGameOver && this.endMessage) {
-			this.uiManager.ui.drawEndGameOverlay(this.endMessage);
+		if (this.isGameOver) {
+			this.uiManager.ui.removeLabel('timer');
+			this.uiManager.counter?.stop();
+
+			if (gameOverMusic && !gameOverMusic.isPlaying()) {
+				gameOverMusic.loop();
+			}
+			noLoop();
 		}
 	}
 
@@ -359,7 +353,8 @@ export class GameManager {
 			}
 
 			//third check which player has more score at the end
-			if (this.uiManager.counter.getTimeLeft() <= 0) {
+			if (this.uiManager.counter.getTimeLeft() == 0) {
+				this.uiManager.ui.removeLabel('timer');
 				if (player1.score.getScore() == player2.score.getScore()) {
 					this.uiManager.ui.drawTie(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
 					this.uiManager.ui.drawTie(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);

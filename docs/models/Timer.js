@@ -14,6 +14,7 @@ export class Timer {
 		if (!this.running) return this.duration;
 		const elapsed = (millis() - this.startTime) / 1000;
 		return Math.max(0, (this.duration - elapsed).toFixed(0));
+		//return Math.max(0, Math.ceil(this.duration - elapsed));
 	}
 
 	addTime(seconds) {
@@ -27,5 +28,6 @@ export class Timer {
 
 	stop() {
 		this.running = false;
+		//this.startTime = millis() - this.duration * 1000; // asegura que getTimeLeft() dé 0
 	}
 }
