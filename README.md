@@ -22,20 +22,20 @@ Your game lives in the [/docs](/docs) folder, and is published using Github page
 
 Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
 
-## Your Group
+## Team Members
 
 <p align="center">
 <img width="90%" src="./images/group_photo.jpg">
 </p>
 
-|        Name         |         Email         |
-| :-----------------: | :-------------------: |
-|  Hayley Yi Li Tay   | zo24201@bristol.ac.uk |
-| Doris Chia Chia Wu  | nq24705@bristol.ac.uk |
-|      Shiyu Fan      | hp24308@bristol.ac.uk |
-| Jimmy Chih Chun Lin | jp24407@bristol.ac.uk |
-|   Octave Jin Liao   | ge24446@bristol.ac.uk |
-|   Gerald Rodrigue   | nu24692@bristol.ac.uk |
+|         Name          |         Email         |      Role      |
+| :-------------------: | :-------------------: | :------------: |
+|  Yi Li Tay (Hayley)   | zo24201@bristol.ac.uk |  Scrum Master  |
+| Chia Chia Wu (Doris)  | nq24705@bristol.ac.uk | Lead Developer |
+|       Shiyu Fan       | hp24308@bristol.ac.uk | Lead Designer  |
+| Chih Chun Lin (Jimmy) | jp24407@bristol.ac.uk | Product Owner  |
+|   Jin Liao (Octave)   | ge24446@bristol.ac.uk |   Developer    |
+|   Gerald Rodriguez    | nu24692@bristol.ac.uk |   Developer    |
 
 ## Introduction
 
