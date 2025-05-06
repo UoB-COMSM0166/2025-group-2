@@ -8,7 +8,7 @@ export class RainIncident extends Incident {
 		this.scaleVal = this.game.scaleVal;
 		this.area = gameArea;
 		this.hasDropped = false;
-		this.fruitCount = 6; // The amount of fruit dropped
+		this.fruitCount = this.game.mode === 'single' ? 4 : 6; // The amount of fruit dropped
 		this.dashLineY = this.game.endLine.y1;
 	}
 

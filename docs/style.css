@@ -6,3 +6,13 @@
 canvas {
 	transform-origin: top left;
 }
+
+.purchased {
+	background-color: #c8e6c9 !important;
+	transition: background-color 0.2s;
+}
+
+.failed {
+	background-color: #ffcdd2 !important;
+	transition: background-color 0.2s;
+}

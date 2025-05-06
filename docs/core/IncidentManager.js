@@ -52,6 +52,15 @@ export class IncidentManager {
 	}
 
 	update() {
+		// First check if the game is over - don't display warnings or incident status during game over
+		if (
+			this.game.player &&
+			this.game.player.gameManager &&
+			this.game.player.gameManager.isGameOver
+		) {
+			return; // Skip all drawing if the game is over
+		}
+
 		// Update all events to ensure they are using the latest game references
 		for (const incidentName in this.incidents) {
 			this.incidents[incidentName].game = this.game;
@@ -150,6 +159,15 @@ export class IncidentManager {
 	}
 
 	showWarning() {
+		// Don't show warnings if the game is over
+		if (
+			this.game.player &&
+			this.game.player.gameManager &&
+			this.game.player.gameManager.isGameOver
+		) {
+			return;
+		}
+
 		push();
 		textAlign(CENTER, CENTER);
 		textSize(30);

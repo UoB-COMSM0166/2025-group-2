@@ -49,19 +49,31 @@ export class RainbowFruit extends Fruit {
 	 */
 	static universalMerge(a, b) {
 		if (a.isRainbow || b.isRainbow) {
+			let rainbowFruit = a.isRainbow ? a : b;
 			let normalFruit = a.isRainbow ? b : a; // Find non-rainbowfruit
-			let newType = normalFruit.level + 1;
-			if (normalFruit.level === 7) {
-				newType = 7;
-			}
-			//let newType = normalFruit.i + 1;
-			let newX = (a.sprite.x + b.sprite.x) / 2;
-			let newY = (a.sprite.y + b.sprite.y) / 2;
-			let newSize = 30 + 20 * newType;
 
-			a.remove();
-			b.remove();
-			return new Fruit(newType, newX, newY, newSize);
+			const minDistance = rainbowFruit.sprite.d / 2 + normalFruit.sprite.d / 2;
+
+			const actualDistance = dist(
+				rainbowFruit.sprite.x,
+				rainbowFruit.sprite.y,
+				normalFruit.sprite.x,
+				normalFruit.sprite.y
+			);
+
+			if (actualDistance < minDistance) {
+				let newType = normalFruit.level + 1;
+				if (normalFruit.level >= 9) {
+					newType = 9;
+				}
+				let newX = (a.sprite.x + b.sprite.x) / 2;
+				let newY = (a.sprite.y + b.sprite.y) / 2;
+				let newSize = 30 + 20 * newType;
+
+				a.remove();
+				b.remove();
+				return new Fruit(newType, newX, newY, newSize);
+			}
 		}
 		return null;
 	}

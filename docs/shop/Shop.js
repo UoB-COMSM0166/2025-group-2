@@ -22,6 +22,7 @@ export class Shop {
 
 		if (this.gameManager.mode == 'single') {
 			this.items = [
+				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
 				{ id: 'shuffle', label: 'Shuffle', price: 10, effect: 'shuffle', icon: '🔀' },
 				{
 					id: 'divineShield',
@@ -31,12 +32,12 @@ export class Shop {
 					icon: '🛡️',
 				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
-				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
-				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
+				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 			];
 		} else if (this.gameManager.mode == 'double') {
 			this.items = [
+				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
 				{ id: 'shuffle', label: 'Shuffle', price: 10, effect: 'shuffle', icon: '🔀' },
 				{
 					id: 'divineShield',
@@ -46,20 +47,30 @@ export class Shop {
 					icon: '🛡️',
 				},
 				{ id: 'doubleScore', label: 'Double Score', price: 20, effect: 'doubleScore', icon: '✨' },
-				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
 				{ id: 'rainbowTool', label: 'Rainbow', price: 25, effect: 'rainbowTool', icon: '🌈' },
-				{ id: 'random', label: 'Random', price: 5, effect: 'randomTool', icon: '❓' },
+				{ id: 'bombTool', label: 'Bomb', price: 30, effect: 'bombTool', icon: '💣' },
+
 				{ id: 'Wind', label: 'Strong Wind', price: 10, effect: 'Wind', icon: '💨' },
 				{ id: 'Rain', label: 'Heavy Rain', price: 10, effect: 'Rain', icon: '🌧️' },
 			];
 		}
+
+		this.lastAffordabilityCheck = 0;
+		this.affordabilityCheckInterval = 250;
+
+		this.affordabilityStatus = {
+			player1: {},
+			player2: {},
+		};
 	}
 
 	setupShopUI(area) {
-		const padding = 10;
-		const buttonWidth = area.w - 2 * padding;
+		const padding = 20;
+
+		const buttonWidth = area.w - padding * 2;
 
 		this.shopArea = area;
+		this.buttonWidth = buttonWidth;
 
 		this.shopItems = this.items.map((item, index) => {
 			// Create a label with a player selection indicator
@@ -75,14 +86,15 @@ export class Shop {
 				id: item.id,
 				bgColor: this.normalBgColor,
 				textColor: this.normalTextColor,
-				hoverBg: '#F4D8C6',
-				hoverText: '#A3785F',
+				hoverBg: this.isDoubleMode ? this.normalBgColor : '#F4D8C6',
+				hoverText: this.isDoubleMode ? this.normalTextColor : '#A3785F',
 				htmlMode: true,
 				width: buttonWidth,
 			});
 
 			// Save original position information for later addition of selection indicators
 			btn.itemIndex = index;
+			btn.item = item;
 			return btn;
 		});
 
@@ -93,7 +105,89 @@ export class Shop {
 			this.updateButtonStyles();
 		}
 	}
+	/*
+	drawAffordabilityIndicators() {
+		if (!this.shopArea) return;
 
+		this.updateAffordabilityStatus();
+
+		push();
+
+		textSize(16);
+		textStyle(BOLD);
+		textAlign(CENTER, CENTER);
+		strokeWeight(1.5);
+
+		// Go through all store items
+		this.shopItems.forEach((btn, index) => {
+			if (!btn || !btn.item) return;
+
+			const itemId = btn.item.id;
+
+			const btnX = btn.x;
+			const btnY = btn.y;
+			const btnHeight = btn.button.height;
+			const btnWidth = this.buttonWidth || btn.button.width;
+
+			const leftIndicatorX = btnX - 10;
+			const rightIndicatorX = btnX + btnWidth + 10;
+			const indicatorY = btnY + btnHeight + 15;
+
+			if (this.isDoubleMode) {
+				const player1CanAfford = this.affordabilityStatus.player1[itemId] || false;
+				fill(player1CanAfford ? '#4CAF50' : '#F44336');
+				stroke(255);
+
+				text(player1CanAfford ? '✓' : '✗', leftIndicatorX, indicatorY);
+
+				const player2CanAfford = this.affordabilityStatus.player2[itemId] || false;
+				fill(player2CanAfford ? '#4CAF50' : '#F44336');
+				stroke(255);
+
+				text(player2CanAfford ? '✓' : '✗', rightIndicatorX, indicatorY);
+			} else {
+				//console.log('placing price indicator');
+				const playerCanAfford = this.affordabilityStatus.player1[itemId] || false;
+				fill(playerCanAfford ? '#4CAF50' : '#F44336');
+				stroke(255);
+				// Place indicator on right side of store area
+				text(playerCanAfford ? '✓' : '✗', rightIndicatorX, indicatorY);
+			}
+		});
+
+		pop();
+	}
+
+	updateAffordabilityStatus() {
+		const currentTime = millis();
+		if (currentTime - this.lastAffordabilityCheck < this.affordabilityCheckInterval) {
+			return;
+		}
+
+		this.lastAffordabilityCheck = currentTime;
+
+		const players = this.gameManager.player;
+		if (!players || !players.length) return;
+
+		if (!this.affordabilityStatus) {
+			this.affordabilityStatus = {
+				player1: {},
+				player2: {},
+			};
+		}
+
+		this.items.forEach(item => {
+			if (players[0] && players[0].coin) {
+				const canAfford = players[0].coin.canAfford(item.price);
+				this.affordabilityStatus.player1[item.id] = canAfford;
+			}
+
+			if (this.isDoubleMode && players.length > 1 && players[1] && players[1].coin) {
+				this.affordabilityStatus.player2[item.id] = players[1].coin.canAfford(item.price);
+			}
+		});
+	}
+*/
 	// Update button style to reflect current selection
 	updateButtonStyles() {
 		this.shopItems.forEach((btn, index) => {
@@ -201,11 +295,6 @@ export class Shop {
 		});
 	}
 
-	updateAllButtonPositions(shopArea) {
-		const padding = 10;
-		this.listShopItems(this.shopItems, shopArea, padding);
-	}
-
 	// Player 1 Browse Store Items
 	player1Browse(direction) {
 		if (!this.isDoubleMode) return;
@@ -241,12 +330,16 @@ export class Shop {
 		const selectedItem = this.items[this.player1Selection];
 		if (selectedItem) {
 			const player = this.gameManager.player?.[0];
+			const button = this.shopItems[this.player1Selection];
 			if (player) {
 				// Check if the player has enough gold coins
 				if (player.coin.canAfford(selectedItem.price)) {
 					player.buyTool(selectedItem.id, selectedItem);
+					this.showPurchaseFeedback(button, true);
 					// Note: The player.buyTool method internally reduces player coins and updates the UI
 				} else {
+					this.showPurchaseFeedback(button, false);
+
 					// Display prompt message (if insufficient coins)
 					this.gameManager.uiManager.notificationManager.addNotification(
 						`Player 1 needs ${selectedItem.price} coins to buy ${selectedItem.label}`
@@ -262,11 +355,14 @@ export class Shop {
 		const selectedItem = this.items[this.player2Selection];
 		if (selectedItem) {
 			const player = this.gameManager.player?.[1];
+			const button = this.shopItems[this.player2Selection];
 			if (player) {
 				// Check if the player has enough gold coins
 				if (player.coin.canAfford(selectedItem.price)) {
 					player.buyTool(selectedItem.id, selectedItem);
+					this.showPurchaseFeedback(button, true);
 				} else {
+					this.showPurchaseFeedback(button, false);
 					this.gameManager.uiManager.notificationManager.addNotification(
 						`Player 2 needs ${selectedItem.price} coins to buy ${selectedItem.label}`
 					);
@@ -275,7 +371,19 @@ export class Shop {
 		}
 	}
 
+	showPurchaseFeedback(button, success = true) {
+		const className = success ? 'purchased' : 'failed';
+		button.button.addClass(className);
+		setTimeout(() => {
+			button.button.removeClass(className);
+		}, 300);
+	}
+
 	handleToolClick(type) {
+		if (this.isDoubleMode) {
+			return; // Go back directly, do nothing
+		}
+
 		const player = this.gameManager.player?.[0];
 		if (!player) return;
 
@@ -283,5 +391,11 @@ export class Shop {
 		if (!item) return;
 
 		player.buyTool(type, item);
+	}
+
+	draw() {
+		if (this.isDoubleMode) {
+			this.drawSelectionIndicators();
+		}
 	}
 }

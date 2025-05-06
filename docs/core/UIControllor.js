@@ -47,6 +47,9 @@ export class UIControllor {
 		push();
 		textAlign(CENTER, CENTER);
 		textSize(48);
+		// Add white stroke to make the text stand out against dark backgrounds
+		strokeWeight(4);
+		stroke(255); // White stroke
 		fill('#ff0000');
 		text('You reached the max level!', x, y);
 		pop();
@@ -85,17 +88,18 @@ export class UIControllor {
 		pop();
 	}
 
-	drawEndGameSingleOverlay(message, score, highestScore) {
+	drawEndGameSingleOverlay(message, score, highestScore, gameAreaCenter) {
 		push();
 		// Dark background
-		fill(0, 0, 0, 180);
+		fill(0, 0, 0, 200);
 		noStroke();
 		rect(0, 0, width, height);
 
 		// Central panel
 		const panelWidth = 250;
 		const panelHeight = 250;
-		const panelX = width / 2 - panelWidth / 2;
+
+		const panelX = gameAreaCenter - panelWidth / 2;
 		const panelY = height / 2 - panelHeight / 2 - 300;
 
 		fill(255);
@@ -109,7 +113,7 @@ export class UIControllor {
 		textAlign(CENTER, CENTER);
 
 		textSize(35);
-		text(message, width / 2, height / 2 - 390);
+		text(message, gameAreaCenter, height / 2 - 390);
 
 		// Display result
 		fill('#6B4F3F');
@@ -118,13 +122,13 @@ export class UIControllor {
 
 		if (score >= highestScore) {
 			textSize(35);
-			text(`New Record!`, width / 2, panelY + 75);
-			text(`${score}`, width / 2, panelY + 175);
+			text(`New Record!`, gameAreaCenter, panelY + 75);
+			text(`${score}`, gameAreaCenter, panelY + 175);
 			textSize(50);
-			text('🏆', width / 2, panelY + 125);
+			text('🏆', gameAreaCenter, panelY + 125);
 		} else {
 			textSize(30);
-			text(`Your Score: ${score}`, width / 2, panelY + 120);
+			text(`Your Score: ${score}`, gameAreaCenter, panelY + 120);
 		}
 
 		pop();
@@ -134,6 +138,9 @@ export class UIControllor {
 		push();
 		textAlign(CENTER, CENTER);
 		textSize(48);
+		// Add white stroke to make the text stand out against dark backgrounds
+		strokeWeight(4);
+		stroke(255); // White stroke
 		fill('#ff0000');
 		text('You crossed the line!', x, y);
 		pop();
@@ -143,6 +150,9 @@ export class UIControllor {
 		push();
 		textAlign(CENTER, CENTER);
 		textSize(48);
+		// Add white stroke to make the text stand out against dark backgrounds
+		strokeWeight(4);
+		stroke(255); // White stroke
 		fill('#ff0000');
 		text('IT IS A TIE!', x, y);
 		pop();
@@ -152,6 +162,8 @@ export class UIControllor {
 		push();
 		textAlign(CENTER, CENTER);
 		textSize(48);
+		strokeWeight(4);
+		stroke(255); // White stroke
 		fill('#ff0000');
 		text('YOU WIN!', x, y);
 		pop();
@@ -161,6 +173,10 @@ export class UIControllor {
 		push();
 		textAlign(CENTER, CENTER);
 		textSize(48);
+		// Add white stroke to make the text stand out against dark backgrounds
+		strokeWeight(4);
+		strokeWeight(4);
+		stroke(255); // White stroke
 		fill('#ff0000');
 		text('YOU LOSE!', x, y);
 		pop();
