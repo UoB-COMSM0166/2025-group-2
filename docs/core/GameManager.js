@@ -163,6 +163,7 @@ export class GameManager {
 				}
 			});
 		}
+		this.uiManager.setupLabels(); // 👈 Añadir esto al final
 	}
 
 	setup() {
@@ -226,6 +227,7 @@ export class GameManager {
 				}
 
 				if (this.uiManager.counter && this.uiManager.counter.stop) {
+				    this.uiManager.ui.removeLabel('timer');
 					this.uiManager.counter.stop();
 				}
 				noLoop();
@@ -387,7 +389,8 @@ export class GameManager {
 			}
 
 			//third check which player has more score at the end
-			if (this.uiManager.counter.getTimeLeft() <= 0) {
+			if (this.uiManager.counter.getTimeLeft() == 0) {
+				this.uiManager.ui.removeLabel('timer');
 				// Stop all incidents for both players to prevent warning overlap
 				player1.boards.incidentManager?.stopAllIncidents();
 				player2.boards.incidentManager?.stopAllIncidents();
