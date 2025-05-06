@@ -106,8 +106,9 @@ export class GameManager {
 	}
 
 	reset() {
-		if (gameOverMusic && gameOverMusic.isPlaying()) {
-			gameOverMusic.stop();
+		const soundManager = this.game.soundManager;
+		if (soundManager.gameOverMusic && soundManager.gameOverMusic.isPlaying()) {
+			soundManager.gameOverMusic.stop();
 		}
 
 		if (this.playAgainButton) {
@@ -213,9 +214,17 @@ export class GameManager {
 			}
 
 			if (this.isGameOver) {
-				if (gameOverMusic && !gameOverMusic.isPlaying()) {
-					gameOverMusic.loop();
+				const soundManager = this.game.soundManager;
+
+				if (soundManager.gameOverMusic && !soundManager.isMuted) {
+					soundManager.stopBackgroundMusic();
+
+					soundManager.gameOverMusic.play();
+					soundManager.gameOverMusic.onended(() => {
+						soundManager.playBackgroundMusic();
+					});
 				}
+
 				if (this.uiManager.counter && this.uiManager.counter.stop) {
 					this.uiManager.counter.stop();
 				}
@@ -244,8 +253,9 @@ export class GameManager {
 	}
 
 	goToMainMenu() {
-		if (gameOverMusic && gameOverMusic.isPlaying()) {
-			gameOverMusic.stop();
+		const soundManager = this.game.soundManager;
+		if (soundManager.gameOverMusic && soundManager.gameOverMusic.isPlaying()) {
+			soundManager.gameOverMusic.stop();
 		}
 
 		location.reload();
@@ -292,8 +302,6 @@ export class GameManager {
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
-		let highestScore = 0;
-		let winner = null;
 		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
 
 		if (this.mode == 'double') {
@@ -443,13 +451,6 @@ export class GameManager {
 					return;
 				}
 			}
-			if (this.isGameOver && !this.playedGameOverSound) {
-				if (this.game && this.game.soundManager) {
-					this.game.soundManager.play('gameOver');
-					this.game.soundManager.stopBackgroundMusic();
-				}
-				this.playedGameOverSound = true;
-			}
 		}
 
 		if (this.mode == 'single') {
@@ -465,9 +466,6 @@ export class GameManager {
 							`Highest Score: ${this.highestSingleScore}`
 						);
 					}
-					console.log('Current score:', currentScore);
-
-					console.log('Highest single score:', this.highestSingleScore);
 
 					this.isGameOver = true;
 
@@ -476,8 +474,9 @@ export class GameManager {
 						player.boards.incidentManager.stopAllIncidents();
 					}
 
-					if (this.isGameOver && gameOverMusic && !gameOverMusic.isPlaying()) {
-						gameOverMusic.loop();
+					const soundManager = this.game.soundManager;
+					if (this.isGameOver && soundManager.gameOverMusic && !soundManager.isMuted) {
+						soundManager.gameOverMusic.play();
 					}
 
 					// Calculate the center of the game area
