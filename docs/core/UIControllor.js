@@ -261,4 +261,7 @@ export class UIControllor {
 		text('Next', area.x, area.y - 8);
 		pop();
 	}
+	removeLabel(id) {
+		delete this.labels[id];
+	}
 }
