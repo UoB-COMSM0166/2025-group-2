@@ -105,7 +105,7 @@ export class Shop {
 			this.updateButtonStyles();
 		}
 	}
-
+	/*
 	drawAffordabilityIndicators() {
 		if (!this.shopArea) return;
 
@@ -187,7 +187,7 @@ export class Shop {
 			}
 		});
 	}
-
+*/
 	// Update button style to reflect current selection
 	updateButtonStyles() {
 		this.shopItems.forEach((btn, index) => {
@@ -379,9 +379,6 @@ export class Shop {
 	}
 
 	draw() {
-		this.updateAffordabilityStatus();
-		this.drawAffordabilityIndicators();
-
 		if (this.isDoubleMode) {
 			this.drawSelectionIndicators();
 		}
