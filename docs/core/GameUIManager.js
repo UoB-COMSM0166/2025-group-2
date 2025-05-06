@@ -232,11 +232,11 @@ export class GameUIManager {
 		this.notificationManager.update();
 
 		// Draw selector indicators last, making sure they appear at the top
-		if (this.isDoubleMode && !isTutorial && !this.gameManager.isTutorialMode && this.shop) {
+		if (!isTutorial && !this.gameManager.isTutorialMode && this.shop) {
 			// Use push() and pop() to save and restore drawing states
 			push();
 			// Here you can set any parameter that ensures that the indicator is clearly visible
-			this.shop.drawSelectionIndicators();
+			this.shop.draw();
 			pop();
 		}
 	}

@@ -91,7 +91,7 @@ export class BombFruit extends Fruit {
 		//removing fruits within explosion radius
 		game.fruits = game.fruits.filter(fruit => {
 			const distance = dist(explosionX, explosionY, fruit.sprite.x, fruit.sprite.y);
-			if (distance <= this.explosionRadius) {
+			if (distance <= this.explosionRadius * 0.7 + fruit.sprite.d / 4) {
 				fruit.remove();
 				return false; //exclude from new array
 			}
@@ -104,9 +104,20 @@ export class BombFruit extends Fruit {
 	//method to check for collisions and trigger explosion
 	checkCollision(game) {
 		for (let fruit of game.fruits) {
+			/*
 			if (fruit != this && this.sprite.overlaps(fruit.sprite)) {
 				this.explode(game);
 				break;
+			}
+*/
+			if (fruit !== this) {
+				// Calculate the distance between two sprites
+				const distance = dist(this.sprite.x, this.sprite.y, fruit.sprite.x, fruit.sprite.y);
+				// Compare distance to sum of two sprite radii
+				if (distance < this.sprite.d / 2 + fruit.sprite.d / 2) {
+					this.explode(game);
+					break;
+				}
 			}
 		}
 	}
