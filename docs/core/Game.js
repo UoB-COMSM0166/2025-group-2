@@ -5,13 +5,13 @@ import { SoundManager } from './SoundManager.js';
 export class Game {
 	constructor(scaleVal) {
 		this.currentScene = 'menu';
+		this.soundManager = new SoundManager(); // Add sound management
 		this.menuPage = new MenuPage(this);
 		this.gameManager = null;
 		this.scaleVal = scaleVal;
 		this.tutorialManager = null;
 		this.isTutorialMode = false;
 		this.tutorialEnabled = true; // Default: tutorial enabled
-		this.soundManager = new SoundManager(); // Add sound management
 	}
 
 	// Set tutorial preference
@@ -46,9 +46,8 @@ export class Game {
 	}
 
 	setup() {
-		this.menuPage.display();
-
 		this.soundManager.preload();
+		this.menuPage.display();
 	}
 
 	draw() {

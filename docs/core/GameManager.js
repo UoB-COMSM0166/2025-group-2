@@ -106,8 +106,9 @@ export class GameManager {
 	}
 
 	reset() {
-		if (gameOverMusic && gameOverMusic.isPlaying()) {
-			gameOverMusic.stop();
+		const soundManager = this.game.soundManager;
+		if (soundManager.gameOverMusic && soundManager.gameOverMusic.isPlaying()) {
+			soundManager.gameOverMusic.stop();
 		}
 
 		if (this.playAgainButton) {
@@ -208,8 +209,34 @@ export class GameManager {
 			shouldEndGame = timeLeft <= 0 || this.isGameOver;
 		}
 
+<<<<<<< HEAD
 		if (shouldEndGame && !this.isGameOver) {
 			this.checkIsGameOver();
+=======
+		if (shouldEndGame) {
+			if (!this.isGameOver) {
+				this.checkIsGameOver();
+			}
+
+			if (this.isGameOver) {
+				const soundManager = this.game.soundManager;
+
+				if (soundManager.gameOverMusic && !soundManager.isMuted) {
+					soundManager.stopBackgroundMusic();
+
+					soundManager.gameOverMusic.play();
+					soundManager.gameOverMusic.onended(() => {
+						soundManager.playBackgroundMusic();
+					});
+				}
+
+				if (this.uiManager.counter && this.uiManager.counter.stop) {
+				    this.uiManager.ui.removeLabel('timer');
+					this.uiManager.counter.stop();
+				}
+				noLoop();
+			}
+>>>>>>> 93e8ef4807b459ede42eba008ecbd8738d46e3f9
 		}
 
 		if (this.isGameOver) {
@@ -243,9 +270,11 @@ export class GameManager {
 			this.uiManager.updateScale(newScale);
 		}
 	}
+
 	goToMainMenu() {
-		if (gameOverMusic && gameOverMusic.isPlaying()) {
-			gameOverMusic.stop();
+		const soundManager = this.game.soundManager;
+		if (soundManager.gameOverMusic && soundManager.gameOverMusic.isPlaying()) {
+			soundManager.gameOverMusic.stop();
 		}
 
 		location.reload();
@@ -292,9 +321,9 @@ export class GameManager {
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
+		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
 		let highestScore = 0;
 		let winner = null;
-		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
 
 		if (this.mode == 'double') {
 			const player1 = this.player[0];
@@ -379,7 +408,8 @@ export class GameManager {
 			}
 
 			//third check which player has more score at the end
-			if (this.uiManager.counter.getTimeLeft() <= 0) {
+			if (this.uiManager.counter.getTimeLeft() == 0) {
+				this.uiManager.ui.removeLabel('timer');
 				// Stop all incidents for both players to prevent warning overlap
 				player1.boards.incidentManager?.stopAllIncidents();
 				player2.boards.incidentManager?.stopAllIncidents();
@@ -444,13 +474,6 @@ export class GameManager {
 					return;
 				}
 			}
-			if (this.isGameOver && !this.playedGameOverSound) {
-				if (this.game && this.game.soundManager) {
-					this.game.soundManager.play('gameOver');
-					this.game.soundManager.stopBackgroundMusic();
-				}
-				this.playedGameOverSound = true;
-			}
 		}
 
 		if (this.mode == 'single') {
@@ -466,9 +489,6 @@ export class GameManager {
 							`Highest Score: ${this.highestSingleScore}`
 						);
 					}
-					console.log('Current score:', currentScore);
-
-					console.log('Highest single score:', this.highestSingleScore);
 
 					this.isGameOver = true;
 
@@ -477,8 +497,9 @@ export class GameManager {
 						player.boards.incidentManager.stopAllIncidents();
 					}
 
-					if (this.isGameOver && gameOverMusic && !gameOverMusic.isPlaying()) {
-						gameOverMusic.loop();
+					const soundManager = this.game.soundManager;
+					if (this.isGameOver && soundManager.gameOverMusic && !soundManager.isMuted) {
+						soundManager.gameOverMusic.play();
 					}
 
 					// Calculate the center of the game area

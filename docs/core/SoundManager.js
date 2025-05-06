@@ -3,18 +3,17 @@ export class SoundManager {
 	constructor() {
 		this.sounds = {};
 		this.backgroundMusic = null;
+		this.gameOverMusic = null;
+		this.mergeSound = null;
 		this.isMuted = false;
 	}
 
 	// preload all sounds effect
 	preload() {
-		// Make sure the sound file exists in the correct path
-		this.merge = loadSound('./soundsplus/merge.mp3');
-
 		try {
-			console.log('Loading background music...');
-			this.backgroundMusic = loadSound('./sounds/backgroundMusic.mp3');
-			console.log('Background music loaded successfully');
+			this.backgroundMusic = loadSound('assets/backgroundMusic.mp3');
+			this.gameOverMusic = loadSound('assets/endGame.mp3');
+			this.mergeSound = loadSound('assets/merge.mp3');
 		} catch (error) {
 			console.error('Sound effect preloading failed:', error);
 		}
@@ -36,22 +35,22 @@ export class SoundManager {
 
 	// play background music（loop）
 	playBackgroundMusic(volume = 0.1) {
-		console.log('try to play background music');
-		if (this.isMuted || !this.backgroundMusic) {
-			console.log('Background music is muted or not loaded');
+		if (this.isMuted) {
+			console.error('Background music is muted');
+			return;
+		}
+		if (!this.backgroundMusic) {
+			console.error('Background music is not loaded');
 			return;
 		}
 		// If background music is already playing, it will not be started again
 		if (this.backgroundMusic.isPlaying()) {
-			console.log('Background music is already playing');
 			return;
 		}
 		try {
-			console.log('setting volume');
 			this.backgroundMusic.setVolume(volume);
 			// Start looping background music
 			this.backgroundMusic.loop();
-			console.log('backgound music start play');
 		} catch (error) {
 			console.error('backgound music start play fialed:', error);
 		}
@@ -79,5 +78,14 @@ export class SoundManager {
 		}
 
 		return this.isMuted;
+	}
+
+	reset() {
+		this.stopBackgroundMusic();
+		if (this.gameOverMusic && this.gameOverMusic.isPlaying()) {
+			this.gameOverMusic.stop();
+		}
+
+		this.playBackgroundMusic();
 	}
 }
