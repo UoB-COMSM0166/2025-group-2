@@ -246,21 +246,6 @@ export class GameUIManager {
 		this.ui.updateLabelText('timer', `Time: ${formattedTime}`);
 	}
 
-	/*
-	displayCounter() {
-		const timeLeft = this.counter.getTimeLeft();
-		const formattedTime = this.formatTime(timeLeft);
-		this.ui.updateLabelText('timer', `Time: ${formattedTime}`);
-		//f5ebe0 F5EBE0 xd
-		//D32F2F rojo
-		//6B4F3F color original
-		if (timeLeft === 1) {
-			this.ui.updateLabelColour('timer', '#F5EBE0'); // Rojo oscuro
-		} else {
-			this.ui.updateLabelColour('timer', '#D32F2F'); // Color original
-		}
-	}
-*/
 	updateHighestScoreLabel(score) {
 		this.ui.updateLabelText('highestScore', `Highest Score: ${score}`);
 	}
