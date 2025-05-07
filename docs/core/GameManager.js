@@ -163,7 +163,7 @@ export class GameManager {
 				}
 			});
 		}
-		this.uiManager.setupLabels(); // 👈 Añadir esto al final
+		this.uiManager.setupLabels(); // Add this at the end
 	}
 
 	setup() {
@@ -227,7 +227,7 @@ export class GameManager {
 				}
 
 				if (this.uiManager.counter && this.uiManager.counter.stop) {
-				    this.uiManager.ui.removeLabel('timer');
+					this.uiManager.ui.removeLabel('timer');
 					this.uiManager.counter.stop();
 				}
 				noLoop();
@@ -276,26 +276,23 @@ export class GameManager {
 				}
 
 				if (player.coin) {
-					player.coin.reset(); // Asegúrate que este método existe
-					player.updateCoin?.(); // Si hay un método visual de actualización
+					player.coin.reset(); // Make sure this method exists
+					player.updateCoin?.(); // If there is a visual update method
 				}
 
-				// Eliminar frutas del juego de forma segura
+				// Safely remove fruits from the game
 				if (player.boards) {
-					// Eliminar frutas visual y físicamente
+					// Remove fruits visually and physically
 					player.boards.fruits.forEach(fruit => {
-						fruit.remove?.(); // método seguro de eliminación de sprites
+						fruit.remove?.(); // Safe method to remove sprites
 					});
 					player.boards.fruits = [];
 
-					// Eliminar current y next fruit si existen
+					// Remove current and next fruit if they exist
 					player.boards.currentFruit?.remove?.();
 					player.boards.nextFruit?.remove?.();
 					player.boards.currentFruit = null;
 					player.boards.nextFruit = null;
-
-					// Crear frutas nuevas como si fuera el comienzo
-					//player.boards.setup();
 				}
 			});
 		}
