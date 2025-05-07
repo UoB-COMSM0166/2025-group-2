@@ -1,4 +1,3 @@
-// 在 core file creat SoundManager.js
 export class SoundManager {
 	constructor() {
 		this.sounds = {};
@@ -19,11 +18,9 @@ export class SoundManager {
 		}
 	}
 
-	// Play a specific sound effect
 	play(soundName, volume = 1.0) {
 		if (this.isMuted) return;
 
-		// Added check to prevent accessing non-existent sound effects
 		if (!this.sounds[soundName]) {
 			console.warn(`sound effect ${soundName} Does not exist or was not loaded successfully`);
 			return;
@@ -33,7 +30,6 @@ export class SoundManager {
 		this.sounds[soundName].play();
 	}
 
-	// play background music（loop）
 	playBackgroundMusic(volume = 0.1) {
 		if (this.isMuted) {
 			console.error('Background music is muted');
@@ -43,13 +39,11 @@ export class SoundManager {
 			console.error('Background music is not loaded');
 			return;
 		}
-		// If background music is already playing, it will not be started again
 		if (this.backgroundMusic.isPlaying()) {
 			return;
 		}
 		try {
 			this.backgroundMusic.setVolume(volume);
-			// Start looping background music
 			this.backgroundMusic.loop();
 		} catch (error) {
 			console.error('backgound music start play fialed:', error);

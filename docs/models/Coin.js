@@ -1,4 +1,3 @@
-// Coin.js
 export class Coin {
 	constructor(initialAmount = 0) {
 		this.coin = initialAmount;
