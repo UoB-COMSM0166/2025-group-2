@@ -1,6 +1,33 @@
-# 2025-group-2
+# 2025-group-2 <!-- omit from toc -->
 
 2025 COMSM0166 group 2
+
+<details>
+<summary>📖 Content</summary>
+
+- [Links to weekly discussions](#links-to-weekly-discussions)
+- [Your Game](#your-game)
+- [Team Members](#team-members)
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+	- [Ideation Process](#ideation-process)
+	- [Stakeholders Identification](#stakeholders-identification)
+	- [User Stories](#user-stories)
+	- [Use Case Model](#use-case-model)
+- [Design](#design)
+	- [System Architecture](#system-architecture)
+	- [Class Diagram](#class-diagram)
+	- [Sequence Diagram](#sequence-diagram)
+	- [Agile Approach](#agile-approach)
+- [Implementation](#implementation)
+- [Evaluation](#evaluation)
+- [Process](#process)
+- [Sustainability, ethics and accessibility](#sustainability-ethics-and-accessibility)
+- [Conclusion](#conclusion)
+- [Contribution Statement](#contribution-statement)
+- [Additional Marks](#additional-marks)
+
+</details>
 
 ## Links to weekly discussions
 
@@ -25,7 +52,7 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 ## Team Members
 
 <p align="center">
-<img width="90%" src="./images/group_photo.jpg">
+<img width="90%" src="./images/new_group_photo.jpg">
 </p>
 
 |         Name          |         Email         |      Role      |
