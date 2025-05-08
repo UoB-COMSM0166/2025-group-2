@@ -47,11 +47,89 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 - 15% ~750 words
 - Use case diagrams, user stories. Early stages design. Ideation process. How did you decide as a team what to develop?
 
-As a team, we discovered that assigning epics to our stakeholders significantly enhanced our ability to plan the next steps. For example, epics allowed us to define user stories and acceptance criteria in advance, enabling a deeper understanding of the features we needed to develop, such as the story of a player wanting to utilize a new game feature. This allows us to list out in more details all the requirements in the development of the game and note down ideas from different stakeholders' perspectives which we may or may not have missed out on if we were to approach this without using the method taught to us.
+### Ideation Process
+
+Our team approached this project with a specific theme in mind: "fun games that you would play after a stressful day to unwind and is simple enough to complete in 3 months". This was a result of our team's shared experience on balancing work with relaxation, and recognizing the value of engaging games that offer quick enjoyment without a steep learning curve.
+
+Each member brainstormed for ideas that fit the theme and included their suggestions onto the GitHub Kanban on the first week, which we then discussed on the following meeting.
+
+<p align="center">
+<img width="70%" src="./images/idea-selection-process.png">
+<br>
+<em><sub>Ideation Meeting Minutes</sub></em>
+</p>
+
+From the initial eight game ideas that we brainstormed, we narrowed our choice down to two ideas: "Merge Fruit" and "Flappy Bird".
+
+The workshop on Week 3 where we created prototypes for both games allowed us to grasp the interest levels of players for both games and gather ideas on how to expand the game further, ultimately leading to us deciding to choose the relatively new "Merge Fruit" game.
+
+<p align="center">
+<img width="40%" src="./images/first-prototype-paper.gif">
+<br>
+<em><sub>First Prototype (paper) developed during Week 3 Workshop</sub></em>
+</p>
+
+A huge factor in our decision was due to the lesser number of variations of "Merge Fruit" available online, meaning that we had ample opportunities for original twists. Having experienced isolation during the Covid period, we knew we wanted to add a competitive double player mode to encourage connection and enjoyment with friends, which worked well for us since variations of the game online at the time of the ideation process only featured single player mode.
+
+The simplicity of the game's concept also meant that the p5.js language which we're required to work with provided the perfect foundation for implementing our envisioned features while allowing for rapid development when paired with the P5play framework. This gave us the confidence that it was feasible to go ahead with the "Merge Fruit" game as our choice of game for this project.
+
+We would eventually rename the game as "Crazy Bubble" following the various twists added and our game design.
+
+<p align="center">
+<img width="70%" src="./images/second-prototype-digital.gif">
+<br>
+<em><sub>Second Prototype (digital) for design ideas during development - game now renamed "Crazy Bubble"</sub></em>
+</p>
+
+### Stakeholders Identification
+
+<p align="center">
+<img width="70%" src="./ReportMaterial/Diagrams/onion-model.png">
+<br>
+<em><sub>Onion Model of Crazy Bubble</sub></em>
+</p>
+
+When we started creating our Onion Model and listing down potential stakeholders, we came to the realisation that there were more stakeholder groups than we first anticipated. This was a good thing since it forces us to design our game by looking through the perspective of the various stakeholders, significantly enhancing our ability to plan the next steps in a structured and thorough way. This allows us to list out in more details all the requirements in the development of the game and note down ideas from different stakeholders' perspectives which we may or may not have missed out on if we were to approach this without using the method taught to us.
 
 Furthermore, by having a clear understanding of the tasks at hand, we were able to create a detailed list of the necessary actions to implement changes and meet our stakeholders' needs, such as the specific tasks required to develop the new game feature. This gives our planning a more structured approach and we're thus less likely to make potentially fatal mistakes.
 
-In conclusion, the requirements gathering process provided us with valuable insights on how to organize and prioritize activities to successfully fulfill the project requirements.
+### User Stories
+
+Based on the stakeholders listed out in our Onion Model, we created user stories to plan and prioritise the features to implement. These are a few examples of our user stories:
+
+> As a Player of the Original Version looking for variations, I want to play a version of this game that comes with double player mode so that I can enjoy playing together with friends and family.
+
+> As a Gamer, I want to be able to play the game with friends in double player mode but not have to input any personal details so that there is no risk of exposing my data online.
+
+> As a Gamer, I want a tool in the game that helps to clear my playing field when I'm close to losing the game so that I can prolong my gameplay and enjoy the game further.
+
+> As a Gamer, I want a tool that allows me to double my score so that I can beat my previous high score more easily.
+
+> As a Gamer, I want each special tool to have their own distinct designs so that I can easily tell them apart at a glance.
+
+> As a Tester, I want the game to be intuitive and user friendly, featuring a tutorial so that players can easily enjoy the game without a steep learning curve.
+
+> As a COMSM0166 Professor, I want to be able to complete one round of the game within 5 minutes so that I can assess the game fast.
+
+> As a Developer, I want clear instructions on features required and what to prioritise so that I can focus on developing and delivering the correct features on time.
+
+### Use Case Model
+
+Analysing the user stories on hand, we knew we had to design our game in a way that can be enjoyed by anyone regardless of gaming skills while implementing our twists. Since the double player mode was part of our twist, it was something we must implement by the end of the project.
+
+In order to ensure that the various elements of the game are clear, we created the Use Case Model to aid and guide us in our development.
+
+<p align="center">
+<img width="70%" src="./ReportMaterial/Diagrams/use-case-diagram.png">
+<br>
+<em><sub>Use Case Diagram</sub></em>
+</p>
+
+<p align="center">
+<img width="70%" src="./ReportMaterial/Diagrams/use-case-specification.png">
+<br>
+<em><sub>Use Case Specification</sub></em>
+</p>
 
 ## Design
 
