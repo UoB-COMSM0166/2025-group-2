@@ -26,6 +26,15 @@ export class DivineShieldTool {
 	}
 
 	update() {
+		// Check if game is over before displaying
+		if (
+			this.incidentManager.game.player &&
+			this.incidentManager.game.player.gameManager &&
+			this.incidentManager.game.player.gameManager.isGameOver
+		) {
+			return;
+		}
+
 		//show the time left of divine shield
 		if (this.shieldActive) {
 			textAlign(CENTER, CENTER);

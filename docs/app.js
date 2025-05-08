@@ -7,22 +7,18 @@ let game,
 // Track pressed keys for continuous movement
 const keysPressed = {
 	a: false,
-	A: false,
 	d: false,
-	D: false,
 	ArrowLeft: false,
 	ArrowRight: false,
+	ArrowUp: false,
 };
 
 const extraKeysPressed = {
 	q: false,
-	Q: false,
 	e: false,
-	E: false,
+	w: false,
 	'.': false,
-	'>': false,
 	'/': false,
-	'?': false,
 };
 
 // Prevent immediate fruit drops triggered by clicking when mode is switched
@@ -85,12 +81,14 @@ window.keyPressed = function () {
 
 	if (keyCode === LEFT_ARROW) keysPressed['ArrowLeft'] = true;
 	if (keyCode === RIGHT_ARROW) keysPressed['ArrowRight'] = true;
+	if (keyCode === UP_ARROW) keysPressed['ArrowUp'] = true; // Add up arrow key
 
 	// Track additional key states
 	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = true;
 	if (key === 'e' || key === 'E') extraKeysPressed['e'] = true;
-	if (key === '.' || key === '>') extraKeysPressed['.'] = true;
-	if (key === '/' || key === '?') extraKeysPressed['/'] = true;
+	if (key === 'w' || key === 'W') extraKeysPressed['w'] = true; // Add w key
+	if (key === '.' || key === '。') extraKeysPressed['.'] = true;
+	if (key === '/') extraKeysPressed['/'] = true;
 
 	if (game && game.gameManager) {
 		// Handle drop keys only on initial press
@@ -113,15 +111,23 @@ window.keyPressed = function () {
 					shop.player1Browse('next');
 				}
 
+				if (key === 'w' || key === 'W') {
+					shop.player1Browse('prev');
+				}
+
 				if (key === 'e' || key === 'E') {
 					shop.player1Buy();
 				}
 
-				if (key === '.' || key === '>') {
+				if (key === '/') {
 					shop.player2Browse('next');
 				}
 
-				if (key === '/' || key === '?') {
+				if (keyCode === UP_ARROW) {
+					shop.player2Browse('prev');
+				}
+
+				if (key === '。' || key === '.') {
 					shop.player2Buy();
 				}
 			}
@@ -138,11 +144,13 @@ window.keyReleased = function () {
 
 	if (keyCode === LEFT_ARROW) keysPressed['ArrowLeft'] = false;
 	if (keyCode === RIGHT_ARROW) keysPressed['ArrowRight'] = false;
+	if (keyCode === UP_ARROW) keysPressed['ArrowUp'] = false;
 
 	if (key === 'q' || key === 'Q') extraKeysPressed['q'] = false;
+	if (key === 'w' || key === 'W') extraKeysPressed['w'] = false;
 	if (key === 'e' || key === 'E') extraKeysPressed['e'] = false;
-	if (key === '.' || key === '>') extraKeysPressed['.'] = false;
-	if (key === '/' || key === '?') extraKeysPressed['/'] = false;
+	if (key === '.' || key === '。') extraKeysPressed['.'] = false;
+	if (key === '/') extraKeysPressed['/'] = false;
 
 	return false; // Prevent default browser behavior
 };

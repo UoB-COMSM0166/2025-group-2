@@ -409,8 +409,8 @@ export class Board {
 	processMergedFruit(mergedFruit) {
 		this.fruits.push(mergedFruit);
 
-		if (typeof mergeSound !== 'undefined') {
-			mergeSound.play();
+		if (this.player.gameManager.game.soundManager.mergeSound) {
+			this.player.gameManager.game.soundManager.mergeSound.play();
 		}
 
 		let scoreLevel = mergedFruit.level;
@@ -463,17 +463,18 @@ export class Board {
 	}
 
 	checkFruitOverLine(y) {
+		// Add a buffer area to make decisions looser
+		const bufferZone = 5; // This value can be adjusted as needed
+
+		//Detection counter to record how many fruits are near the red line
+		let nearLineCount = 0;
+
 		for (const fruit of this.fruits) {
 			if (fruit.getState() !== Fruit.STATE.FALLING || fruit.getSafePeriod() > 0) continue;
 
 			const fruitTop = fruit.sprite.y - fruit.sprite.d / 2;
-			if (fruitTop <= y) {
-				if (this.mode == 'single') {
-					this.uiControllor.drawGameOver(
-						this.gameArea.x + this.gameArea.w / 2,
-						this.gameArea.y - 60
-					);
-				}
+
+			if (fruitTop <= y - bufferZone) {
 				return true;
 			}
 		}

@@ -12,6 +12,7 @@ export class TutorialManager {
 		this.clickProtectionTimer = 20; // Wait some frames before allowing clicks
 		this.scaleVal = gameManager.scaleVal; // Get current scale value
 		this.canvasElt = document.querySelector('canvas'); // Get canvas element reference
+		this.skipButton = null;
 
 		// Listen for window resize events to update button scaling
 		window.addEventListener('resize', () => {
@@ -21,7 +22,7 @@ export class TutorialManager {
 		});
 
 		// Create skip button
-		this.createSkipButton();
+		//this.createSkipButton();
 
 		// Setup click listener for tutorial progression
 		this.setupClickListener();
@@ -30,45 +31,46 @@ export class TutorialManager {
 		if (this.mode === 'single') {
 			this.tutorialSteps = [
 				{
-					text: "Welcome to the Crazy Bubble! \nYour goal is to merge bubbles of the same size to create larger bubbles and earn points. \nDon't let bubbles stack up past the red line!",
+					text: 'Welcome to the Crazy Bubble! \nMerge matching bubbles to grow bigger & earn coins!\nKeep stacks below the red line!',
 					highlight: null,
 				},
 				{
-					text: 'Move your mouse to position the bubble. Click to drop the bubble. \nTry to drop bubbles on top of other bubbles of the same size to merge them!',
+					text: 'Move & click mouse🖱️ to drop bubbles \nAim for same-size matches to merge!',
 					highlight: null,
 				},
 				{
-					text: 'Random incidents will occur throughout gameplay that will create challenges for you!',
+					text: '⚠️Random incidents will occur throughout gameplay that will create challenges for you!',
 					highlight: null,
 				},
 				{
-					text: 'The shop contains special tools that you can purchase with coins earned by merging bubbles.',
+					text: '💰SHOP: Spend coins on special tools.',
 					highlight: this.gameManager.uiManager.AREAS.shop,
 				},
 				{
-					text: "Shuffle: Shakes all bubbles to help rearrange them when you're stuck.",
+					text: '❓Random: Gives you a random tool or special bubble for a lower price.',
+					highlight: 'random',
+				},
+				{
+					text: '🔀Shuffle: Rearrange stuck bubbles.',
 					highlight: 'shuffle',
 				},
 				{
-					text: 'Divine Shield: Protects you from incidents for a short period of time.',
+					text: '🛡️Divine Shield: Temporary protection from incidents.',
 					highlight: 'divineShield',
 				},
 				{
-					text: 'Double Score: Doubles your score for each merge for a limited time.',
+					text: '✨Double Score: Double points timer.',
 					highlight: 'doubleScore',
 				},
 				{
-					text: 'Bomb: Creates an explosive bubble that clears nearby bubbles when it collides.',
-					highlight: 'bombTool',
-				},
-				{
-					text: 'Rainbow: Creates a special bubble that can merge with any other bubble.',
+					text: '🌈Rainbow: Universal merger.',
 					highlight: 'rainbowTool',
 				},
 				{
-					text: 'Random: Gives you a random tool or special bubble for a lower price.',
-					highlight: 'random',
+					text: '💣Bomb: Clear nearby bubbles.',
+					highlight: 'bombTool',
 				},
+
 				{
 					text: 'Get ready! The game will start when you click.',
 					highlight: null,
@@ -77,67 +79,72 @@ export class TutorialManager {
 		} else if (this.mode === 'double') {
 			this.tutorialSteps = [
 				{
-					text: 'Welcome to the Crazy Bubble Two-Player Mode!',
+					text: 'Welcome to the Crazy Bubble Double-Player Mode!',
 					highlight: null,
 				},
 				{
-					text: 'Players must merge bubbles in their own area.\n Avoid stacking bubbles beyond the red line — that ends the game!\n\nWin Conditions: \n1. First player to achieve biggest bubble size wins! \nOR  \n2.  If time runs out, the player with highest score wins!',
+					text: 'Merge in your zone.\n ❌ Cross red line = lose!\n',
+					highlight: null,
+				},
+				{
+					text: '🏆Win Conditions:\n1. Get the Biggest bubble\nOR \n2. Higher score',
 					highlight: null,
 				},
 				{
 					title: 'How to play',
 					highlight: null,
 					split: true,
-					left: ['Left Side Player 1:', '- A / D: Move bubble left / right', '- S: Drop bubble'],
-					right: ['Right Side Player 2:', '- ← / →: Move bubble left / right', '- ↓: Drop bubble'],
+					left: ['Left Side Player 1:\n A (Left) / D (Right) \nS (Drop)'],
+					right: ['Right Side Player 2:\n← (Left)/→ (Right)\n↓ (Drop)'],
 					highlightKeys: ['A', 'D', 'S', '←', '→', '↓'],
 				},
 				{
-					text: 'Random incidents will occur throughout gameplay that will create challenges for you!',
+					text: '⚠️Random events affect both players!',
 					highlight: null,
 				},
 				{
-					text: 'The shop contains special tools that you can purchase with coins earned by merging bubbles.',
+					text: '💰SHOP: Spend coins on special tools.',
 					highlight: this.gameManager.uiManager.AREAS.shop,
 				},
 				{
 					title: 'Shop Controls',
-					left: ['Left Side Player 1:', '- W / Q to browse', '- E to buy'],
-					right: ['Right Side Player 2:', "- ⭡ / '.' to browse", "- '?' to buy"],
+					left: ['Left Side Player 1:\nQ (Down) and W (Up)\nE (Buy)'],
+					right: ["Right Side Player 2:\n'/' (Down) and '↑' (Up)\n'.' (Buy)"],
 					highlight: this.gameManager.uiManager.AREAS.shop,
 					split: true,
-					highlightKeys: ['Q', 'W', 'E', '↑', '.', '?'],
+					highlightKeys: ['Q', 'W', 'E', '↑', '.', '/'],
 				},
 				{
-					text: "Shuffle: Shakes all bubbles to help rearrange them when you're stuck.",
-					highlight: 'shuffle',
-				},
-				{
-					text: 'Divine Shield: Protects you from incidents for a short period of time.',
-					highlight: 'divineShield',
-				},
-				{
-					text: 'Double Score: Doubles your score for each merge for a limited time.',
-					highlight: 'doubleScore',
-				},
-				{
-					text: 'Bomb: Creates an explosive bubble that clears nearby bubbles when it collides.',
-					highlight: 'bombTool',
-				},
-				{
-					text: 'Rainbow: Creates a special bubble that can merge with any other bubble.',
-					highlight: 'rainbowTool',
-				},
-				{
-					text: 'Random: Gives you a random tool or special bubble for a lower price.',
+					text: '❓Random: Gives you a random tool or special bubble for a lower price.',
 					highlight: 'random',
 				},
 				{
-					text: 'Strong Wind: Cause a wind on your opponent side.',
+					text: '🔀Shuffle: Rearrange stuck bubbles.',
+					highlight: 'shuffle',
+				},
+				{
+					text: '🛡️Divine Shield: Temporary protection from incidents.',
+					highlight: 'divineShield',
+				},
+				{
+					text: '✨Double Score: Double points timer.',
+					highlight: 'doubleScore',
+				},
+				{
+					text: '🌈Rainbow: Universal merger.',
+					highlight: 'rainbowTool',
+				},
+				{
+					text: '💣Bomb: Clear nearby bubbles.',
+					highlight: 'bombTool',
+				},
+
+				{
+					text: '💨Strong Wind: Cause a wind on your opponent side.',
 					highlight: 'Wind',
 				},
 				{
-					text: 'Heavy Rain: Cause a rain on your opponent side.',
+					text: '🌧️Heavy Rain: Cause a rain on your opponent side.',
 					highlight: 'Rain',
 				},
 				{
@@ -152,16 +159,33 @@ export class TutorialManager {
 	}
 
 	// Create the skip button for tutorial
-	createSkipButton() {
-		this.skipButton = new Button('Skip Tutorial', () => this.skipTutorial(), {
-			x: width - 130,
-			y: 10,
-			getScaleVal: () => this.gameManager.scaleVal,
-			bgColor: '#E5C3A6',
-			textColor: '#6B4F3F',
-			hoverBg: '#F4D8C6',
-			hoverText: '#A3785F',
-		});
+	createSkipButton(tutorialBoxX, tutorialBoxY, boxWidth, boxHeight) {
+		if (this.skipButton) {
+			const buttonX =
+				this.mode === 'single' ? tutorialBoxX + boxWidth / 4 : tutorialBoxX + boxWidth / 4 + 40;
+			const buttonY = tutorialBoxY + boxHeight / 2 - 50;
+			this.skipButton.setPosition(buttonX, buttonY);
+			return;
+		}
+		const buttonX =
+			this.mode === 'single' ? tutorialBoxX + boxWidth / 4 : tutorialBoxX + boxWidth / 4 + 40;
+		const buttonY = tutorialBoxY + boxHeight / 2 - 50;
+
+		this.skipButton = new Button(
+			'Skip',
+			() => {
+				this.skipTutorial();
+			},
+			{
+				x: buttonX,
+				y: buttonY,
+				getScaleVal: () => this.gameManager.scaleVal,
+				bgColor: '#E5C3A6',
+				textColor: '#6B4F3F',
+				hoverBg: '#F4D8C6',
+				hoverText: '#A3785F',
+			}
+		);
 	}
 
 	// Skip the tutorial and go directly to gameplay
@@ -169,6 +193,7 @@ export class TutorialManager {
 		// Hide the skip button
 		if (this.skipButton) {
 			this.skipButton.remove();
+			this.skipButton = null;
 		}
 
 		// End the tutorial
@@ -262,6 +287,7 @@ export class TutorialManager {
 		// Remove the skip button if it exists
 		if (this.skipButton) {
 			this.skipButton.remove();
+			this.skipButton = null;
 		}
 
 		this.restoreOriginalClickHandler();
@@ -308,9 +334,9 @@ export class TutorialManager {
 		push();
 		// Position the tutorial box
 		let boxX = width / 2;
-		let boxY = 117;
-		let boxWidth = min(850, width * 0.9);
-		let boxHeight = 220;
+		let boxY = this.mode === 'single' ? 150 : 117;
+		let boxWidth = this.mode === 'single' ? 600 : 850;
+		let boxHeight = this.mode === 'single' ? 270 : 220;
 
 		// Draw background
 		fill(53, 47, 42, 255);
@@ -397,6 +423,8 @@ export class TutorialManager {
 		textAlign(CENTER, CENTER);
 		text('Click anywhere to continue', boxX, boxY + boxHeight / 2 - 20);
 		pop();
+
+		this.createSkipButton(boxX, boxY, boxWidth, boxHeight);
 	}
 
 	update() {
@@ -409,11 +437,11 @@ export class TutorialManager {
 				this.initialClickProtection = false;
 			}
 		}
-
+		/*
 		// Update skip button position when scaling may have changed
 		if (this.skipButton) {
 			this.skipButton.updatePosition();
-		}
+		}*/
 
 		// Ensure all bubbles stay frozen during tutorial
 		this.freezeAllFruits();
@@ -431,6 +459,7 @@ export class TutorialManager {
 			rect(0, 0, width, height);
 			pop();
 		}
+
 		if (this.mode === 'double') {
 			if (currentStepData.highlightKeys) {
 				this.gameManager.uiManager.keyGuide.setHighlight(currentStepData.highlightKeys);

@@ -3,6 +3,8 @@ import { Timer } from '../models/Timer.js';
 import { GameUIManager } from './GameUIManager.js';
 import { TutorialManager } from './TutorialManager.js';
 
+const endGameTextY = 80;
+
 export class GameManager {
 	constructor(game, mode, scaleVal) {
 		this.mode = mode;
@@ -45,6 +47,13 @@ export class GameManager {
 				player.boards.incidentBegin();
 			}
 		});
+
+		// Make sure the Store indicator is displayed and updated after the tutorial ends
+		if (this.uiManager && this.uiManager.shop) {
+			// Force all button positions and indicators to update once
+			this.uiManager.shop.setupShopUI(this.uiManager.AREAS.shop);
+			//this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
+		}
 	}
 
 	updateTutorial() {
@@ -97,8 +106,9 @@ export class GameManager {
 	}
 
 	reset() {
-		if (gameOverMusic && gameOverMusic.isPlaying()) {
-			gameOverMusic.stop();
+		const soundManager = this.game.soundManager;
+		if (soundManager.gameOverMusic && soundManager.gameOverMusic.isPlaying()) {
+			soundManager.gameOverMusic.stop();
 		}
 
 		if (this.playAgainButton) {
@@ -118,8 +128,9 @@ export class GameManager {
 			this.uiManager.counter.reset();
 		}
 
-		if (this.uiManager?.shop && this.mode === 'double') {
+		if (this.uiManager?.shop) {
 			this.uiManager.shop.resetIndicators(this.uiManager.AREAS.shop);
+			this.uiManager.shop.setupShopUI(this.uiManager.AREAS.shop);
 		}
 
 		if (this.player && this.player.length > 0) {
@@ -152,6 +163,7 @@ export class GameManager {
 				}
 			});
 		}
+		this.uiManager.setupLabels(); // Add this at the end
 	}
 
 	setup() {
@@ -180,11 +192,11 @@ export class GameManager {
 	update() {
 		if (!this.isGameOver) {
 			this.checkIsGameOver();
+			this.updateLeadingPlayer();
 		}
 		this.updateScale(this.scaleVal);
 		this.uiManager.ui.drawLabels();
 		this.uiManager.draw();
-		this.uiManager.shop.updateAllButtonPositions(this.uiManager.AREAS.shop);
 
 		this.player.forEach(player => player.update());
 
@@ -203,19 +215,28 @@ export class GameManager {
 			}
 
 			if (this.isGameOver) {
-				if (gameOverMusic && !gameOverMusic.isPlaying()) {
-					gameOverMusic.loop();
+				const soundManager = this.game.soundManager;
+
+				if (soundManager.gameOverMusic && !soundManager.isMuted) {
+					soundManager.stopBackgroundMusic();
+
+					soundManager.gameOverMusic.play();
+					soundManager.gameOverMusic.onended(() => {
+						soundManager.playBackgroundMusic();
+					});
 				}
+
 				if (this.uiManager.counter && this.uiManager.counter.stop) {
+					this.uiManager.ui.removeLabel('timer');
 					this.uiManager.counter.stop();
 				}
 				noLoop();
 			}
 		}
 
-		// This should always go at the very end
-		if (this.isGameOver && this.endMessage) {
-			this.uiManager.ui.drawEndGameOverlay(this.endMessage);
+		// Redraw game end messages on top of everything else
+		if (this.isGameOver && this.mode === 'double') {
+			this.redrawGameEndMessages();
 		}
 	}
 
@@ -228,10 +249,15 @@ export class GameManager {
 		for (const player of this.player) {
 			player.boards.updateScale(newScale);
 		}
+		if (this.uiManager) {
+			this.uiManager.updateScale(newScale);
+		}
 	}
+
 	goToMainMenu() {
-		if (gameOverMusic && gameOverMusic.isPlaying()) {
-			gameOverMusic.stop();
+		const soundManager = this.game.soundManager;
+		if (soundManager.gameOverMusic && soundManager.gameOverMusic.isPlaying()) {
+			soundManager.gameOverMusic.stop();
 		}
 
 		location.reload();
@@ -250,26 +276,23 @@ export class GameManager {
 				}
 
 				if (player.coin) {
-					player.coin.reset(); // Asegúrate que este método existe
-					player.updateCoin?.(); // Si hay un método visual de actualización
+					player.coin.reset(); // Make sure this method exists
+					player.updateCoin?.(); // If there is a visual update method
 				}
 
-				// Eliminar frutas del juego de forma segura
+				// Safely remove fruits from the game
 				if (player.boards) {
-					// Eliminar frutas visual y físicamente
+					// Remove fruits visually and physically
 					player.boards.fruits.forEach(fruit => {
-						fruit.remove?.(); // método seguro de eliminación de sprites
+						fruit.remove?.(); // Safe method to remove sprites
 					});
 					player.boards.fruits = [];
 
-					// Eliminar current y next fruit si existen
+					// Remove current and next fruit if they exist
 					player.boards.currentFruit?.remove?.();
 					player.boards.nextFruit?.remove?.();
 					player.boards.currentFruit = null;
 					player.boards.nextFruit = null;
-
-					// Crear frutas nuevas como si fuera el comienzo
-					//player.boards.setup();
 				}
 			});
 		}
@@ -278,9 +301,9 @@ export class GameManager {
 	checkIsGameOver() {
 		if (this.isGameOver) return;
 
+		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
 		let highestScore = 0;
 		let winner = null;
-		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
 
 		if (this.mode == 'double') {
 			const player1 = this.player[0];
@@ -292,12 +315,16 @@ export class GameManager {
 			//You can check the value of the max level in player X using ${player2.boards.getMaxFruitLevel()}
 			//first checking fruit over line
 			if (player1.boards.checkFruitOverLine(dashLineY)) {
-				this.uiManager.ui.drawCrossLine(
-					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
+				this.uiManager.ui.drawCrossLine(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -306,12 +333,16 @@ export class GameManager {
 			}
 
 			if (player2.boards.checkFruitOverLine(dashLineY)) {
-				this.uiManager.ui.drawCrossLine(
-					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
+				this.uiManager.ui.drawCrossLine(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -321,12 +352,16 @@ export class GameManager {
 
 			//second check if fruit is biggest
 			if (player1.boards.checkFruitIsMaximun()) {
-				this.uiManager.ui.drawMaximum(
-					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
+				this.uiManager.ui.drawMaximum(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -335,12 +370,16 @@ export class GameManager {
 			}
 
 			if (player2.boards.checkFruitIsMaximun()) {
-				this.uiManager.ui.drawMaximum(
-					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-					60
-				);
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
 				this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
+				this.uiManager.ui.drawMaximum(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
 
 				this.isGameOver = true;
 				this.showEndGameButtons();
@@ -349,12 +388,23 @@ export class GameManager {
 			}
 
 			//third check which player has more score at the end
-			if (this.uiManager.counter.getTimeLeft() <= 0) {
-				if (player1.score.getScore() == player2.score.getScore()) {
-					this.uiManager.ui.drawTie(player1.boards.gameArea.x + player1.boards.gameArea.w / 2, 60);
-					this.uiManager.ui.drawTie(player2.boards.gameArea.x + player2.boards.gameArea.w / 2, 60);
+			if (this.uiManager.counter.getTimeLeft() == 0) {
+				this.uiManager.ui.removeLabel('timer');
+				// Stop all incidents for both players to prevent warning overlap
+				player1.boards.incidentManager?.stopAllIncidents();
+				player2.boards.incidentManager?.stopAllIncidents();
 
+				if (player1.score.getScore() == player2.score.getScore()) {
 					this.uiManager.ui.drawEndGameOverlay("It's a Tie!", true);
+
+					this.uiManager.ui.drawTie(
+						player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+						endGameTextY
+					);
+					this.uiManager.ui.drawTie(
+						player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+						endGameTextY
+					);
 
 					this.isGameOver = true;
 					this.showEndGameButtons();
@@ -364,17 +414,18 @@ export class GameManager {
 				if (player1.score.getScore() > player2.score.getScore()) {
 					highestScore = player1.score.getScore();
 					winner = player1;
+
+					// First draw the overlay
+					this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
+
 					this.uiManager.ui.drawWinner(
 						player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
 					this.uiManager.ui.drawLoser(
 						player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
-					winner = player1;
-					this.uiManager.ui.drawEndGameOverlay(this.endMessage1);
-
 					this.isGameOver = true;
 					this.showEndGameButtons();
 
@@ -384,16 +435,17 @@ export class GameManager {
 				if (player1.score.getScore() < player2.score.getScore()) {
 					highestScore = player2.score.getScore();
 					winner = player2;
+
+					this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
+
 					this.uiManager.ui.drawWinner(
 						player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
 					this.uiManager.ui.drawLoser(
 						player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
-						60
+						endGameTextY
 					);
-
-					this.uiManager.ui.drawEndGameOverlay(this.endMessage2);
 
 					this.isGameOver = true;
 					this.showEndGameButtons();
@@ -416,35 +468,38 @@ export class GameManager {
 							`Highest Score: ${this.highestSingleScore}`
 						);
 					}
-					console.log('Current score:', currentScore);
-
-					console.log('Highest single score:', this.highestSingleScore);
-
-					this.uiManager.ui.drawCrossLine(
-						player.boards.gameArea.x + player.boards.gameArea.w / 2,
-						60
-					);
 
 					this.isGameOver = true;
-					if (this.isGameOver && gameOverMusic && !gameOverMusic.isPlaying()) {
-						gameOverMusic.loop();
+
+					// Stop all incidents to prevent warning messages
+					if (player.boards.incidentManager) {
+						player.boards.incidentManager.stopAllIncidents();
 					}
+
+					const soundManager = this.game.soundManager;
+					if (this.isGameOver && soundManager.gameOverMusic && !soundManager.isMuted) {
+						soundManager.gameOverMusic.play();
+					}
+
+					// Calculate the center of the game area
+					const gameAreaCenter = player.boards.gameArea.x + player.boards.gameArea.w / 2;
 
 					this.uiManager.ui.drawEndGameSingleOverlay(
 						'GAME OVER',
 						currentScore,
-						this.highestSingleScore
+						this.highestSingleScore,
+						gameAreaCenter
 					);
-					this.showEndGameButtons(true);
+					this.showEndGameButtons(true, gameAreaCenter);
 					return;
 				}
 			}
 		}
 	}
 
-	showEndGameButtons(single = false) {
+	showEndGameButtons(single = false, gameAreaCenter = null) {
 		let temp = 0;
-		const centerX = width / 2;
+		const centerX = gameAreaCenter || width / 2;
 		const buttonY = height - 80;
 
 		if (single == true) {
@@ -460,7 +515,7 @@ export class GameManager {
 				loop();
 			},
 			{
-				x: centerX - 110,
+				x: centerX - 100,
 				y: buttonY - 600 + temp,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#A5D6A7',
@@ -476,7 +531,7 @@ export class GameManager {
 				this.goToMainMenu();
 			},
 			{
-				x: centerX + 30,
+				x: centerX + 40,
 				y: buttonY - 600 + temp,
 				getScaleVal: () => this.scaleVal,
 				bgColor: '#EF9A9A',
@@ -513,6 +568,115 @@ export class GameManager {
 		const player = this.player[0];
 		if (player && player.boards) {
 			player.boards.handleMouseClick();
+		}
+	}
+
+	redrawGameEndMessages() {
+		if (!this.isGameOver || this.mode !== 'double') return;
+
+		// We need to determine which end condition triggered the game over
+		// and redraw the appropriate messages on top
+		const player1 = this.player[0];
+		const player2 = this.player[1];
+		const dashLineY = this.uiManager.AREAS.dashLine1.y1;
+
+		// Check for crossed line
+		if (player1.boards.checkFruitOverLine(dashLineY)) {
+			this.uiManager.ui.drawCrossLine(
+				player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		if (player2.boards.checkFruitOverLine(dashLineY)) {
+			this.uiManager.ui.drawCrossLine(
+				player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		// Check for maximum fruit
+		if (player1.boards.checkFruitIsMaximun()) {
+			this.uiManager.ui.drawMaximum(
+				player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		if (player2.boards.checkFruitIsMaximun()) {
+			this.uiManager.ui.drawMaximum(
+				player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+				endGameTextY
+			);
+			return;
+		}
+
+		// Check for time-based end
+		if (this.uiManager.counter.getTimeLeft() <= 0) {
+			if (player1.score.getScore() === player2.score.getScore()) {
+				this.uiManager.ui.drawTie(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				this.uiManager.ui.drawTie(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				return;
+			}
+
+			if (player1.score.getScore() > player2.score.getScore()) {
+				this.uiManager.ui.drawWinner(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				this.uiManager.ui.drawLoser(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				return;
+			}
+
+			if (player1.score.getScore() < player2.score.getScore()) {
+				this.uiManager.ui.drawWinner(
+					player2.boards.gameArea.x + player2.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				this.uiManager.ui.drawLoser(
+					player1.boards.gameArea.x + player1.boards.gameArea.w / 2,
+					endGameTextY
+				);
+				return;
+			}
+		}
+	}
+
+	updateLeadingPlayer() {
+		if (this.mode !== 'double' || this.isGameOver) return;
+
+		const player1 = this.player[0];
+		const player2 = this.player[1];
+
+		// Get the current scores of both players
+		const score1 = player1.score.getScore();
+		const score2 = player2.score.getScore();
+
+		// Make the leading player's score label flash (optional effect)
+		const pulseEffect = frameCount % 40 < 20; // Flashes every 2/3 seconds
+
+		if (score1 > score2 && pulseEffect) {
+			this.uiManager.ui.updateLabelColour(`score_1`, '#FF5733');
+		} else if (score1 > score2) {
+			this.uiManager.ui.updateLabelColour(`score_1`, '#6B4F3F'); // Restore original color
+		}
+
+		if (score2 > score1 && pulseEffect) {
+			this.uiManager.ui.updateLabelColour(`score_2`, '#3366FF');
+		} else if (score2 > score1) {
+			this.uiManager.ui.updateLabelColour(`score_2`, '#6B4F3F'); // Restore original color
 		}
 	}
 }

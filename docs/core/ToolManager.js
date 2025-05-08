@@ -5,7 +5,16 @@ import {
 	RainbowFruit,
 	ShuffleTool,
 } from '../shop/index.js';
+
+/**
+ * Manages tools and special fruits for a player in the game.
+ */
 export class ToolManager {
+	/**
+	 * Creates an instance of ToolManager.
+	 * @param {Object} player - The player object associated with the tools.
+	 * @param {Object} area - The game area where tools are used.
+	 */
 	constructor(player, area) {
 		this.player = player;
 		this.area = area;
@@ -26,7 +35,11 @@ export class ToolManager {
 		};
 	}
 
+	/**
+	 * Updates all tools by calling their update methods, if available.
+	 */
 	update() {
+		// Iterate through tools and call their update methods
 		for (let key in this.tools) {
 			if (this.tools[key].update) {
 				this.tools[key].update();
@@ -34,6 +47,10 @@ export class ToolManager {
 		}
 	}
 
+	/**
+	 * Activates a tool, special fruit, or incident based on the provided name.
+	 * @param {string} toolName - The name of the tool, special fruit, or incident to activate.
+	 */
 	activate(toolName) {
 		if (toolName === 'random') {
 			this.randomTool();
@@ -62,12 +79,20 @@ export class ToolManager {
 		}
 	}
 
+	/**
+	 * Activates a specific tool by name.
+	 * @param {string} toolName - The name of the tool to activate.
+	 */
 	activateTool(toolName) {
 		if (this.tools[toolName]) {
 			this.tools[toolName].activate();
 		}
 	}
 
+	/**
+	 * Activates a special fruit by name.
+	 * @param {string} fruitName - The name of the special fruit to activate.
+	 */
 	activateSpecialFruit(fruitName) {
 		const fruit = this.specialFruits[fruitName]?.();
 		if (!fruit?.sprite) return;
@@ -75,6 +100,9 @@ export class ToolManager {
 		this.board.setCurrentFruit(fruit);
 	}
 
+	/**
+	 * Activates a random tool or special fruit.
+	 */
 	randomTool() {
 		const allKeys = [...Object.keys(this.tools), ...Object.keys(this.specialFruits)];
 		if (allKeys.length === 0) {
@@ -89,6 +117,9 @@ export class ToolManager {
 		}
 	}
 
+	/**
+	 * Resets all tools by deactivating them.
+	 */
 	reset() {
 		// Reset all tools
 		Object.values(this.tools).forEach(tool => {

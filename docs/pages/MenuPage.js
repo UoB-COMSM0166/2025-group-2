@@ -8,7 +8,6 @@ export class MenuPage {
 		this.buttonHeight = 60;
 		this.buttonSpacing = 70;
 		this.buttonCornerRadius = 15;
-
 		// Color configuration
 		this.buttonColors = {
 			normal: color(213, 189, 175), // #d5bdaf - It's the same color as the walls
@@ -37,19 +36,36 @@ export class MenuPage {
 		this.buttons = [
 			{
 				text: 'Casual Mode',
-				action: () => this.game.startGame('single'),
+				action: () => {
+					userStartAudio().then(() => {
+						this.game.soundManager.playBackgroundMusic();
+						this.game.startGame('single');
+					});
+				},
 				bounds: { x: 0, y: 0, w: this.buttonWidth, h: this.buttonHeight },
 				isHovered: false,
 			},
 			{
 				text: 'Double Player',
-				action: () => this.game.startGame('double'),
+				action: () => {
+					userStartAudio().then(() => {
+						this.game.soundManager.playBackgroundMusic();
+						this.game.startGame('double');
+					});
+				},
 				bounds: { x: 0, y: 0, w: this.buttonWidth, h: this.buttonHeight },
 				isHovered: false,
 			},
 			{
 				text: 'Tutorial: ON',
 				action: () => this.toggleTutorial(),
+				bounds: { x: 0, y: 0, w: this.buttonWidth, h: this.buttonHeight },
+				isHovered: false,
+			},
+			// Add volume button here
+			{
+				text: 'Sound: ON',
+				action: () => this.toggleSound(),
 				bounds: { x: 0, y: 0, w: this.buttonWidth, h: this.buttonHeight },
 				isHovered: false,
 			},
@@ -63,6 +79,15 @@ export class MenuPage {
 
 		// Initialize the background fruit
 		this.initBackgroundFruits();
+
+		// Add a global click listener to unlock the AudioContext and start background music
+		const unlockAudio = () => {
+			userStartAudio().then(() => {
+				this.game.soundManager.playBackgroundMusic();
+			});
+			document.body.removeEventListener('click', unlockAudio);
+		};
+		document.body.addEventListener('click', unlockAudio);
 	}
 
 	initBackgroundFruits() {
@@ -255,5 +280,10 @@ export class MenuPage {
 
 		// Updated tutorial preferences for the game
 		this.game.setTutorialEnabled(this.tutorialEnabled);
+	}
+
+	toggleSound() {
+		const isMuted = this.game.soundManager.toggleMute();
+		this.buttons[3].text = isMuted ? 'Sound: OFF' : 'Sound: ON';
 	}
 }
