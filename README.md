@@ -283,14 +283,14 @@ The evaluated result confirms that the addition of our key twist and new core me
 
 ## Contribution Statement
 
-|        Name         | Contribution |
-| :-----------------: | :----------: |
-|  Hayley Yi Li Tay   |     1.00     |
-| Doris Chia Chia Wu  |     1.00     |
-|      Shiyu Fan      |     1.00     |
-| Jimmy Chih Chun Lin |     1.00     |
-|   Octave Jin Liao   |     1.00     |
-|   Gerald Rodrigue   |     1.00     |
+|         Name          | Contribution |
+| :-------------------: | :----------: |
+|  Yi Li Tay (Hayley)   |     1.00     |
+| Chia Chia Wu (Doris)  |     1.00     |
+|       Shiyu Fan       |     1.00     |
+| Chih Chun Lin (Jimmy) |     1.00     |
+|   Jin Liao (Octave)   |     1.00     |
+|   Gerald Rodriguez    |     1.00     |
 
 ## Additional Marks
 
