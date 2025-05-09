@@ -597,7 +597,14 @@ All members of our team agree that this was an invaluable experience as it allow
 
 ## Contribution Statement
 
-- Provide a table of everyone's contribution, which may be used to weight individual grades. We expect that the contribution will be split evenly across team-members in most cases. Let us know as soon as possible if there are any issues with teamwork as soon as they are apparent.
+|         Name          | Contribution |
+| :-------------------: | :----------: |
+|  Yi Li Tay (Hayley)   |     1.00     |
+| Chia Chia Wu (Doris)  |     1.00     |
+|       Shiyu Fan       |     1.00     |
+| Chih Chun Lin (Jimmy) |     1.00     |
+|   Jin Liao (Octave)   |     1.00     |
+|   Gerald Rodriguez    |     1.00     |
 
 ## Additional Marks
 
