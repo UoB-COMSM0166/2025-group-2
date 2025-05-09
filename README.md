@@ -270,7 +270,7 @@ This does appear to be an area for improvement as we believe that we could have 
 
 ## Implementation
 
-The base behind our game is the traditional Suika Game, with added twists like double player mode, shop function, new tools and random incidences occuring during gameplay.
+The base behind our game is the traditional "Merge Fruit" game, with added twists like double player mode, shop function, new tools and random incidences occuring during gameplay.
 
 <p align="center">
 <img width="40%" src="./images/first-version-gameplay.gif">
