@@ -119,9 +119,6 @@ By combining these three twists, we managed to create an engaging game that offe
 
 ## Requirements
 
-- 15% ~750 words
-- Use case diagrams, user stories. Early stages design. Ideation process. How did you decide as a team what to develop?
-
 ### Ideation Process
 
 Our team approached this project with a specific theme in mind: "fun games that you would play after a stressful day to unwind and is simple enough to complete in 3 months". This was a result of our team's shared experience on balancing work with relaxation, and recognizing the value of engaging games that offer quick enjoyment without a steep learning curve.
