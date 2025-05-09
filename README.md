@@ -1,47 +1,6 @@
-# 2025-group-2 <!-- omit from toc -->
+# 2025-group-2
 
 2025 COMSM0166 group 2
-
-<details>
-<summary>📖 Content</summary>
-
-- [Links to weekly discussions](#links-to-weekly-discussions)
-- [Your Game](#your-game)
-- [Team Members](#team-members)
-- [Introduction](#introduction)
-- [Requirements](#requirements)
-  - [Ideation Process](#ideation-process)
-  - [Stakeholders Identification](#stakeholders-identification)
-  - [User Stories](#user-stories)
-  - [Use Case Model](#use-case-model)
-- [Design](#design)
-  - [System Architecture](#system-architecture)
-  - [Class Diagram](#class-diagram)
-  - [Sequence Diagram](#sequence-diagram)
-  - [Agile Approach](#agile-approach)
-- [Implementation](#implementation)
-- [Evaluation](#evaluation)
-- [Process](#process)
-- [Sustainability, ethics and accessibility](#sustainability-ethics-and-accessibility)
-- [Conclusion](#conclusion)
-- [Contribution Statement](#contribution-statement)
-- [Additional Marks](#additional-marks)
-
-</details>
-
-## Links to weekly discussions
-
-|     Week Number     |                                                                                                                                                                                                                                                                         Links                                                                                                                                                                                                                                                                         |
-| :-----------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|       Week 1        |                                                                                                                                                                                                    [meeting minutes](/ReportMaterial/MeetingMinutes/16Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/13)                                                                                                                                                                                                     |
-|       Week 2        |                                                                                                                                                                                                    [meeting minutes](/ReportMaterial/MeetingMinutes/21Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/12)                                                                                                                                                                                                     |
-|       Week 3        | [meeting minutes](/ReportMaterial/MeetingMinutes/28Jan2025.txt) <br> [crazy bubble discussion drawings](/ReportMaterial/MeetingMinutes/28th.jpeg) <br> [crazy bubble initial brainstorm](/ReportMaterial/ProgressTracker/crazy-bubble-brainstorming-28Jan2025.pdf) <br> [flappy bird gameplay video for lab](/ReportMaterial/Week3PrototypeVideos/flappy-bird-ppt-gameplay.mp4) <br> [crazy bubble gameplay video for lab](https://www.youtube.com/shorts/hrKJQ_CAGm4) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/14) |
-|       Week 4        |                                  [meeting minutes](/ReportMaterial/MeetingMinutes/4thFeb2025.txt) <br> [crazy bubble new brainstorm redrawn](/ReportMaterial/ProgressTracker/crazy-bubble-redo-4Feb2025.pdf) <br> [crazy bubble new discussion drawings](/ReportMaterial/ProgressTracker/Meeting%20pic%20on%204th%20Feb.jpeg) <br> [game requirements week4 lab](/ReportMaterial/Week4LabGameRequriments/week4-game-requirements.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/15)                                  |
-|       Week 5        |                                                                                                                                                                 [meeting minutes](ReportMaterial/MeetingMinutes/11thFeb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/16) <br> [Class Diagram](/ReportMaterial/Diagrams/class-diagram-v1.jpeg)                                                                                                                                                                  |
-|       Week 7        |                                                                                                                                [meeting minutes 1](ReportMaterial/MeetingMinutes/24Feb2025.txt) <br> [meeting minutes 2](ReportMaterial/MeetingMinutes/25Feb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/17) <br> [Qualitative Evaluations](ReportMaterial/qualitative-evals/)                                                                                                                                |
-|  Week 8 and Week 9  |                                                                                                                                                                   [meeting minutes](ReportMaterial/MeetingMinutes/4Mar2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/19) <br> [Quantitative Evaluations](ReportMaterial/quantitative-evals/)                                                                                                                                                                    |
-| Week 10 and Week 11 |                                                                                                                                                                                                                                       [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/20)                                                                                                                                                                                                                                       |
-|   Week 12 onwards   |                                                                                                                                                                                                                                       [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/21)                                                                                                                                                                                                                                       |
 
 ## Crazy Bubble Video Demonstration
 
@@ -56,7 +15,44 @@ Click on the image above to watch a game demonstration video of Crazy Bubble!
 
 Interested in trying out the game for yourself? You can [play here](https://uob-comsm0166.github.io/2025-group-2/)!
 
-## Team Members
+## Table of Contents
+
+<details>
+<summary>Contents</summary>
+
+- [Development Team](#Development-Team)
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+  - [Ideation Process](#ideation-process)
+  - [Stakeholders Identification](#stakeholders-identification)
+  - [User Stories](#user-stories)
+  - [Use Case Model](#use-case-model)
+- [Design](#design)
+  - [System Architecture](#system-architecture)
+  - [Class Diagram](#class-diagram)
+  - [Sequence Diagram](#sequence-diagram)
+  - [Agile Approach](#agile-approach)
+- [Implementation](#implementation)
+- [Evaluation](#evaluation)
+  - [Qualitative Evaluation](#qualitative-evaluation)
+  - [Quantitative Evaluation using NASA TLX](#quantitative-evaluation-using-nasa-tlx)
+- [Process](#process)
+  - [Collaboration](#collaboration)
+  - [Tools](#tools)
+- [Sustainability, ethics and accessibility](#sustainability-ethics-and-accessibility)
+  - [Environmental Impact](#1-environmental-impact)
+    - [Green Software Foundation Implementation Patterns](#11-green-software-foundation-implementation-patterns)
+    - [Energy](#12-energy)
+  - [Social Impact](#2-social-impact)
+  - [Individual Impact](#3-individual-impact)
+- [Conclusion](#conclusion)
+- [Contribution Statement](#contribution-statement)
+- [Appendices](#appendices)
+  - [Links to weekly discussions](#links-to-weekly-discussions)
+
+</details>
+
+## Development Team
 
 <p align="center">
 <img width="90%" src="./images/new_group_photo.jpg">
@@ -70,18 +66,6 @@ Interested in trying out the game for yourself? You can [play here](https://uob-
 | Chih Chun Lin (Jimmy) | jp24407@bristol.ac.uk | Product Owner  |
 |   Jin Liao (Octave)   | ge24446@bristol.ac.uk |   Developer    |
 |   Gerald Rodriguez    | nu24692@bristol.ac.uk |   Developer    |
-
-## Table of Contents
-
-- [Introduction](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#introduction)
-- [Requirements](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#requirements)
-- [Design](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#design)
-- [Implementation](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#implementation)
-- [Evaluation](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#evaluation)
-- [Process](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#process)
-- [Sustainability, ethics and accessibility](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#sustainability-ethics-and-accessibility)
-- [Conclusion](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#conclusion)
-- [Contribution Statement](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#contribution-statement)
 
 ## Introduction
 
@@ -204,9 +188,6 @@ In order to ensure that the various elements of the game are clear, we created t
 </p>
 
 ## Design
-
-- 15% ~750 words
-- System architecture. Class diagrams, behavioural diagrams.
 
 Once we identified the stakeholders and evaluated the User Stories, we were able to determine a list of features to be implemented into our game, with the Use Case Model acting as a planning tool to guide us on the flow of our system behaviour from a user's perspective.
 
@@ -343,8 +324,6 @@ Here, we will discuss about the two technical challenges that particularly stood
 Through addressing these challenges, along with other challenges not touched on in this report, we created a robust game that maintained our envisioned features while gaining valuable insights into managing complex system interactions. This experience highlighted the importance of thorough early integration testing and clear communication when working on interconnected systems in a collaborative environment.
 
 ## Evaluation
-
-- 15% ~750 words
 
 ### Qualitative Evaluation
 
@@ -671,15 +650,18 @@ All members of our team agree that this was an invaluable experience as it allow
 |   Jin Liao (Octave)   |     1.00     |
 |   Gerald Rodriguez    |     1.00     |
 
-## Additional Marks
+## Appendices
 
-You can delete this section in your own repo, it's just here for information. in addition to the marks above, we will be marking you on the following two points:
+### Links to weekly discussions
 
-- **Quality** of report writing, presentation, use of figures and visual material (5%)
-
-  - Please write in a clear concise manner suitable for an interested layperson. Write as if this repo was publicly available.
-
-- **Documentation** of code (5%)
-
-  - Is your repo clearly organised?
-  - Is code well commented throughout?
+|     Week Number     |                                                                                                                                                                                                                                                                         Links                                                                                                                                                                                                                                                                         |
+| :-----------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|       Week 1        |                                                                                                                                                                                                    [meeting minutes](/ReportMaterial/MeetingMinutes/16Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/13)                                                                                                                                                                                                     |
+|       Week 2        |                                                                                                                                                                                                    [meeting minutes](/ReportMaterial/MeetingMinutes/21Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/12)                                                                                                                                                                                                     |
+|       Week 3        | [meeting minutes](/ReportMaterial/MeetingMinutes/28Jan2025.txt) <br> [crazy bubble discussion drawings](/ReportMaterial/MeetingMinutes/28th.jpeg) <br> [crazy bubble initial brainstorm](/ReportMaterial/ProgressTracker/crazy-bubble-brainstorming-28Jan2025.pdf) <br> [flappy bird gameplay video for lab](/ReportMaterial/Week3PrototypeVideos/flappy-bird-ppt-gameplay.mp4) <br> [crazy bubble gameplay video for lab](https://www.youtube.com/shorts/hrKJQ_CAGm4) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/14) |
+|       Week 4        |                                  [meeting minutes](/ReportMaterial/MeetingMinutes/4thFeb2025.txt) <br> [crazy bubble new brainstorm redrawn](/ReportMaterial/ProgressTracker/crazy-bubble-redo-4Feb2025.pdf) <br> [crazy bubble new discussion drawings](/ReportMaterial/ProgressTracker/Meeting%20pic%20on%204th%20Feb.jpeg) <br> [game requirements week4 lab](/ReportMaterial/Week4LabGameRequriments/week4-game-requirements.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/15)                                  |
+|       Week 5        |                                                                                                                                                                 [meeting minutes](ReportMaterial/MeetingMinutes/11thFeb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/16) <br> [Class Diagram](/ReportMaterial/Diagrams/class-diagram-v1.jpeg)                                                                                                                                                                  |
+|       Week 7        |                                                                                                                                [meeting minutes 1](ReportMaterial/MeetingMinutes/24Feb2025.txt) <br> [meeting minutes 2](ReportMaterial/MeetingMinutes/25Feb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/17) <br> [Qualitative Evaluations](ReportMaterial/qualitative-evals/)                                                                                                                                |
+|  Week 8 and Week 9  |                                                                                                                                                                   [meeting minutes](ReportMaterial/MeetingMinutes/4Mar2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/19) <br> [Quantitative Evaluations](ReportMaterial/quantitative-evals/)                                                                                                                                                                    |
+| Week 10 and Week 11 |                                                                                                                                                                                                                                       [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/20)                                                                                                                                                                                                                                       |
+|   Week 12 onwards   |                                                                                                                                                                                                                                       [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/21)                                                                                                                                                                                                                                       |
