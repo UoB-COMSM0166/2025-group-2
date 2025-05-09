@@ -356,7 +356,7 @@ _Stage 1 - Initial Demo Version (25th Feb 2025)_
 > > Feedbacks for Improvement:
 > >
 > > > - Container (playing field) needs to be bigger
-> > > - Description of all function/tools should be added
+> > > - Explanation of all function/tools should be given
 > > > - Will be good to show a list of all different sizes of balls
 
 > #### Heuristic Evaluation:
@@ -364,7 +364,7 @@ _Stage 1 - Initial Demo Version (25th Feb 2025)_
 > > | Interface               | Issue                                                                                                                                 | Heuristic                               | Frequency | Impact | Persistence | Severity |
 > > | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --------- | ------ | ----------- | -------- |
 > > | Single Player Main Game | End game criteria needs to be added as the game is just an infinite loop right now with no ending                                     | Visibility of System Status             | 4         | 4      | 4           | 4        |
-> > | Single Player Main Game | There are no descriptions of the available tools in the game, only a button with the tool names. Players don't know what they are for | Help and documentation                  | 4         | 2      | 2           | 2.6      |
+> > | Single Player Main Game | There are no explanations on the available tools in the game, only a button with the tool names. Players don't know what they are for | Help and documentation                  | 4         | 2      | 2           | 2.6      |
 > > | Single Player Main Game | Players can't tell when the wind incidence is activated as there are no animations or indications, making it feel abrupt              | Visibility of System Status             | 3         | 3      | 2           | 2.6      |
 > > | Single Player Main Game | Some functions like the Bomb tool does not work as expected (no explosions even though the name would imply an explosion)             | Match between System and the Real World | 4         | 2      | 2           | 2.6      |
 > > | Single Player Main Game | Scores of the game needs to be more obvious                                                                                           | Visibility of System Status             | 2         | 1      | 1           | 1.3      |
@@ -373,15 +373,20 @@ After consolidating all the feedbacks received from Stage 1 of our qualitative e
 
 - Players need a way to determine that the game has ended
 - Tools not working as intended
-- Description of tools need to be displayed
-- More animations need to be included so it is obvious to players when an in-game event occurs
+- Explanation of tools need to be added
+- More indications need to be included so it is obvious to players when an in-game event occurs
 
 The points above were marked for prioritisation and as areas to focus on because they were either pointed out multiple times or that their negative impact on the game was huge.
-A key issue that was given a score of 4 for severity was that there was no end to the game. This was a point that was noted down as the top priority for rectification.
+A key issue that was given a score of 4 for severity was that there was no end to the game. This was a point that was noted down as the top priority for rectification. While the overall experience was positive, these were glaring issues that required our immediate attention before moving onto Stage 2.
 
-Once we had the evaluations analysed for Stage 1, the next steps and development prioritisations became clearer. The first improvement to be pushed was to include a way for the players to determine when their game has ended, essentially breaking out of the infinite loop and attaching a goal to the game. A couple of tools that did not work as intended also had to be fixed so that the gameplay does not get negatively impacted. We also had to improve player experience by adding descriptions to the tools available in the game and additional animations for in-game event occurences. While the overall experience was positive, these were glaring issues that required our immediate attention before moving onto Stage 2.
+Once we had the evaluations analysed for Stage 1, the next steps and development prioritisations became clearer. The modifications we added to the game following the Stage 1 evaluations were:
 
-For Stage 2, we focused on Think Aloud Evaluation so that we could get insights on personal opinions of players, with two examples shown below.
+1. to include a way for the players to determine when their game has ended, essentially breaking out of the infinite loop and attaching a goal to the game
+2. since a couple of tools did not work as intended, they were fixed so that the gameplay does not get negatively impacted
+3. explanation for tools were also added in to improve player experience
+4. additional indications for in-game event occurences were added so that it is clear when they are coming
+
+After the modifications were added, we moved on to Stage 2 where we focused on the Think Aloud Evaluation so that we could get insights on personal opinions of players, with two examples shown below.
 
 _Stage 2 - Improved version (3rd Mar 2025)_
 
@@ -420,7 +425,7 @@ _Stage 2 - Improved version (3rd Mar 2025)_
 
 With the modifications added according to the feedbacks received from Stage 1 of our qualitative evaluation, the feedbacks we received during Stage 2 leaned towards user experience improvements instead of critical fixes to make the game playable. Evaluating all the feedbacks received in Stage 2, it seems that the concerns raised during Stage 1 were addressed properly and received positively, which was a relief to the team. The remaining modifications to be made to the game at this point will mostly be to improve gameplay experience and to polish up the game.
 
-At this point, keeping in mind the limited time remaining, the team listed down the different modifications we would still like to add to the game and ranked them according to priority to focus on.
+At this point, keeping in mind the limited time remaining, the team listed down the different modifications we would still like to add to the game and ranked them according to priority to focus on. These modifications include fixing the Double Player mode so that both players can play using the keyboard, adding an animation for when the game ends, and fixing the unwanted bugs when two incidences occur concurrently.
 
 ### Quantitative Evaluation using NASA TLX
 
