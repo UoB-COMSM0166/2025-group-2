@@ -31,15 +31,17 @@
 
 ## Links to weekly discussions
 
-| Week Number |                                                                                                                                                                                                                                                                       Links                                                                                                                                                                                                                                                                       |
-| :---------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|   Week 1    |                                                                                                                                                                                                  [meeting minutes](/ReportMaterial/MeetingMinutes/16Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/13)                                                                                                                                                                                                   |
-|   Week 2    |                                                                                                                                                                                                  [meeting minutes](/ReportMaterial/MeetingMinutes/21Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/12)                                                                                                                                                                                                   |
-|   Week 3    | [meeting minutes](/ReportMaterial/MeetingMinutes/28Jan2025.txt) <br> [merge fruit discussion drawings](/ReportMaterial/MeetingMinutes/28th.jpeg) <br> [merge fruit initial brainstorm](/ReportMaterial/ProgressTracker/merge-fruit-brainstorming-28Jan2025.pdf) <br> [flappy bird gameplay video for lab](/ReportMaterial/Week3PrototypeVideos/flappy-bird-ppt-gameplay.mp4) <br> [merge fruit gameplay video for lab](https://www.youtube.com/shorts/hrKJQ_CAGm4) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/14) |
-|   Week 4    |                                 [meeting minutes](/ReportMaterial/MeetingMinutes/4thFeb2025.txt) <br> [merge fruit new brainstorm redrawn](/ReportMaterial/ProgressTracker/merge-fruit-redo-4Feb2025.pdf) <br> [merge fruit new discussion drawings](/ReportMaterial/ProgressTracker/Meeting%20pic%20on%204th%20Feb.jpeg) <br> [game requirements week4 lab](/ReportMaterial/Week4LabGameRequriments/week4-game-requirements.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/15)                                  |
-|   Week 5    |                                                                                                                                                               [meeting minutes](ReportMaterial/MeetingMinutes/11thFeb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/16) <br> [Class Diagram](/ReportMaterial/Diagrams/class-diagram-v1.jpeg)                                                                                                                                                                |
-|   Week 7    |                                                                                                                              [meeting minutes 1](ReportMaterial/MeetingMinutes/24Feb2025.txt) <br> [meeting minutes 2](ReportMaterial/MeetingMinutes/25Feb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/17) <br> [Qualitative Evaluations](ReportMaterial/qualitative-evals/)                                                                                                                              |
-|   Week 8    |                                                                                                                                                                 [meeting minutes](ReportMaterial/MeetingMinutes/4Mar2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/19) <br> [Quantitative Evaluations](ReportMaterial/quantitative-evals/)                                                                                                                                                                  |
+|     Week Number     |                                                                                                                                                                                                                                                                         Links                                                                                                                                                                                                                                                                         |
+| :-----------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+|       Week 1        |                                                                                                                                                                                                    [meeting minutes](/ReportMaterial/MeetingMinutes/16Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/13)                                                                                                                                                                                                     |
+|       Week 2        |                                                                                                                                                                                                    [meeting minutes](/ReportMaterial/MeetingMinutes/21Jan2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/12)                                                                                                                                                                                                     |
+|       Week 3        | [meeting minutes](/ReportMaterial/MeetingMinutes/28Jan2025.txt) <br> [crazy bubble discussion drawings](/ReportMaterial/MeetingMinutes/28th.jpeg) <br> [crazy bubble initial brainstorm](/ReportMaterial/ProgressTracker/crazy-bubble-brainstorming-28Jan2025.pdf) <br> [flappy bird gameplay video for lab](/ReportMaterial/Week3PrototypeVideos/flappy-bird-ppt-gameplay.mp4) <br> [crazy bubble gameplay video for lab](https://www.youtube.com/shorts/hrKJQ_CAGm4) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/14) |
+|       Week 4        |                                  [meeting minutes](/ReportMaterial/MeetingMinutes/4thFeb2025.txt) <br> [crazy bubble new brainstorm redrawn](/ReportMaterial/ProgressTracker/crazy-bubble-redo-4Feb2025.pdf) <br> [crazy bubble new discussion drawings](/ReportMaterial/ProgressTracker/Meeting%20pic%20on%204th%20Feb.jpeg) <br> [game requirements week4 lab](/ReportMaterial/Week4LabGameRequriments/week4-game-requirements.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/15)                                  |
+|       Week 5        |                                                                                                                                                                 [meeting minutes](ReportMaterial/MeetingMinutes/11thFeb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/16) <br> [Class Diagram](/ReportMaterial/Diagrams/class-diagram-v1.jpeg)                                                                                                                                                                  |
+|       Week 7        |                                                                                                                                [meeting minutes 1](ReportMaterial/MeetingMinutes/24Feb2025.txt) <br> [meeting minutes 2](ReportMaterial/MeetingMinutes/25Feb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/17) <br> [Qualitative Evaluations](ReportMaterial/qualitative-evals/)                                                                                                                                |
+|  Week 8 and Week 9  |                                                                                                                                                                   [meeting minutes](ReportMaterial/MeetingMinutes/4Mar2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/19) <br> [Quantitative Evaluations](ReportMaterial/quantitative-evals/)                                                                                                                                                                    |
+| Week 10 and Week 11 |                                                                                                                                                                                                                                       [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/20)                                                                                                                                                                                                                                       |
+|   Week 12 onwards   |                                                                                                                                                                                                                                       [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/21)                                                                                                                                                                                                                                       |
 
 ## Crazy Bubble Video Demonstration
 
@@ -406,13 +408,75 @@ For the evaluation, we used an alpha value of 0.05 as we would like to be 95% ce
 
 The calculated W value for our evaluation was 0, which is well below the critical value of 8 for our chosen alpha value.
 
-The evaluated result confirms that the addition of our key twist and new core mechanic, i.e. the random Incidences, increases the difficulty level of our gameplay relative to the basic version and is statistically significant. This is a positive outcome as it assures the team that the direction we took in creating a twist to the game is correct and that the addition of the random Incidences made during the sprint over reading week was not in vain.
+The evaluated result confirms that the addition of our key twist and new core mechanic, i.e. the random Incidences, increases the difficulty level of our gameplay relative to the basic version and is statistically significant. This is a positive outcome as it assures the team that the direction we took in creating a twist to the game is correct and that the addition of the random Incidences made during the reading week sprint was not in vain.
 
 ## Process
 
-- 15% ~750 words
+### Collaboration
 
-- Teamwork. How did you work together, what tools did you use. Did you have team roles? Reflection on how you worked together.
+Our team decided early on that most of our meetings would be done in person to promote group camaraderie and facilitate discussions. We found that it was much easier to bounce ideas off each other and that the discussions were more productive when done face to face as opposed to online. This falls in line with the [study](https://www.gsb.stanford.edu/insights/thinking-inside-box-why-virtual-meetings-generate-fewer-ideas#:~:text=The%20researchers%20say%20they've,as%20well%2C%E2%80%9D%20Levav%20says.) that we came across stating that meeting in person improves creative collaboration in teams.
+
+We mostly adopted a Scrum-Inspired Agile approach where we made each sprint one or two weeks long, had weekly standups instead of daily, added frequent check-ins with each other throughout each sprint week and use Kanban board in GitHub for tracking tasks, to name a few deviations from traditional Scrum.
+
+At the start of the project, our sprint was typically one week long to carefully lay the bricks that would shape up our game and get it off the ground.
+
+Starting from reading week, the team then switched to two weeks long sprints as we ramped up on the difficulty of each tasks and increased the amount of tasks to be completed per sprint in order to implement all the functions that we needed to make the game more interesting, all while juggling the other coursework deadlines.
+
+Our team typically meets up at least twice per sprint:
+
+1. Sprint Planning after lab sessions end on Tuesdays, where we decide and assign the tasks for the sprint week
+2. Sprint Standup after lectures conclude on Thurdays, where we discuss the progress thus far, the work to be done and whether there are any help required from the team
+
+[Meeting minutes](/ReportMaterial/MeetingMinutes/) were recorded for most Sprint Planning meetings to allow members of the team to refresh their memory on what was discussed during the meeting, in addition to assigning the respective tasks to the appropriate members on GitHub's [Kanban](https://github.com/orgs/UoB-COMSM0166/projects/73) during the meeting itself.
+
+The team got more familiar with each other's strengths and weaknesses quickly within a couple weeks working on the project, which allowed us to delegate tasks with greater efficiency. This helped manage stress as we are able to properly leverage on each other's strengths and weaknesses to fill up any potential gaps in the group and assign the correct tasks to the correct member. Tasks are typically assigned to members either through matching the member with the appropriate skills or self-selection.
+
+Pair programming was also used extensively throughout the project. The decision to utilise pair programming initially stemmed from the fact that all members of the team had never coded in p5.js before and were not too confident about tackling the tasks individually.
+
+On the first week, the team worked on each task individually but faced many challenges and progress was not smooth due to the lack of foundation in the new language.
+Learning from this and anticipating many errors with potentially many hours spent on debugging if done alone, the team decided to try adopting pair programming to reduce the initial intimidation from tackling these new concepts and challenges, in addition to accelerating the learning of a new language in a more efficient and collaborative manner since both members can research and discuss together.
+
+It is also worth noting that since we were all new to p5.js, there were many occasions where we actually did not realise that there were errors in our code as we were writing them. It is in these situations where we really felt that pair programming shines since time spent on error catching and debugginng reduced significantly, leading to the team deciding to continue utilising pair programming even after gaining confidence in p5.js. Members working on the task together would choose to meet up directly at each other's dorms or MVB, or decide to work online together while sharing screens.
+
+### Tools
+
+Various different tools were used throughout development of the game.
+
+We used WhatsApp to keep in constant contact, using it as our primary communication tool to coordinate meetings, ask for help, request for reviews and seek clarifications.
+
+<p align="center">
+<img width="50%" src="./images/whatsapp-screenshot.png">
+<br>
+<em><sub>Whatsapp chat</sub></em>
+</p>
+
+To keep track of our progress for each meeting and sprint, we mainly used GitHub to store meeting minutes and the built-in functions like GitHub Kanban to track tasks.
+This works well for the team as most of our information and resources are kept within GitHub itself, allowing team members to be able to find the information they need just by opening GitHub alone without having to open other applications.
+
+<p align="center">
+<img width="80%" src="./images/github-kanban-screenshot.png">
+<br>
+<em><sub>GitHub Kanban Board</sub></em>
+</p>
+
+Coding itself is done within Visual Studio Code. On top of Visual Studio Code, the team also made use of the Git client application called Fork which helps show the Git operations in a more visual manner, making it easier to work with the different branches created during development as compared to using command-line operations.
+
+<p align="center">
+<img width="80%" src="./images/visual-studio-screenshot.png">
+<br>
+<em><sub>Visual Studio Code</sub></em>
+</p>
+<br>
+
+<p align="center">
+<img width="80%" src="./images/fork-screenshot.png">
+<br>
+<em><sub>Fork</sub></em>
+</p>
+ 
+Our team also made extensive use of the Pull Request function on GitHub. We eventually developed the habit of creating a new branch for every task assigned. Once the development for a single task is completed, the team member will submit a Pull Request and have another team member review the codes before approving the merge.
+
+This process of having one branch per task and for a separate team member to review each Pull Request before merging helps ensure good coding standards as it becomes easy to catch bugs before Pull Requests are approved, and even if buggy code gets merged in, we can easily tell which task caused the bug.
 
 ## Sustainability, ethics and accessibility
 
