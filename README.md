@@ -216,14 +216,14 @@ Our game utilises several manager classes to handle the different areas of gamep
 
 The primary manager classes (found in the folder named "[core](/docs/core)") are:
 
-1. **Game**: Main coordinator to manage all game states and transitions
-2. **GameManager**: Focuses on controlling the physics, game logic and entity updates
-3. **GameUIManager**: Focuses on managing UI components and all visual elements
-4. **IncidentManager**: Focuses on handling the random events that were incorporated to increase game challenge and act as a twist to the original game
-5. **ToolManager**: Focuses on controlling the tools found in our shop function
-6. **UIController**: Focuses on rendering the UI elements and handling updates to the display
+1. `Game`: Main coordinator to manage all game states and transitions
+2. `GameManager`: Focuses on controlling the physics, game logic and entity updates
+3. `GameUIManager`: Focuses on managing UI components and all visual elements
+4. `IncidentManager`: Focuses on handling the random events that were incorporated to increase game challenge and act as a twist to the original game
+5. `ToolManager`: Focuses on controlling the tools found in our shop function
+6. `UIController`: Focuses on rendering the UI elements and handling updates to the display
 
-Creating multiple primary manager classes allows us to modify the different components independently. In the final version of our Class Diagram (covered in the section below), you can see clearly that the Game class sits at the top of the hierarchy, managing all the other manager classes.
+Creating multiple primary manager classes allows us to modify the different components independently. In the final version of our Class Diagram (covered in the section below), you can see clearly that the `Game` class sits at the top of the hierarchy, managing all the other manager classes.
 
 ### Class Diagram
 
@@ -246,7 +246,7 @@ This led to us creating the second and final Class Diagram.
 <em><sub>Final Class Diagram</sub></em>
 </p>
 
-The final Class Diagram reflects our System Architecture by visualising the way our components relate to one another, with the Game class serving as the main controller and connecting to the GameManager, TutorialManager and MenuPage.
+The final Class Diagram reflects our System Architecture by visualising the way our components relate to one another, with the Game class serving as the main controller and connecting to the `GameManager`, `TutorialManager` and `MenuPage`.
 
 ### Sequence Diagram
 
@@ -270,9 +270,77 @@ This does appear to be an area for improvement as we believe that we could have 
 
 ## Implementation
 
-- 15% ~750 words
+The base behind our game is the traditional Suika Game, with added twists like double player mode, shop function, new tools and random incidences occuring during gameplay.
 
-- Describe implementation of your game, in particular highlighting the three areas of challenge in developing your game.
+<p align="center">
+<img width="40%" src="./images/first-version-gameplay.gif">
+<br>
+<em><sub>First Version of Crazy Bubble</sub></em>
+</p>
+
+We structured our implementation by following Object Oriented Design (OOD) approach. From the initial main classes being `Board` and `Player` which interacts with `GameManager` at the top, we eventually expanded and evolved our code as complexity increased. Now, we have `Game` serving as the main coordinator to manage all game states and transitions, `GameManager` to handle core gameplay loop, and `UIController` and `GameUIManager` to handle UI components and visual elements.
+
+In our initial version, we faced our first challenge with trying to implement the expected functionality of the "Rainbow Tool" and "Bomb Tool". However, these were simple challenges that we easily overcame after gaining more experience and knowledge in p5.js.
+
+The significant challenges came after we fully implemented the shop function, double player mode and all "Incidences" and "Tools".
+
+Here, we will discuss about the two technical challenges that particularly stood out to us during the development of the game which we managed to overcome.
+
+> ### Challenge 1: Integrating Incidences and Tools
+>
+> Our biggest challenge was the integration of all the separate "Incidences" and "Tools" together into the game. Since each of the "Incidences" and "Tools" were developed by different team members concurrently, it meant that testings for each of these features were done in isolation. While these features all functioned correctly in isolation, combining them revealed unexpected interactions and conflicts.
+>
+> Each of the "Incidences" (Wind, Fog, Freeze, Fire, Rain) inherits from the base `Incident` class with the `IncidentManager` acting as the controller for them. On the other hand, the "Tools" are handled by the `ToolManager`.
+>
+> <p align="center">
+> <img width="45%" src="./ReportMaterial/screenshots/incidences-code-screenshot.png">
+> <br>
+> <em><sub>Incidences in IncidentManager.js</sub></em>
+> </p>
+>
+> The conflicts happens when multiple incidences or tools were simultaneously active. For example, the `FogIncident`, which acts like a layer of dense fog to block all vision of the player's playing field, would partially reveal bubbles frozen by the `FreezeIncident` and bubbles burning by the `FireIncident`.
+>
+> <p align="center">
+> <img width="40%" src="./ReportMaterial/screenshots/fog-bug-with-other-incidences.png">
+> <br>
+> <em><sub>Bug with Fog Incident when active with other Incidences</sub></em>
+> </p>
+>
+> This happened because the "Incidences" modifies the properties of the bubbles in conflicting ways, causing visual glitches and inconsistent behaviour.
+>
+> To resolve these issues, we conducted intensive pair programming sessions to redesign and refactor our codes. Among the modifications were a state management approach to track the effects of the "Incidences", tweaking code sequences, and implementing additional methods to properly pause or resume effects.
+>
+> <p align="center">
+> <img width="45%" src="./ReportMaterial/screenshots/incidence-pause-resume-screenshot.png">
+> <br>
+> <em><sub>Example of Pause() and Resume() methods implemented</sub></em>
+> </p>
+>
+> This challenge consumed most of the second half of our project while we also concurrently worked on development in other areas, highlighting the importance of thorough early integration testing.
+
+> ### Challenge 2: Shop Integration in Double Player Mode
+>
+> Another significant challenge was implementing the shop function into the double player mode. While casual mode, being single player, was straightforward with mouse interaction, it wasn't feasible to have two players share one mouse.
+>
+> We needed to redesign the `Shop` class to allow the browsing and purchasing of items in the shop for each player individually using their own unique key controls.
+>
+> <p align="center">
+> <img width="60%" src="./ReportMaterial/screenshots/player1and2-browsing-shop-code-screenshot.png">
+> <br>
+> <em><sub>Codes for individually browsing shop for Player 1 and 2</sub></em>
+> </p>
+>
+> Another complexity was ensuring that tools activated in the correct player's playing field. Some tools, like the "Strong Wind" or "Heavy Rain" tools, were designed to disrupt the opponent rather than benefit the purchasing player. This required implementing a targeting system to direct the effects to the appropriate playing field.
+>
+> <p align="center">
+> <img width="70%" src="./ReportMaterial/screenshots/disruptive-tools-activation-codes-screenshot.png">
+> <br>
+> <em><sub>Codes for directing tools to disrupt opposing player</sub></em>
+> </p>
+>
+> Throughout these extensive redesigning, we encountered numerous issues where the new codes broke the existing logics. Balancing competitive and fair gameplay while ensuring that all tools worked correctly was part of the challenge. Through pair programming sessions, we were able to solve the problems collectively and catch errors before implemention.
+
+Through addressing these challenges, along with other challenges not touched on in this report, we created a robust game that maintained our envisioned features while gaining valuable insights into managing complex system interactions. This experience highlighted the importance of thorough early integration testing and clear communication when working on interconnected systems in a collaborative environment.
 
 ## Evaluation
 
