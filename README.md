@@ -121,7 +121,7 @@ By combining these three twists, we managed to create an engaging game that offe
 
 ### Ideation Process
 
-Our team approached this project with a specific theme in mind: "fun games that you would play after a stressful day to unwind and is simple enough to complete in 3 months". This was a result of our team's shared experience on balancing work with relaxation, and recognizing the value of engaging games that offer quick enjoyment without a steep learning curve.
+Our team approached this project with a specific theme in mind: `fun games that you would play after a stressful day to unwind and is simple enough to complete in 3 months`. This was a result of our team's shared experience on balancing work with relaxation, and recognizing the value of engaging games that offer quick enjoyment without a steep learning curve.
 
 Each member brainstormed for ideas that fit the theme and included their suggestions onto the GitHub Kanban on the first week, which we then discussed on the following meeting.
 
