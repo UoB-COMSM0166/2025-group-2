@@ -76,18 +76,18 @@ The core gameplay revolves around dropping bubbles of different sizes and colour
 <p align="center">
 <img width="70%" src="./images/gameplay.gif">
 <br>
-<em><sub>Initial Class Diagram</sub></em>
+<em><sub>Crazy Bubble Gameplay</sub></em>
 </p>
 
 What makes our `Crazy Bubble` truly unique and novel are these three key twists:
 
 > **1. Shop System**
 >
-> Coins earned through merges allows players to make purchases in the in-game shop, giving players access to gameplay-altering tools. Players can purchase helpful items like the "Rainbow Tool", which merges with any bubble, or disruptive items in the double player mode like the "Strong Wind" tool that blows the opponent's falling bubble off course.
+> Coins earned through merges allows players to make purchases in the in-game shop, giving players access to gameplay-altering tools. Players can purchase helpful items like the "Rainbow Tool", which merges with any bubble, or disruptive items in the Double Player mode like the "Strong Wind" tool that blows the opponent's falling bubble off course.
 
 > **2. Competitive Double Player Mode**
 >
-> The competitive double player mode adds another layer to the traditionally solitary game, allowing players more excitement and strategic depth as they race against time while attempting to gain an edge over each other.
+> The competitive Double Player mode adds another layer to the traditionally solitary game, allowing players more excitement and strategic depth as they race against time while attempting to gain an edge over each other.
 
 > **3. Random "Incidences" Throughout Gameplay**
 >
@@ -125,7 +125,7 @@ The workshop on Week 3 where we created prototypes for both games allowed us to 
 <em><sub>First Prototype (paper) developed during Week 3 Workshop</sub></em>
 </p>
 
-A huge factor in our decision was due to the lesser number of variations of "Merge Fruit" available online, meaning that we had ample opportunities for original twists. Having experienced isolation during the Covid period, we knew we wanted to add a competitive double player mode to encourage connection and enjoyment with friends, which worked well for us since variations of the game online at the time of the ideation process only featured single player mode.
+A huge factor in our decision was due to the lesser number of variations of "Merge Fruit" available online, meaning that we had ample opportunities for original twists. Having experienced isolation during the Covid period, we knew we wanted to add a competitive Double Player mode to encourage connection and enjoyment with friends, which worked well for us since variations of the game online at the time of the ideation process only featured single player mode.
 
 The simplicity of the game's concept also meant that the p5.js language which we're required to work with provided the perfect foundation for implementing our envisioned features while allowing for rapid development when paired with the P5play framework. This gave us the confidence that it was feasible to go ahead with the "Merge Fruit" game as our choice of game for this project.
 
@@ -171,7 +171,7 @@ Based on the stakeholders listed out in our Onion Model, we created user stories
 
 ### Use Case Model
 
-Analysing the user stories on hand, we knew we had to design our game in a way that can be enjoyed by anyone regardless of gaming skills while implementing our twists. Since the double player mode was part of our twist, it was something we must implement by the end of the project.
+Analysing the user stories on hand, we knew we had to design our game in a way that can be enjoyed by anyone regardless of gaming skills while implementing our twists. Since the Double Player mode was part of our twist, it was something we must implement by the end of the project.
 
 In order to ensure that the various elements of the game are clear, we created the Use Case Model to aid and guide us in our development.
 
@@ -218,7 +218,7 @@ This first version was created by brainstorming together during a face-to-face s
 <em><sub>Initial Class Diagram</sub></em>
 </p>
 
-As we developed the game further and added in more features according to the various twists planned, like the double player mode, the shop function, the various new tools found in the shop function and the random incidences occuring during gameplay, code complexity quickly increased and refactoring became necessary.
+As we developed the game further and added in more features according to the various twists planned, like the Double Player mode, the shop function, the various new tools found in the shop function and the random incidences occuring during gameplay, code complexity quickly increased and refactoring became necessary.
 This led to us creating the second and final Class Diagram.
 
 <p align="center">
@@ -251,7 +251,7 @@ This does appear to be an area for improvement as we believe that we could have 
 
 ## Implementation
 
-The base behind our game is the traditional "Merge Fruit" game, with added twists like double player mode, shop function, new tools and random incidences occuring during gameplay.
+The base behind our game is the traditional "Merge Fruit" game, with added twists like Double Player mode, shop function, new tools and random incidences occuring during gameplay.
 
 <p align="center">
 <img width="40%" src="./images/first-version-gameplay.gif">
@@ -263,7 +263,7 @@ We structured our implementation by following Object Oriented Design (OOD) appro
 
 In our initial version, we faced our first challenge with trying to implement the expected functionality of the "Rainbow Tool" and "Bomb Tool". However, these were simple challenges that we easily overcame after gaining more experience and knowledge in p5.js.
 
-The significant challenges came after we fully implemented the shop function, double player mode and all "Incidences" and "Tools".
+The significant challenges came after we fully implemented the shop function, Double Player mode and all "Incidences" and "Tools".
 
 Here, we will discuss about the two technical challenges that particularly stood out to us during the development of the game which we managed to overcome.
 
@@ -301,7 +301,7 @@ Here, we will discuss about the two technical challenges that particularly stood
 
 > ### Challenge 2: Shop Integration in Double Player Mode
 >
-> Another significant challenge was implementing the shop function into the double player mode. While casual mode, being single player, was straightforward with mouse interaction, it wasn't feasible to have two players share one mouse.
+> Another significant challenge was implementing the shop function into the Double Player mode. While Casual Mode, being single player, was straightforward with mouse interaction, it wasn't feasible to have two players share one mouse.
 >
 > We needed to redesign the `Shop` class to allow the browsing and purchasing of items in the shop for each player individually using their own unique key controls.
 >
@@ -325,6 +325,8 @@ Through addressing these challenges, along with other challenges not touched on 
 
 ## Evaluation
 
+Part of the Agile methodology emphasises on the delivering of working software through iterative development and embracing change based on feedback. Evaluations are conducted throughout the development of Crazy Bubble to ensure that the game develops in the right direction and appeals to players. In this section, we will discuss the Qualitative Evaluation and the Quantitative Evaluation conducted during development.
+
 ### Qualitative Evaluation
 
 The qualitative evaluations were collected in two stages:
@@ -333,6 +335,8 @@ The qualitative evaluations were collected in two stages:
 - Stage 2 - the improved version with modifications to address the feedbacks given during Stage 1
 
 Evaluations collected at each stage allowed the team to gain a clearer understanding of player needs and expectations, allowing for improvements in the right direction before arriving at the final version that is enjoyable to the players of the game. Problems spotted by players during the different stages were addressed early which helped avoid unnecessary complications, and negative feedbacks drove improvement to overall gameplay experience.
+
+Below are examples of feedbacks received during the Think Aloud Evaluation and Heuristic Evaluation from Stage 1 of our qualitative evaluation.
 
 _Stage 1 - Initial Demo Version (25th Feb 2025)_
 
@@ -365,7 +369,7 @@ _Stage 1 - Initial Demo Version (25th Feb 2025)_
 > > | Single Player Main Game | Some functions like the Bomb tool does not work as expected (no explosions even though the name would imply an explosion)             | Match between System and the Real World | 4         | 2      | 2           | 2.6      |
 > > | Single Player Main Game | Scores of the game needs to be more obvious                                                                                           | Visibility of System Status             | 2         | 1      | 1           | 1.3      |
 
-Consolidating the feedbacks received from Stage 1 of our qualitative evaluation, we identified the following points for prioritisation:
+After consolidating all the feedbacks received from Stage 1 of our qualitative evaluation, we identified the following points for prioritisation:
 
 - Players need a way to determine that the game has ended
 - Tools not working as intended
@@ -376,6 +380,8 @@ The points above were marked for prioritisation and as areas to focus on because
 A key issue that was given a score of 4 for severity was that there was no end to the game. This was a point that was noted down as the top priority for rectification.
 
 Once we had the evaluations analysed for Stage 1, the next steps and development prioritisations became clearer. The first improvement to be pushed was to include a way for the players to determine when their game has ended, essentially breaking out of the infinite loop and attaching a goal to the game. A couple of tools that did not work as intended also had to be fixed so that the gameplay does not get negatively impacted. We also had to improve player experience by adding descriptions to the tools available in the game and additional animations for in-game event occurences. While the overall experience was positive, these were glaring issues that required our immediate attention before moving onto Stage 2.
+
+For Stage 2, we focused on Think Aloud Evaluation so that we could get insights on personal opinions of players, with two examples shown below.
 
 _Stage 2 - Improved version (3rd Mar 2025)_
 
@@ -405,32 +411,34 @@ _Stage 2 - Improved version (3rd Mar 2025)_
 > >
 > > Problems spotted:
 > >
-> > > - Double player mode still requires using the mouse to play, making it almost impossible for 2 players to play at the same time
+> > > - Double Player mode still requires using the mouse to play, making it almost impossible for 2 players to play at the same time
 > >
 > > Feedbacks for Improvement:
 > >
 > > > - Add animation or a more obvious indication that the game has ended after player places fruit that goes over the red line in the playing field
 > > > - Switch from using a mouse and instead use keyboard keys to play the game
 
-With the modifications added according to the feedbacks received from Stage 1 of our qualitative evaluation, the feedbacks we received during Stage 2 leaned towards user experience improvements instead of critical fixes to make the game playable. Evaluating the feedbacks in Stage 2, it seems that the concerns raised during Stage 1 were addressed properly and received positively, which was a relief to the team. The remaining modifications to be made to the game at this point will mostly be to improve gameplay experience and to polish up the game.
+With the modifications added according to the feedbacks received from Stage 1 of our qualitative evaluation, the feedbacks we received during Stage 2 leaned towards user experience improvements instead of critical fixes to make the game playable. Evaluating all the feedbacks received in Stage 2, it seems that the concerns raised during Stage 1 were addressed properly and received positively, which was a relief to the team. The remaining modifications to be made to the game at this point will mostly be to improve gameplay experience and to polish up the game.
 
 At this point, keeping in mind the limited time remaining, the team listed down the different modifications we would still like to add to the game and ranked them according to priority to focus on.
 
 ### Quantitative Evaluation using NASA TLX
 
-For the quantitative evaluation, we approached ten random players to test out our game in two difficulty levels. All players were given a short introduction to our game prior to the start of the evaluations. The players then filled out both the NASA TLX and the System Usability Scale right after completing each difficulty level. To minimise learning effects, we arranged for five players to play the easier difficulty first before playing the harder difficulty, and for the other five players to play the harder difficulty first before playing the easier difficulty.
+For the quantitative evaluation, we approached ten random players to test out our game in two difficulty levels. All players were given a short introduction of our game prior to the start of the evaluations. The players then filled out both the NASA TLX and the System Usability Scale right after completing each difficulty level. To minimise learning effects, we arranged for five players to play the easier difficulty first before playing the harder difficulty, and for the other five players to play the harder difficulty first before playing the easier difficulty.
 
 In this report, we will discuss the results from the NASA TLX assessment.
 
 For the NASA TLX evaluation we received, we opted not to use weights, instead choosing to use the raw TLX scores. This decision was made in consideration of the fact that we want to eliminate the layer of subjectivity in the assessment, primarily because for our game, it was decided that each dimension in the NASA TLX is equally important. On top of that, there is also [research](https://www.jmir.org/2020/9/e19472/) which suggested that using raw TLX scores makes it easier to administer the NASA TLX.
 
-Since both the Single Player mode and the Double Player mode in our game runs on essentially the same logics and mechanics, save for the different number of players involved per game, we decided that the evaluation this time should focus on getting the ten players to test out the core mechanics of our game using the Single Player mode for simplicity. The goal is to confirm whether the new additional twists that we added to the game managed to improve the gameplay difficulty and add depth.
+Since both the Casual mode, which is single player, and the Double Player mode in our game runs on essentially the same logics and mechanics, save for the different number of players involved per game, we decided that the evaluation this time should focus on getting the ten players to test out the core mechanics of our game using the Casual mode for simplicity. The goal is to confirm whether the new additional twists that we added to the game managed to improve the gameplay difficulty and add depth.
 
-In the Single Player mode, players will strive to get as high a score as possible before the game ends. The game ends when the player exceeds the allowable playing field by going over the red line in our game.
+In the Casual mode, players will strive to get as high a score as possible before the game ends. The game ends when the player exceeds the allowable playing field by going over the red line at the top, or when the player achieves the largest sized bubble.
 
-The first level of difficulty that the ten players tested out is the basic and plain version of our Single Player mode where the goal is to get as high as score as possible before the game ends as described above, with access to the in-game shop items.
+The first level of difficulty that the ten players tested out is the basic and plain version of our Casual mode where the goal is to get as high as score as possible before the game ends as described above, with access to the in-game shop items.
 
-The second level of difficulty that the ten players tested out is the full Single Player mode where on top of what they played with in the first level of difficulty, there is the addition of random Incidences occuring throughout gameplay to disrupt them. The existence of the random Incidences in our gameplay is a core mechanic and a key twist of our game that we decided must be evaluated.
+The second level of difficulty that the ten players tested out is the full Casual mode where on top of what they played with in the first level of difficulty, there is the addition of random Incidences occuring throughout gameplay to disrupt them. The existence of the random Incidences in our gameplay is a core mechanic and one of the key twists of our game that we decided must be evaluated.
+
+Evaluation results from the ten players are shown below.
 
 > #### Evaluation Results (4th Mar 2025)
 >
@@ -446,7 +454,7 @@ The second level of difficulty that the ten players tested out is the full Singl
 > > 	<img width="90%" src="./ReportMaterial/quantitative-evals/NASA_TLX-lvl2.png">
 > > </p>
 
-We evaluated the NASA TLX results received from the ten players using the Wilcoxon Signed Ranked Test to determine whether there is a significant difference between the two difficulty levels.
+We evaluated the NASA TLX results above from the ten players using the Wilcoxon Signed Ranked Test to determine whether there is a significant difference between the two difficulty levels.
 
 For the evaluation, we used an alpha value of 0.05 as we would like to be 95% certain that any significant differences found in our assessment is caused by real differences and not randomness. On a test with 10 sets of data, this means that we would require a W value of 8 or below for the test result to be statistically significant.
 
@@ -468,7 +476,7 @@ Starting from reading week, the team then switched to two weeks long sprints as 
 
 Our team typically meets up at least twice per sprint:
 
-1. Sprint Planning after lab sessions end on Tuesdays, where we decide and assign the tasks for the sprint week
+1. Sprint Review followed by Sprint Planning after lab sessions end on Tuesdays, where we discuss the work done in the previous sprint for the first half of the meeting before moving on to assigning the tasks for the following sprint week
 2. Sprint Standup after lectures conclude on Thurdays, where we discuss the progress thus far, the work to be done and whether there are any help required from the team
 
 [Meeting minutes](/ReportMaterial/MeetingMinutes/) were recorded for most Sprint Planning meetings to allow members of the team to refresh their memory on what was discussed during the meeting, in addition to assigning the respective tasks to the appropriate members on GitHub's [Kanban](https://github.com/orgs/UoB-COMSM0166/projects/73) during the meeting itself.
@@ -587,7 +595,7 @@ Implementing mechanisms to pause updates in the game when certain features are i
 
 Analysing Crazy Bubble using the SusAF framework showed significant social benefits, particularly in the area of fostering a sense of community and inclusiveness.
 
-Our game design allows for double player mode, which enables shared experiences. This means friends can play together, or players can find new friends by bonding through this game, enhancing social interaction through a shared activity that, in the long run, naturally results in a sense of community.
+Our game design allows for Double Player mode, which enables shared experiences. This means friends can play together, or players can find new friends by bonding through this game, enhancing social interaction through a shared activity that, in the long run, naturally results in a sense of community.
 
 The game is also relatively simple in terms of controls, with gradual difficulty progression, ensuring accessibility to players regardless of age, background, or gaming skills. To further ensure that all players can easily learn and play the game, we implemented a tutorial feature that can be skipped.
 
@@ -609,12 +617,12 @@ Crazy Bubble was designed with the intention of allowing players to unwind after
 
 #### Negative Impact - Potential Addiction
 
-A potential negative impact was identified where there was a risk of addiction to the game through the addictive mechanics. To mitigate this potential negative impact, we implemented additional conditions that leads to the game ending. Instead of the original singular game over condition of exceeding the playing field limit only, we added two additional conditions: one where the game ends once the player reaches the maximum sized bubble, and another in double player mode where there is a time limit of two minutes per game.
+A potential negative impact was identified where there was a risk of addiction to the game through the addictive mechanics. To mitigate this potential negative impact, we implemented additional conditions that leads to the game ending. Instead of the original singular game over condition of exceeding the playing field limit only, we added two additional conditions: one where the game ends once the player reaches the maximum sized bubble, and another in Double Player mode where there is a time limit of two minutes per game.
 
 <p align="center">
 <img width="65%" src="./ReportMaterial/sustainability-documents/time-limit-screenshot.png">
 <br>
-<em><sub>Screenshot of time limit in double player mode</sub></em>
+<em><sub>Screenshot of time limit in Double Player mode</sub></em>
 </p>
 
 By adding these additional game over conditions, we ensure that Crazy Bubble ends earlier than the original base version of the game would, resulting in shorter sessions.
@@ -629,13 +637,13 @@ As we progressed in the development of the game, the complexity of our codes inc
 
 One main challenge was the integration of all "Incidences" and "Tools" within the game. These "Incidences" and "Tools" were developed by different team members and they all worked well when doing isolated testing. The problem came when they were all thrown together during a full playtesting, where we saw broken logics or unexpected bugs occurring because the codes on the backend clashed with each other. The cleaning up for this lasted for most of the second half of our project and required a lot of refactoring and redesigning.
 
-Another challenge faced during development was the implementation of our shop function into the double player mode. Various considerations had to be taken in order to ensure that the different effects from items bought in the shared shop activates in the correct player's playing field, determining how each player can access the shared shop function individually at the same time without affecting gameplay, and not breaking any existing logics like in the previous challenge mentioned.
+Another challenge faced during development was the implementation of our shop function into the Double Player mode. Various considerations had to be taken in order to ensure that the different effects from items bought in the shared shop activates in the correct player's playing field, determining how each player can access the shared shop function individually at the same time without affecting gameplay, and not breaking any existing logics like in the previous challenge mentioned.
 
 Both the challenges mentioned above were overcome by the team through many meetings between different team members to ensure all codes are fully understood before attempting any modifications. This helped prevent unwanted bugs from appearing and allowed development to proceed smoother after we learnt from the experience.
 
 Perhaps due to our lack of experience and skills due to having come from various different backgrounds not related to software development, we were not able to fully adopt a Test-Driven Development (TDD) process for this game. A lot of our functions had to be tested through playtesting, finding new bugs this way and going back to resolve them, wasting a lot of time as there were always bugs missed out during the rounds of playtesting. This is an area for improvement and a lesson that the team will take to heart for future projects.
 
-As for the future of Crazy Bubble itself, there were a few features that we would have liked to implement if there was enough time. Modifying the game into an online version with individual player accounts and storing each player's high scores in a database would allow the player to access their old game data and attempt to beat either their own previous high scores or get on the leaderboard for highest score across all players. With the online version also comes the possibility of a new game mode of playing with more than just one other opponent, much like [Tetris 99](https://www.nintendo.com/en-gb/Games/Nintendo-Switch-download-software/TETRIS-99-1505396.html) where 99 different opponents compete with each other. On a smaller scale, we would also have liked to add more tools into the shop function in our game, especially on the double player mode where adding more tools for disrupting other players would have made the game more interesting.
+As for the future of Crazy Bubble itself, there were a few features that we would have liked to implement if there was enough time. Modifying the game into an online version with individual player accounts and storing each player's high scores in a database would allow the player to access their old game data and attempt to beat either their own previous high scores or get on the leaderboard for highest score across all players. With the online version also comes the possibility of a new game mode of playing with more than just one other opponent, much like [Tetris 99](https://www.nintendo.com/en-gb/Games/Nintendo-Switch-download-software/TETRIS-99-1505396.html) where 99 different opponents compete with each other. On a smaller scale, we would also have liked to add more tools into the shop function in our game, especially on the Double Player mode where adding more tools for disrupting other players would have made the game more interesting.
 
 All members of our team agree that this was an invaluable experience as it allowed each of us to experience working in a team as developers, explore the different aspects of software engineering and challenge ourselves in a new way that we had never experienced before, all before actually stepping out into the industry. The lessons learnt in this project will be something that helps define us as we grow as software developers in the future.
 
