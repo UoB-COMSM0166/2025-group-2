@@ -41,13 +41,18 @@
 |   Week 7    |                                                                                                                              [meeting minutes 1](ReportMaterial/MeetingMinutes/24Feb2025.txt) <br> [meeting minutes 2](ReportMaterial/MeetingMinutes/25Feb2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/17) <br> [Qualitative Evaluations](ReportMaterial/qualitative-evals/)                                                                                                                              |
 |   Week 8    |                                                                                                                                                                 [meeting minutes](ReportMaterial/MeetingMinutes/4Mar2025.txt) <br> [Kanban link](https://github.com/orgs/UoB-COMSM0166/projects/73/views/19) <br> [Quantitative Evaluations](ReportMaterial/quantitative-evals/)                                                                                                                                                                  |
 
-## Your Game
+## Crazy Bubble Video Demonstration
 
-Link to your game [PLAY HERE](https://uob-comsm0166.github.io/2025-group-2/)
+<p align="center">
+<a href="LinkToBeAdded" title="Watch Video on Game Demonstration"> 
+<img width="70%" src="./images/main-page.png">
+</a>
+<br>
+</p>
 
-Your game lives in the [/docs](/docs) folder, and is published using Github pages to the link above.
+Click on the image above to watch a game demonstration video of Crazy Bubble!
 
-Include a demo video of your game here (you don't have to wait until the end, you can insert a work in progress video)
+Interested in trying out the game for yourself? You can [play here](https://uob-comsm0166.github.io/2025-group-2/)!
 
 ## Team Members
 
@@ -64,10 +69,51 @@ Include a demo video of your game here (you don't have to wait until the end, yo
 |   Jin Liao (Octave)   | ge24446@bristol.ac.uk |   Developer    |
 |   Gerald Rodriguez    | nu24692@bristol.ac.uk |   Developer    |
 
+## Table of Contents
+
+- [Introduction](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#introduction)
+- [Requirements](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#requirements)
+- [Design](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#design)
+- [Implementation](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#implementation)
+- [Evaluation](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#evaluation)
+- [Process](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#process)
+- [Sustainability, ethics and accessibility](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#sustainability-ethics-and-accessibility)
+- [Conclusion](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#conclusion)
+- [Contribution Statement](https://github.com/UoB-COMSM0166/2025-group-2/tree/main?tab=readme-ov-file#contribution-statement)
+
 ## Introduction
 
-- 5% ~250 words
-- Describe your game, what is based on, what makes it novel?
+In `Crazy Bubble`, players get to experience the satisfying challenge of merging colourful and expressive bubbles to create increasingly larger ones while juggling strategic tool usage and navigating random incidences in a race against time and space. This seemingly simple concept challenges the player's spatial awareness and planning while remaining a fun and relaxing game that anyone, regardless of gaming experience, can enjoy.
+
+The core gameplay revolves around dropping bubbles of different sizes and colour into a contained playing field. Collision between two bubbles of the same colour and size results in a merge that forms a larger bubble, rewarding players with points and coins. With the increase in size and number of bubbles in the playing field, the available space decreases, creating a natural difficulty progression that challenges the player's spatial reasoning and timing.
+
+<p align="center">
+<img width="70%" src="./images/gameplay.gif">
+<br>
+<em><sub>Initial Class Diagram</sub></em>
+</p>
+
+What makes our `Crazy Bubble` truly unique and novel are these three key twists:
+
+> **1. Shop System**
+>
+> Coins earned through merges allows players to make purchases in the in-game shop, giving players access to gameplay-altering tools. Players can purchase helpful items like the "Rainbow Tool", which merges with any bubble, or disruptive items in the double player mode like the "Strong Wind" tool that blows the opponent's falling bubble off course.
+
+> **2. Competitive Double Player Mode**
+>
+> The competitive double player mode adds another layer to the traditionally solitary game, allowing players more excitement and strategic depth as they race against time while attempting to gain an edge over each other.
+
+> **3. Random "Incidences" Throughout Gameplay**
+>
+> These random "Incidences" that occur throughout gameplay introduces unexpected challenges like freezing certain bubbles to stop merges, or having certain bubbles catch fire such that merges results in a deduction of points and no coins awarded. This keeps players engaged and challenges them to be adaptive.
+>
+> <p align="center">
+> <img width="70%" src="./images/freeze-incident.gif">
+> <br>
+> <em><sub>Freeze Incident that stops certain bubbles from merging temporarily</sub></em>
+> </p>
+
+By combining these three twists, we managed to create an engaging game that offers a unique blend of competitiveness and relaxation. `Crazy Bubble` delivers a satisfying experience that can be enjoyed in short sessions, allowing it to be the perfect respite after a long and stressful day.
 
 ## Requirements
 
