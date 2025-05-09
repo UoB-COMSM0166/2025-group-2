@@ -1,0 +1,24 @@
+Three Green Software Foundation Implementation Patterns used in Crazy Bubble:
+
+1. Using scale() to Resize Game Instead of Modifying DOM Structure (Avoid excessive DOM size)
+		-> When resizing the game screen, we use scale() to adjust the content within
+			the Canvas, rather than using CSS transform: scale() or dynamically changing
+			the width and height.
+
+		-> Benefits of this approach:
+				- No need to create additional DOM elements to fit different device sizes.
+				- Scaling does not affect the webpage’s DOM tree structure, reducing the
+					browser’s computational load.
+
+2. Keep Request Counts Low
+		-> Crazy Bubble minimizes HTTP requests by preloading all game assets (images, sounds)
+			locally, avoiding frequent server calls.
+			The game runs entirely on the client-side without unnecessary API requests, reducing
+			network load and improving performance.
+
+3. Minimize Main Thread Work
+		-> The game optimizes performance by using GPU-accelerated Canvas rendering instead of
+			DOM manipulation. It utilizes requestAnimationFrame() for smooth animations and noLoop()
+			to pause unnecessary rendering, reducing CPU load and ensuring a responsive gameplay
+			experience.
+
