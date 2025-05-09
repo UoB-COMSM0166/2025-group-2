@@ -10,15 +10,15 @@
 - [Team Members](#team-members)
 - [Introduction](#introduction)
 - [Requirements](#requirements)
-	- [Ideation Process](#ideation-process)
-	- [Stakeholders Identification](#stakeholders-identification)
-	- [User Stories](#user-stories)
-	- [Use Case Model](#use-case-model)
+  - [Ideation Process](#ideation-process)
+  - [Stakeholders Identification](#stakeholders-identification)
+  - [User Stories](#user-stories)
+  - [Use Case Model](#use-case-model)
 - [Design](#design)
-	- [System Architecture](#system-architecture)
-	- [Class Diagram](#class-diagram)
-	- [Sequence Diagram](#sequence-diagram)
-	- [Agile Approach](#agile-approach)
+  - [System Architecture](#system-architecture)
+  - [Class Diagram](#class-diagram)
+  - [Sequence Diagram](#sequence-diagram)
+  - [Agile Approach](#agile-approach)
 - [Implementation](#implementation)
 - [Evaluation](#evaluation)
 - [Process](#process)
@@ -233,18 +233,18 @@ This does appear to be an area for improvement as we believe that we could have 
 
 - 15% ~750 words
 
-<ins> Qualitative Evaluation </ins>  
+### Qualitative Evaluation
+
 The qualitative evaluations were collected in two stages:
 
 - Stage 1 - the initial demo version
 - Stage 2 - the improved version with modifications to address the feedbacks given during Stage 1
 
 Evaluations collected at each stage allowed the team to gain a clearer understanding of player needs and expectations, allowing for improvements in the right direction before arriving at the final version that is enjoyable to the players of the game. Problems spotted by players during the different stages were addressed early which helped avoid unnecessary complications, and negative feedbacks drove improvement to overall gameplay experience.
-<br>
 
 _Stage 1 - Initial Demo Version (25th Feb 2025)_
 
-> Think Aloud Evaluation
+> #### Think Aloud Evaluation
 >
 > > Positives Experiences:
 > >
@@ -263,9 +263,7 @@ _Stage 1 - Initial Demo Version (25th Feb 2025)_
 > > > - Description of all function/tools should be added
 > > > - Will be good to show a list of all different sizes of balls
 
-<br>
-
-> Heuristic Evaluation:
+> #### Heuristic Evaluation:
 >
 > > | Interface               | Issue                                                                                                                                 | Heuristic                               | Frequency | Impact | Persistence | Severity |
 > > | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------- | --------- | ------ | ----------- | -------- |
@@ -274,8 +272,6 @@ _Stage 1 - Initial Demo Version (25th Feb 2025)_
 > > | Single Player Main Game | Players can't tell when the wind incidence is activated as there are no animations or indications, making it feel abrupt              | Visibility of System Status             | 3         | 3      | 2           | 2.6      |
 > > | Single Player Main Game | Some functions like the Bomb tool does not work as expected (no explosions even though the name would imply an explosion)             | Match between System and the Real World | 4         | 2      | 2           | 2.6      |
 > > | Single Player Main Game | Scores of the game needs to be more obvious                                                                                           | Visibility of System Status             | 2         | 1      | 1           | 1.3      |
-
-<br>
 
 Consolidating the feedbacks received from Stage 1 of our qualitative evaluation, we identified the following points for prioritisation:
 
@@ -288,11 +284,10 @@ The points above were marked for prioritisation and as areas to focus on because
 A key issue that was given a score of 4 for severity was that there was no end to the game. This was a point that was noted down as the top priority for rectification.
 
 Once we had the evaluations analysed for Stage 1, the next steps and development prioritisations became clearer. The first improvement to be pushed was to include a way for the players to determine when their game has ended, essentially breaking out of the infinite loop and attaching a goal to the game. A couple of tools that did not work as intended also had to be fixed so that the gameplay does not get negatively impacted. We also had to improve player experience by adding descriptions to the tools available in the game and additional animations for in-game event occurences. While the overall experience was positive, these were glaring issues that required our immediate attention before moving onto Stage 2.
-<br>
 
 _Stage 2 - Improved version (3rd Mar 2025)_
 
-> Think Aloud Evaluation 1
+> #### Think Aloud Evaluation 1
 >
 > > Positives Experiences:
 > >
@@ -308,9 +303,7 @@ _Stage 2 - Improved version (3rd Mar 2025)_
 > > > - Ensure that the bugs do not happen during gameplay when two incidents occur at the same time
 > > > - "Currency" system should be implemented so it limits the things that players can buy
 
-<br>
-
-> Think Aloud Evaluation 2
+> #### Think Aloud Evaluation 2
 >
 > > Positives Experiences:
 > >
@@ -327,14 +320,11 @@ _Stage 2 - Improved version (3rd Mar 2025)_
 > > > - Add animation or a more obvious indication that the game has ended after player places fruit that goes over the red line in the playing field
 > > > - Switch from using a mouse and instead use keyboard keys to play the game
 
-<br>
-
 With the modifications added according to the feedbacks received from Stage 1 of our qualitative evaluation, the feedbacks we received during Stage 2 leaned towards user experience improvements instead of critical fixes to make the game playable. Evaluating the feedbacks in Stage 2, it seems that the concerns raised during Stage 1 were addressed properly and received positively, which was a relief to the team. The remaining modifications to be made to the game at this point will mostly be to improve gameplay experience and to polish up the game.
 
 At this point, keeping in mind the limited time remaining, the team listed down the different modifications we would still like to add to the game and ranked them according to priority to focus on.
-<br> <br>
 
-<ins> Quantitative Evaluation using NASA TLX </ins>
+### Quantitative Evaluation using NASA TLX
 
 For the quantitative evaluation, we approached ten random players to test out our game in two difficulty levels. All players were given a short introduction to our game prior to the start of the evaluations. The players then filled out both the NASA TLX and the System Usability Scale right after completing each difficulty level. To minimise learning effects, we arranged for five players to play the easier difficulty first before playing the harder difficulty, and for the other five players to play the harder difficulty first before playing the easier difficulty.
 
@@ -350,17 +340,15 @@ The first level of difficulty that the ten players tested out is the basic and p
 
 The second level of difficulty that the ten players tested out is the full Single Player mode where on top of what they played with in the first level of difficulty, there is the addition of random Incidences occuring throughout gameplay to disrupt them. The existence of the random Incidences in our gameplay is a core mechanic and a key twist of our game that we decided must be evaluated.
 
-> **Evaluation Results (4th Mar 2025)**
+> #### Evaluation Results (4th Mar 2025)
 >
-> > **_First Difficulty Level - Single Player Basic version_**
+> > ##### _First Difficulty Level - Single Player Basic version_
 > >
 > > <p align="center">
 > > 	<img width="90%" src="./ReportMaterial/quantitative-evals/NASA_TLX-lvl1.png">
 > > </p>
 > >
-> > <br>
-> >
-> > **_Second Difficulty Level - Single Player with Incidences_**
+> > ##### _Second Difficulty Level - Single Player with Incidences_
 > >
 > > <p align="center">
 > > 	<img width="90%" src="./ReportMaterial/quantitative-evals/NASA_TLX-lvl2.png">
@@ -382,10 +370,100 @@ The evaluated result confirms that the addition of our key twist and new core me
 
 ## Sustainability, ethics and accessibility
 
-- 100% ~750 words
+Recognising the importance of sustainability and our responsibility in the long-term consequences of our design, we analysed our Crazy Bubble game across multiple sustainability dimensions using the Sustainability Awareness Framework (SusAF) to build sustainability from the start.
 
-- Evidence of the impact of your game across the environment and two of the other areas:
-  - Environmental + 2 of the following: Social, Economic, Technical, Individual
+<p align="center">
+<img width="70%" src="./ReportMaterial/sustainability-documents/SusAD-screenshot.png">
+<br>
+<em><sub>Sustainability Awareness Diagram (SusAD) from SusAF Analysis</sub></em>
+</p>
+
+Here, we will discuss a few Environmental, Social and Individual impacts of our game, together with the implementation of Green Software Foundation Patterns to reduce our ecological footprint.
+
+### 1. Environmental Impact
+
+#### 1.1 Green Software Foundation Implementation Patterns
+
+Three key optimisation patterns were implemented to minimise the environmental impact of our game:
+
+<p align="center">
+<img width="60%" src="./ReportMaterial/sustainability-documents/green-patterns-screenshot.png">
+<br>
+<em><sub>Green Software Implementation Patterns used in Crazy Bubble</sub></em>
+</p>
+
+> ##### Pattern 1: Avoid excessive DOM size
+>
+> We used `scale()` to adjust our canvas proportionally for game resizing. This helps us avoid the need to dynamically modify DOM elements, allowing for a simpler and smaller sized DOM tree structure which reduces the browser's computational load and energy consumption.
+>
+> <p align="center">
+> <img width="40%" src="./ReportMaterial/sustainability-documents/window-resize-code-screenshot.png">
+> <br>
+> <em><sub>Screenshot of windowResized() function which uses scale() for resizing</sub></em>
+> </p>
+
+> ##### Pattern 2: Keep Request Counts Low
+>
+> We preload all our game assets locally to minimise HTTP requests, eliminating unnecessary network traffic during gameplay.
+>
+> <p align="center">
+> <img width="50%" src="./ReportMaterial/sustainability-documents/preload-sounds-code-screenshot.png">
+> <br>
+> <em><sub>Screenshot of preload() function which preloads sound effects locally</sub></em>
+> </p>
+> Crazy Bubble is able to reduce carbon footprint associated with data transfers and server energy consumption through the use of this client-side approach since no unnecessary API requests are made.
+
+> ##### Pattern 3: Minimize Thread Work
+>
+> Instead of DOM manipulation, Crazy Bubble uses GPU-accelerated canvas rendering to reduce CPU load, ensuring a responsive gameplay experience.
+
+#### 1.2 Energy
+
+We also built energy-saving features directly into our game mechanics to complement the Green Software Implementation Patterns.
+
+<p align="center">
+<img width="45%" src="./ReportMaterial/sustainability-documents/draw-without-update-codes-screenshot.png">
+<br>
+<em><sub>Screenshot of example code that pauses updates unless required</sub></em>
+</p>
+
+Implementing mechanisms to pause updates in the game when certain features are inactive helps further conserve energy and resources. This addresses the SusAF concern on increased power and energy consumption caused by extended gameplay sessions.
+
+### 2. Social Impact
+
+Analysing Crazy Bubble using the SusAF framework showed significant social benefits, particularly in the area of fostering a sense of community and inclusiveness.
+
+Our game design allows for double player mode, which enables shared experiences. This means friends can play together, or players can find new friends by bonding through this game, enhancing social interaction through a shared activity that, in the long run, naturally results in a sense of community.
+
+The game is also relatively simple in terms of controls, with gradual difficulty progression, ensuring accessibility to players regardless of age, background, or gaming skills. To further ensure that all players can easily learn and play the game, we implemented a tutorial feature that can be skipped.
+
+<p align="center">
+<img width="45%" src="./ReportMaterial/sustainability-documents/tutorial-codes-screenshot.png">
+<br>
+<em><sub>Screenshot of part of tutorial feature codes</sub></em>
+</p>
+
+This way, players who need help with learning the game can get guidance through the tutorial feature while experienced players can choose to skip the tutorial entirely.
+
+### 3. Individual Impact
+
+On the Individual level, the SusAF framework identified both positive and negative impacts.
+
+#### Positive Impact - Mental Health Benefits
+
+Crazy Bubble was designed with the intention of allowing players to unwind after a long and stressful day. This is evident in the relatively simple gameplay which has been noted by testers to provide relaxing entertainment and satisfaction, offering a positive impact on mental well-being.
+
+#### Negative Impact - Potential Addiction
+
+A potential negative impact was identified where there was a risk of addiction to the game through the addictive mechanics. To mitigate this potential negative impact, we implemented additional conditions that leads to the game ending. Instead of the original singular game over condition of exceeding the playing field limit only, we added two additional conditions: one where the game ends once the player reaches the maximum sized bubble, and another in double player mode where there is a time limit of two minutes per game.
+
+<p align="center">
+<img width="65%" src="./ReportMaterial/sustainability-documents/time-limit-screenshot.png">
+<br>
+<em><sub>Screenshot of time limit in double player mode</sub></em>
+</p>
+
+By adding these additional game over conditions, we ensure that Crazy Bubble ends earlier than the original base version of the game would, resulting in shorter sessions.
 
 ## Conclusion
 
