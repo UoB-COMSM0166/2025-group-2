@@ -5,7 +5,7 @@
 ## Crazy Bubble Video Demonstration
 
 <p align="center">
-<a href="LinkToBeAdded" title="Watch Video on Game Demonstration"> 
+<a href="https://youtu.be/UmlsQypJV-E" title="Watch Video on Game Demonstration"> 
 <img width="70%" src="./images/main-page.png">
 </a>
 <br>
@@ -22,35 +22,40 @@ Expand "Contents" below for table of contents and easy navigation within the rep
 <details>
 <summary>Contents</summary>
 
-- [Development Team](#Development-Team)
-- [Introduction](#introduction)
-- [Requirements](#requirements)
-  - [Ideation Process](#ideation-process)
-  - [Stakeholders Identification](#stakeholders-identification)
-  - [User Stories](#user-stories)
-  - [Use Case Model](#use-case-model)
-- [Design](#design)
-  - [System Architecture](#system-architecture)
-  - [Class Diagram](#class-diagram)
-  - [Sequence Diagram](#sequence-diagram)
-  - [Agile Approach](#agile-approach)
-- [Implementation](#implementation)
-- [Evaluation](#evaluation)
-  - [Qualitative Evaluation](#qualitative-evaluation)
-  - [Quantitative Evaluation using NASA TLX](#quantitative-evaluation-using-nasa-tlx)
-- [Process](#process)
-  - [Collaboration](#collaboration)
-  - [Tools](#tools)
-- [Sustainability, ethics and accessibility](#sustainability-ethics-and-accessibility)
-  - [Environmental Impact](#1-environmental-impact)
-    - [Green Software Foundation Implementation Patterns](#11-green-software-foundation-implementation-patterns)
-    - [Energy](#12-energy)
-  - [Social Impact](#2-social-impact)
-  - [Individual Impact](#3-individual-impact)
-- [Conclusion](#conclusion)
-- [Contribution Statement](#contribution-statement)
-- [Appendices](#appendices)
-  - [Links to weekly discussions](#links-to-weekly-discussions)
+- [2025-group-2](#2025-group-2)
+	- [Crazy Bubble Video Demonstration](#crazy-bubble-video-demonstration)
+	- [Table of Contents](#table-of-contents)
+	- [Development Team](#development-team)
+	- [Introduction](#introduction)
+	- [Requirements](#requirements)
+		- [Ideation Process](#ideation-process)
+		- [Stakeholders Identification](#stakeholders-identification)
+		- [User Stories](#user-stories)
+		- [Use Case Model](#use-case-model)
+	- [Design](#design)
+		- [System Architecture](#system-architecture)
+		- [Class Diagram](#class-diagram)
+		- [Sequence Diagram](#sequence-diagram)
+		- [Agile Approach](#agile-approach)
+	- [Implementation](#implementation)
+	- [Evaluation](#evaluation)
+		- [Qualitative Evaluation](#qualitative-evaluation)
+		- [Quantitative Evaluation using NASA TLX](#quantitative-evaluation-using-nasa-tlx)
+	- [Process](#process)
+		- [Collaboration](#collaboration)
+		- [Tools](#tools)
+	- [Sustainability, ethics and accessibility](#sustainability-ethics-and-accessibility)
+		- [1. Environmental Impact](#1-environmental-impact)
+			- [1.1 Green Software Foundation Implementation Patterns](#11-green-software-foundation-implementation-patterns)
+			- [1.2 Energy](#12-energy)
+		- [2. Social Impact](#2-social-impact)
+		- [3. Individual Impact](#3-individual-impact)
+			- [Positive Impact - Mental Health Benefits](#positive-impact---mental-health-benefits)
+			- [Negative Impact - Potential Addiction](#negative-impact---potential-addiction)
+	- [Conclusion](#conclusion)
+	- [Contribution Statement](#contribution-statement)
+	- [Appendices](#appendices)
+		- [Links to weekly discussions](#links-to-weekly-discussions)
 
 </details>
 
