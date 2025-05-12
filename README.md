@@ -9,29 +9,49 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin: 20px 0;
+  gap: 8px;
+  margin: 5px 0;
 ">
   <a href="https://youtu.be/UmlsQypJV-E" title="Watch Video" style="width: 70%">
     <img src="./images/main-page.png" alt="Crazy Bubble" style="width: 100%">
   </a>
 
   <div style="
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #0366d6;
-    font-family: Arial, sans-serif;
-    font-weight: 600;
-    font-size: 1.1em;
+    display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     color: #0366d6;
+     font-family: Arial, sans-serif;
+     font-weight: 600;
+     font-size: 18px;
+     padding: 5px 0;
+     line-height: 1;
+		 margin-top: -4px; 
   ">
-    <span>⬆️</span>
-    <span>Click to watch the game video</span>
-    <span>⬆️</span>
+	<span style="vertical-align: middle; font-size: 1.1em">⬆️</span>
+  <span style="vertical-align: middle">Click to watch the game video🎬</span>
+  <span style="vertical-align: middle; font-size: 1.1em">⬆️</span>
   </div>
-</div>
 
-Interested in trying out the game for yourself? You can [play here](https://uob-comsm0166.github.io/2025-group-2/)!
+<a href="https://uob-comsm0166.github.io/2025-group-2/" 
+   style="
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     color: #0366d6;
+     font-family: Arial, sans-serif;
+     font-weight: 600;
+     font-size: 18px;
+     padding: 5px 0;
+     line-height: 1;  
+		 margin-top: -4px;
+   ">
+<span style="vertical-align: middle; font-size: 1.1em">➡️</span>
+<span style="vertical-align: middle">Click here to play the game🎮</span>
+<span style="vertical-align: middle; font-size: 1.1em">⬅️</span>
+</a>
+
+</div>
 
 ## Table of Contents
 
