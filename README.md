@@ -4,16 +4,50 @@
 
 ## Crazy Bubble Video Demonstration
 
-<p align="center">
-<a href="https://youtu.be/UmlsQypJV-E" title="Watch Video on Game Demonstration"> 
-<img width="70%" src="./images/main-page.png">
+<div align="center" style="
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 5px 0;
+">
+  <a href="https://youtu.be/UmlsQypJV-E" title="Watch Video" style="width: 70%">
+    <img src="./images/main-page.png" alt="Crazy Bubble" style="width: 100%">
+  </a>
+
+  <div style="
+    display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     color: #0366d6;
+     font-family: Arial, sans-serif;
+     font-weight: 600;
+     font-size: 18px;
+     padding: 5px 0;
+     line-height: 1;
+		 margin-top: -4px; 
+  ">
+  <span style="vertical-align: middle">Click the image above to watch the game video🎬</span>
+  </div>
+
+<a href="https://uob-comsm0166.github.io/2025-group-2/" 
+   style="
+     display: inline-flex;
+     align-items: center;
+     gap: 6px;
+     color: #0366d6;
+     font-family: Arial, sans-serif;
+     font-weight: 600;
+     font-size: 18px;
+     padding: 5px 0;
+     line-height: 1;  
+		 margin-top: -4px;
+   ">
+<span style="vertical-align: middle">Click here to play the game🎮</span>
 </a>
-<br>
-</p>
 
-Click on the image above to watch a game demonstration video of Crazy Bubble!
-
-Interested in trying out the game for yourself? You can [play here](https://uob-comsm0166.github.io/2025-group-2/)!
+</div>
 
 ## Table of Contents
 
