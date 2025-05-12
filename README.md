@@ -28,9 +28,7 @@
      line-height: 1;
 		 margin-top: -4px; 
   ">
-	<span style="vertical-align: middle; font-size: 1.1em">⬆️</span>
-  <span style="vertical-align: middle">Click to watch the game video🎬</span>
-  <span style="vertical-align: middle; font-size: 1.1em">⬆️</span>
+  <span style="vertical-align: middle">Click the image above to watch the game video🎬</span>
   </div>
 
 <a href="https://uob-comsm0166.github.io/2025-group-2/" 
@@ -46,9 +44,7 @@
      line-height: 1;  
 		 margin-top: -4px;
    ">
-<span style="vertical-align: middle; font-size: 1.1em">➡️</span>
 <span style="vertical-align: middle">Click here to play the game🎮</span>
-<span style="vertical-align: middle; font-size: 1.1em">⬅️</span>
 </a>
 
 </div>
