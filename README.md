@@ -17,6 +17,8 @@ Interested in trying out the game for yourself? You can [play here](https://uob-
 
 ## Table of Contents
 
+Expand "Contents" below for table of contents and easy navigation within the report.
+
 <details>
 <summary>Contents</summary>
 
@@ -79,7 +81,7 @@ The core gameplay revolves around dropping bubbles of different sizes and colour
 <em><sub>Crazy Bubble Gameplay</sub></em>
 </p>
 
-What makes our `Crazy Bubble` truly unique and novel are these three key twists:
+`Crazy Bubble` is based on the existing game called "Merge Fruit", with additional twists added to set it apart from the original version of the game. What makes our `Crazy Bubble` truly unique and novel are these three key twists:
 
 > **1. Shop System**
 >
